@@ -1,0 +1,238 @@
+{
+  "$comment": "AndroidX sample FILES this catalog cannot compile against the Compose Multiplatform desktop artifacts, each with its reason. A declared gap rather than a silent one: scripts/import-samples.mjs skips these, and deleting an entry and re-running the import + `./gradlew :catalog:compileKotlin` is how to tell whether it is still needed. The first fourteen are yschimke/m3-catalog's ui-samples-catalog/quarantine.json, carried over verbatim (same pin, same artifacts). The rest were added from the first compile of the wider corpus here; the error counts are what that compile reported. An entry keys on the bare `file` name unless that name repeats across libraries, when it names the vendored `path`.",
+  "$comment_kinds": "Three kinds. ANDROID-SPECIFIC (an Activity, a View, a Context, android.*) and ANDROID RESOURCES (R.drawable / R.font / R.string — a desktop module has no Android resource table) are the steady state. VERSION SKEW is temporary: AndroidX 1.12.0 has an API the Compose Multiplatform artifact of the same line does not ship yet, so when the CMP pin moves, re-run the import without the entry. Where one API takes out a file whose other samples are fine, the entry says so: a patch in catalog/patches/ is the better fix.",
+  "samples": [
+    {
+      "file": "WindowInsetsPaddingSample.kt",
+      "reason": "159 errors: `androidx.activity.ComponentActivity`, `onCreate`, `setContent`, `WindowCompat` and `android.os.Bundle`. Every sample in the file is an Activity subclass demonstrating edge-to-edge insets, which is a statement about the Android window and has no desktop equivalent at all."
+    },
+    {
+      "file": "WindowInsetsSizeSample.kt",
+      "reason": "36 errors: the same Activity-and-`WindowCompat` shape as WindowInsetsPaddingSample.kt, for the inset SIZE modifiers."
+    },
+    {
+      "file": "WindowInsetsConnectionSample.kt",
+      "reason": "2 errors: `Modifier.imeNestedScroll`, which drives the Android soft keyboard as it animates. Android-only by construction — there is no IME to scroll with."
+    },
+    {
+      "file": "DragAndDropSamples.kt",
+      "reason": "69 errors: `android.content.ClipData`, `ClipDescription`, `Intent` and `toAndroidDragEvent`. Compose's drag-and-drop surface is platform-typed and these samples are written against the Android payload."
+    },
+    {
+      "file": "AndroidExternalSurfaceSamples.kt",
+      "reason": "53 errors: `AndroidExternalSurface` and `AndroidEmbeddedExternalSurface`, plus `android.graphics.Rect` and `Surface.lockCanvas`. Android-only by name as well as by API."
+    },
+    {
+      "file": "ReceiveContentSamples.kt",
+      "reason": "11 errors: the `TransferableContent` receive-content surface, whose payload is an Android `ClipData` and whose `consume` overload the multiplatform artifact does not carry."
+    },
+    {
+      "file": "ContextMenuSample.kt",
+      "reason": "6 errors: `ProcessTextKey`, `stringResource` and `R` — an Android text-processing intent and a resource table, neither of which exists on the desktop renderer."
+    },
+    {
+      "file": "MagnifierSamples.kt",
+      "reason": "4 errors: `Modifier.magnifier` and an `android.os.Build` version gate. The magnifier is a platform widget the Android framework draws."
+    },
+    {
+      "file": "HandwritingDetectorSample.kt",
+      "reason": "4 errors: `Modifier.handwritingDetector` and `Modifier.handwritingHandler`, the stylus handwriting surface the Android IME provides."
+    },
+    {
+      "file": "ClickableTextSample.kt",
+      "reason": "2 errors: `android.util.Log`, called from the click handler. Small enough to be a patch on its face — and a patch would edit what the sample DOES, since the logging call is the whole body of the click it demonstrates. Revisit when upstream stops logging from a sample."
+    },
+    {
+      "file": "BackgroundTextMeasurementSample.kt",
+      "reason": "3 errors: `LocalBackgroundTextMeasurementExecutor`, an AndroidX 1.12 composition local Compose Multiplatform 1.12.0 does not ship. Version skew, expected to disappear when the CMP pin moves."
+    },
+    {
+      "file": "FlexBoxSample.kt",
+      "reason": "1 error after the FlexBox opt-ins: `maxItemsInEachLine` on `FlexBox`, which AndroidX 1.12.0 has and the Compose Multiplatform artifact of the same version does not. Version skew, and the reason the opt-ins are worth keeping: they are what reduced 336 errors to this one, and they will be needed the moment the skew closes."
+    },
+    {
+      "file": "LazyGridSamples.kt",
+      "reason": "1 error: `cacheWindow`, a LazyGrid parameter added in AndroidX 1.12.0 and absent from Compose Multiplatform 1.12.0. Version skew. The whole file goes for one parameter, which is the per-file cost this list's header warns about — a patch would mean deleting an argument from a sample whose subject is arguably that argument."
+    },
+    {
+      "file": "LazyStaggeredGridSamples.kt",
+      "reason": "1 error: the same `cacheWindow` skew as LazyGridSamples.kt."
+    },
+    {
+      "file": "AnimatableSamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "1 error: `DeferredTargetAnimation.value`, which AndroidX 1.12.0 has and Compose Multiplatform 1.12 does not ship."
+    },
+    {
+      "path": "androidx/compose/animation/core/samples/TransitionSamples.kt",
+      "kind": "VERSION SKEW + ANDROID-SPECIFIC",
+      "reason": "7 errors: `rememberDeferredTransition` (AndroidX 1.12.0 only) and `Modifier.systemGestureExclusion`, an Android window-insets API. Named by `path` because `animation` has a `TransitionSamples.kt` too."
+    },
+    {
+      "file": "AnimatedVectorSample.kt",
+      "kind": "ANDROID RESOURCES",
+      "reason": "4 errors: `animatedVectorResource` and `R.drawable.*`: an Android animated-vector XML resource, which a desktop module has no resource table for."
+    },
+    {
+      "file": "AnimatedContentSamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "4 errors: `rememberDeferredTransition`, which AndroidX 1.12.0 has and Compose Multiplatform 1.12 does not ship. One API takes the whole file — a candidate for a patch."
+    },
+    {
+      "file": "AnimatedVisibilitySamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "9 errors: `CapturedAnimatedVisibility` and `rememberDeferredTransition`, AndroidX 1.12.0 APIs Compose Multiplatform 1.12 does not ship. A candidate for a patch: most of the file's samples use neither."
+    },
+    {
+      "file": "EnterExitTransitionSamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "4 errors: `EnterTransition.config` / `ExitTransition.config`, absent from Compose Multiplatform 1.12."
+    },
+    {
+      "file": "SharedTransitionSamples.kt",
+      "kind": "ANDROID RESOURCES + VERSION SKEW",
+      "reason": "24 errors: `R.drawable.*` through `painterResource(id = …)` — an Android resource table — plus `rememberDeferredTransition`."
+    },
+    {
+      "file": "DrawScopeSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "1 error: `android.graphics.*`, used to draw into a native Android canvas."
+    },
+    {
+      "file": "GraphicsLayerSamples.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "11 errors: `asAndroidBitmap`, `openFileOutput` and `android.graphics.*`: the samples write a captured layer to an Android file."
+    },
+    {
+      "file": "AndroidViewSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "50 errors: `AndroidView` and `android.view.*` — embedding Android Views is the whole subject."
+    },
+    {
+      "file": "BlurSample.kt",
+      "kind": "ANDROID RESOURCES",
+      "reason": "1 error: `R.drawable.*`, an Android resource."
+    },
+    {
+      "file": "ComposeViewContextSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "16 errors: `ComposeView` / `ComposeViewContext`, the Android View-system host."
+    },
+    {
+      "file": "DialogSample.kt",
+      "kind": "ANDROID-SPECIFIC + VERSION SKEW",
+      "reason": "6 errors: `android.os.IBinder` and the `windowToken` / `scrimAlpha` `DialogProperties` parameters, which the desktop `DialogProperties` does not have."
+    },
+    {
+      "file": "NestedScrollInteropSamples.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "35 errors: `AndroidView` and `rememberNestedScrollInteropConnection`, nested-scroll interop with Android Views."
+    },
+    {
+      "file": "PainterSample.kt",
+      "kind": "ANDROID RESOURCES",
+      "reason": "1 error: `R.drawable.*`, an Android resource."
+    },
+    {
+      "file": "PlacementScopeCoordinatesSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "2 errors: `LocalView`, the Android host View."
+    },
+    {
+      "file": "PlatformTextInputModifierNodeSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "8 errors: `android.view.inputmethod.EditorInfo` / `InputConnection`: the Android IME protocol."
+    },
+    {
+      "file": "PointerInputModifierSamples.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "5 errors: `PointerEvent.motionEvent` and `android.view.MotionEvent` in two samples. A candidate for a patch: the rest of the file is platform-neutral."
+    },
+    {
+      "file": "PopupSample.kt",
+      "kind": "ANDROID-SPECIFIC + VERSION SKEW",
+      "reason": "5 errors: `android.os.IBinder` and the `windowToken` / `scrimAlpha` `PopupProperties` parameters, absent on desktop."
+    },
+    {
+      "file": "RulerSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "4 errors: `LocalContext` and `resources`, to read an Android dimension."
+    },
+    {
+      "file": "SemanticsPropertiesSamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "2 errors: `SemanticsPropertyReceiver.hintText`, an AndroidX 1.12.0 semantics property Compose Multiplatform 1.12 does not ship."
+    },
+    {
+      "file": "SetFrameRateCategorySample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "7 errors: `Activity`, `LocalContext` and `window`: the Android display frame-rate API."
+    },
+    {
+      "file": "SetFrameRateSample.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "12 errors: `LocalContext`, `window` and `android.*`: the Android display frame-rate API."
+    },
+    {
+      "file": "SoundEffectSamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "3 errors: `SoundEffectOnInteraction`, absent from Compose Multiplatform 1.12."
+    },
+    {
+      "file": "TraverseModifierDemo.kt",
+      "kind": "VERSION SKEW",
+      "reason": "1 error: `ExposedDropdownMenu`, which the file resolves against an AndroidX material3 API surface the Compose Multiplatform material3 1.12 alpha does not match."
+    },
+    {
+      "file": "AnnotatedStringBuilderSamples.kt",
+      "kind": "VERSION SKEW",
+      "reason": "19 errors: `AnnotatedString` `Saver` APIs the Compose Multiplatform 1.12 `ui-text` does not ship; the remaining errors cascade from them. A candidate for a patch."
+    },
+    {
+      "file": "AnnotatedStringFromHtmlSamples.kt",
+      "kind": "ANDROID RESOURCES + VERSION SKEW",
+      "reason": "5 errors: `AnnotatedString.fromHtml` and `stringResource(R.string.*)`: an Android HTML parser and resource table."
+    },
+    {
+      "file": "FontFamilySamples.kt",
+      "kind": "ANDROID RESOURCES",
+      "reason": "3 errors: `R.font.*`: fonts from the Android resource table."
+    },
+    {
+      "file": "FontVariationSamples.kt",
+      "kind": "ANDROID RESOURCES + VERSION SKEW",
+      "reason": "8 errors: `R.font.*` plus `FontVariation.Settings.merge`, absent from Compose Multiplatform 1.12."
+    },
+    {
+      "file": "LineBreakSamples.kt",
+      "kind": "ANDROID-SPECIFIC",
+      "reason": "9 errors: `LineBreak.Strategy` / `Strictness` / `WordBreak`, which exist only on the Android `LineBreak` — desktop text has no configurable line-break strategy."
+    }
+  ],
+  "previews": [
+    {
+      "sample": "AdaptiveButtonSample",
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+    },
+    {
+      "sample": "AdaptiveStylesSample",
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+    },
+    {
+      "sample": "DelegatedReadOnlyStateSample",
+      "reason": "Throws `kotlin.NotImplementedError` at composition: the sample's data source is upstream's own `TODO()` placeholder (`observeSampleData`), so it is a code listing rather than something that can render anywhere."
+    },
+    {
+      "sample": "FoldableAwareSample",
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+    },
+    {
+      "sample": "MediaQueryModifierNodeSample",
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+    },
+    {
+      "sample": "MediaQuerySample",
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+    }
+  ]
+}

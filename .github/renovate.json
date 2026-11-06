@@ -1,0 +1,183 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>yschimke/renovate-config",
+    ":dependencyDashboard",
+    ":semanticCommits"
+  ],
+  "timezone": "UTC",
+  "prConcurrentLimit": 10,
+  "description": "Ported from yschimke/m3-catalog. Automerge is the default posture: this catalog has no downstream consumers, so a bad bump costs a revert. Compose Multiplatform is the exception — it is not automerged, because a CMP bump changes which AndroidX samples compile (see catalog/quarantine.json's VERSION SKEW entries) and moves pixels across the whole sheet, and because catalog/import.json's pin should move with it.",
+  "automerge": true,
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "packageRules": [
+    {
+      "description": "Majors are never automerged. A major on Kotlin, Compose Multiplatform or the preview toolchain changes what the catalog renders, and the render is the product — a human looks at the visual diff before it lands. Also hold a major for two weeks so the ecosystem's first round of regressions surfaces on someone else's CI.",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "description": "Compose Multiplatform and its independently-versioned Material 3 artifact move together; a mismatched pair drags in a foundation version the other half wasn't compiled against. One PR so CI judges them as a unit. Not automerged: this is the pair that decides how every sticker in the catalog is laid out, so the visual diff on the PR is the review.",
+      "matchPackageNames": [
+        "/^org\\.jetbrains\\.compose($|[.:])/"
+      ],
+      "groupName": "Compose Multiplatform",
+      "automerge": false
+    },
+    {
+      "description": "material-icons-extended is frozen at 1.7.3 — Google stopped publishing new releases of the extended set, so anything Renovate ranks above it on the 1.x line is not a newer icon set. `material-icons-core`, which material3 pulls in itself, still tracks the main Compose version and is covered by the rule above.",
+      "matchPackageNames": [
+        "org.jetbrains.compose.material:material-icons-extended"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Toolchain and CI plumbing — the Gradle wrapper, the GitHub Actions pins and the pinned Node version. These are judged entirely by whether CI passes, which is the one thing automerge already waits for, so batch them into a single PR rather than one PR per action. No `schedule`: like everything else here (the shared preset no longer sets one either), the batch is proposed on whichever Renovate run first sees an update. Deliberately BEFORE the compose-ai-tools rule, which re-claims its own action ref out of this batch — that pin travels with the Gradle coords, not with the rest of the plumbing.",
+      "matchManagers": [
+        "gradle-wrapper",
+        "github-actions"
+      ],
+      "groupName": "CI toolchain"
+    },
+    {
+      "description": "LAST ON PURPOSE, and now THREE rules rather than one. Renovate applies packageRules in order and the LAST match wins, so while this sat above the CI-toolchain rule the pinned `compose-ai-tools` action ref — a github-actions dependency — was pulled back out into the weekly batch and the two halves of one release drifted apart exactly as this says they must not: the `apply` pin in compose-preview.yml sat on v1.12.0 while the Gradle coords were three releases ahead on 1.15.0. Keep these last. This first rule is the compose-ai-tools train itself: the repo ships the preview CLI, the ee.schimke.composeai Gradle artifacts (the preview-annotations dependency and the ee.schimke.composeai.preview plugin marker) and the reusable CI actions/workflows as a single release, so the pinned action refs and the Gradle coords go in ONE PR — a skew breaks preview discovery outright. Track it aggressively and automerge once CI is green: the release moves several times a day and the pin is only useful if it keeps up. Republishing the catalog against the new renderer needs no extra step, because design-artifacts.yml has a push trigger on main covering the manifest paths this PR touches.",
+      "matchPackageNames": [
+        "yschimke/compose-ai-tools",
+        "/^ee\\.schimke\\.composeai($|[.:])/"
+      ],
+      "groupName": "compose-ai-tools",
+      "schedule": [
+        "at any time"
+      ],
+      "automerge": true,
+      "automergeSchedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "The wire contracts are published from yschimke/compose-preview-contracts on their OWN version line (2.x, against compose-ai-tools' 1.5x.x), so they are not part of the release above and must not share its group — one group means one shared version ref in libs.versions.toml, and Renovate raises that ref to whichever train released last, proposing a version the other never published. This is the same failure the rc-players rule fixed in wear-m3-catalog#199. The shared preset already splits these trains; this rule exists only to give the contracts the same aggressive posture as its neighbour, because a repo-local rule appended after the preset would otherwise leave them on the default posture. Listed by exact artifactId because the names interleave: `daemon-protocol` is a contract, `daemon-core` is not.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:daemon-protocol",
+        "ee.schimke.composeai:daemon-devices",
+        "ee.schimke.composeai:daemon-bta",
+        "ee.schimke.composeai:agent-grant-protocol",
+        "ee.schimke.composeai:data-render-core",
+        "ee.schimke.composeai:data-layoutinspector-core",
+        "ee.schimke.composeai:data-theme-core",
+        "ee.schimke.composeai:data-preview-overrides-core",
+        "ee.schimke.composeai:common-io"
+      ],
+      "groupName": "compose-preview-contracts",
+      "schedule": [
+        "at any time"
+      ],
+      "automerge": true,
+      "automergeSchedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "`preview-annotations` and `data-preview-overrides-runtime` are published from yschimke/compose-preview-daemon since its 3.0.0 (compose-ai-tools#5336), on a version line of their own that is already ahead of compose-ai-tools', so they must not share the tools group above: one group means one shared version ref, and a ref spanning two release lines is a version lie whichever way it points. `composePreviewAnnotations` in gradle/libs.versions.toml is that line's ref; the plugin marker and the CI action refs stay on the compose-ai-tools group. Same reasoning as the contracts rule above, and placed after it so the last match wins.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:preview-annotations",
+        "ee.schimke.composeai:data-preview-overrides-runtime",
+        "ee.schimke.composeai:data-remotecompose-connector"
+      ],
+      "groupName": "compose-preview-daemon",
+      "schedule": [
+        "at any time"
+      ],
+      "automerge": true,
+      "automergeSchedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "`compose-preview serve` and its render host, published from yschimke/compose-preview-server on a third version line independent of both the tools and the contracts. Same reasoning as the contracts rule above. The catalog does not resolve these coordinates today; the rule is here so that the day it does, the coordinate lands in its own PR rather than being swallowed by the compose-ai-tools group above it.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:compose-preview-serve",
+        "ee.schimke.composeai:compose-preview-render-host"
+      ],
+      "groupName": "compose-preview-server",
+      "schedule": [
+        "at any time"
+      ],
+      "automerge": true,
+      "automergeSchedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "LAST, and it takes the RemoteCompose players back out of the compose-ai-tools group above. They carry the ee.schimke.composeai group but are published from yschimke/rc-players on a version line of their own that is already ahead. Grouped with the tools, Renovate raised a shared version ref to a player-only version and dragged four compose-ai-tools artifacts to a version nobody published — that is wear-m3-catalog#199. This catalog resolves no player coordinate today, so the rule is a guard rather than a live grouping: without it the broad rule above silently re-collapses the split the shared preset makes, and the first player dependency added here inherits the bug.",
+      "matchPackageNames": [
+        "/^ee\\.schimke\\.composeai:rc-player-/",
+        "/^ee\\.schimke\\.composeai:third-party-rc-embedded-player($|-)/",
+        "ee.schimke.composeai:remote-compose-player-js-dist"
+      ],
+      "groupName": "rc-players",
+      "schedule": [
+        "at any time"
+      ],
+      "automerge": true,
+      "automergeSchedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "The daemon BOM rides in the compose-ai-tools PR, not one of its own. Each compose-preview plugin release bakes a minimum daemon (plugin-version.properties), so a plugin bump split from its daemon bump runs a skewed pair until the daemon PR lands (#594/#593 on 2.57.0 / 3.16.1; wear-m3-catalog's alignment check turns the same split red). One group makes them land together; module versions still come from the BOM's constraints.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:compose-preview-daemon-bom"
+      ],
+      "groupName": "compose-ai-tools",
+      "rangeStrategy": "pin",
+      "enabled": true,
+      "schedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "Update this release BOM independently; module versions come from its constraints.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:compose-preview-contracts-bom"
+      ],
+      "groupName": "compose-preview-contracts",
+      "rangeStrategy": "pin",
+      "enabled": true,
+      "schedule": [
+        "at any time"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "The tools release BOM advances when any module changes, while unchanged Gradle plugins keep their last published version. Keep the BOM on its own catalog ref/group so a BOM-only release cannot rewrite the plugin marker to a version that was never published. This is independent update tracking, not a compatibility pin.",
+      "matchPackageNames": [
+        "ee.schimke.composeai:compose-ai-tools-bom"
+      ],
+      "groupName": "compose-ai-tools-bom"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/ci\\.yml$/"
+      ],
+      "matchStrings": [
+        "repository:\\s*yschimke/compose-ai-tools\\s+ref:\\s*v(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "yschimke/compose-ai-tools",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    }
+  ]
+}

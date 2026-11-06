@@ -1,0 +1,150 @@
+{
+  "$comment": "The AndroidX Compose samples this repository vendors and publishes as ONE catalog, the `compose-ui-samples` system on preview.coo.ee: every `androidx.compose` sample tree with a Compose Multiplatform desktop artifact, EXCEPT material3, which yschimke/m3-catalog publishes as `m3-samples` beside the kit it is paired with. Excluded on purpose: material3 and its adaptive/window-size-class siblings (m3-catalog), `remote`, `runtime-livedata`/`-rxjava*`, `ui-viewbinding`, `ui-text-google-fonts` and `material-navigation` (Android-only, no desktop artifact), the `ui-test*` trees (test-rule samples, nothing to render), and `ui-tooling-preview` (its samples are empty `@PreviewWrapper` demos with no content to render). Every library shares ONE `ref` because the Compose core libraries release as a single train: androidx-main as of 2026-08-12, the day the 1.12.0 train was published — the same commit yschimke/m3-catalog measured as the exact @sample match for Compose Multiplatform 1.12 (see its ui-samples-catalog/import.json). `ref` is a COMMIT SHA, never a branch, so a render is reproducible and an upstream bump is a reviewable diff. `section` is the catalog tab each library's groups are published under.",
+  "repo": "https://github.com/androidx/androidx",
+  "libraries": [
+    {
+      "name": "foundation",
+      "section": "Foundation",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/foundation/foundation/samples/src/main/java/androidx/compose/foundation/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.foundation:foundation",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.foundation:foundation-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "foundation-layout",
+      "section": "Layout",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/foundation/foundation-layout/samples/src/main/java/androidx/compose/foundation/layout/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.foundation:foundation-layout",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.foundation:foundation-layout-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "ui",
+      "section": "UI",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/ui/ui/samples/src/main/java/androidx/compose/ui/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.ui:ui",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.ui:ui-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "ui-graphics",
+      "section": "Graphics",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/ui/ui-graphics/samples/src/main/java/androidx/compose/ui/graphics/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.ui:ui-graphics",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.ui:ui-graphics-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "ui-text",
+      "section": "Text",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/ui/ui-text/samples/src/main/java/androidx/compose/ui/text/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.ui:ui-text",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.ui:ui-text-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "ui-unit",
+      "section": "Unit",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/ui/ui-unit/samples/src/main/java/androidx/compose/ui/unit/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.ui:ui-unit",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.ui:ui-unit-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "animation",
+      "section": "Animation",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/animation/animation/samples/src/main/java/androidx/compose/animation/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.animation:animation",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.animation:animation-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "animation-core",
+      "section": "Animation Core",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/animation/animation-core/samples/src/main/java/androidx/compose/animation/core/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.animation:animation-core",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.animation:animation-core-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "animation-graphics",
+      "section": "Animation Graphics",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/animation/animation-graphics/samples/src/main/java/androidx/compose/animation/graphics/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.animation:animation-graphics",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.animation:animation-graphics-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "runtime",
+      "section": "Runtime",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/runtime/runtime/samples/src/main/java/androidx/compose/runtime/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.runtime:runtime",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.runtime:runtime-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "runtime-saveable",
+      "section": "Runtime Saveable",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/runtime/runtime-saveable/samples/src/main/java/androidx/compose/runtime/saveable/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.runtime:runtime-saveable",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.runtime:runtime-saveable-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    },
+    {
+      "name": "material",
+      "section": "Material",
+      "ref": "8cb591117137a7d6fb20840d6734b6c554ec8f3d",
+      "paths": [
+        "compose/material/material/samples/src/main/java/androidx/compose/material/samples"
+      ],
+      "artifactCoordinates": "androidx.compose.material:material",
+      "artifactVersion": "1.12.0",
+      "composeMultiplatformCoordinates": "org.jetbrains.compose.material:material-desktop",
+      "composeMultiplatformVersionRef": "compose-multiplatform"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+name: Design Artifacts
+
+# Render the vendored AndroidX Compose samples and publish the importable bundle to the
+# `design-artifacts/compose-ui-samples` branch of yschimke/compose-ui-samples-out, which the public
+# preview server (preview.coo.ee) serves at /compose-ui-samples/ once that repository is listed in
+# its catalogs.json and producers.json.
+#
+#   :catalog -> design-artifacts/compose-ui-samples   every androidx.compose sample tree but material3
+#
+# Modelled on yschimke/m3-catalog's design-artifacts.yml, which publishes that repository's four
+# catalogs (m3-catalog, m3-samples, compose-ui-samples, compose-foundation) to m3-catalog-out the
+# same way. The whole pipeline — install CLI -> validate spec -> render -> generate -> publish — is
+# the shared reusable workflow in compose-ai-tools, so this caller is just the `uses:` block. If a
+# need arises the reusable workflow cannot express, add a generic input upstream rather than forking
+# the pipeline here.
+
+on:
+  # Weekly, so the published sheet tracks renderer changes upstream without a change here.
+  schedule:
+    - cron: '17 6 * * 1' # Mondays 06:17 UTC
+  # Republish as soon as a render input lands on main: the vendored tree, the generated wrappers and
+  # spec, the pin, quarantine and patches (all under catalog/), the generators that move the
+  # published inventory with no change to catalog/ at all, and the build manifests (they carry the
+  # composePreviewPlugin pin that `cli-version: catalog` resolves the CLI from).
+  push:
+    branches: [main]
+    paths:
+      - 'catalog/**'
+      - 'scripts/samples-previews.mjs'
+      - 'scripts/samples-spec.mjs'
+      - 'gradle/libs.versions.toml'
+      - 'gradle/wrapper/gradle-wrapper.properties'
+      - 'settings.gradle.kts'
+      - 'build.gradle.kts'
+      - '.github/workflows/design-artifacts.yml'
+  workflow_dispatch:
+    inputs:
+      allow_incomplete:
+        description: 'Publish even if some previews fail to render or lack semantics (use while tuning the spec).'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# No caller-side `concurrency:` — `supersede-stale-runs` below is the lane's group, inside the
+# reusable workflow (a newer run cancels an older run's render; a started publish always finishes).
+# A caller-side group would wrap the whole called workflow and defeat it; see m3-catalog's
+# design-artifacts.yml for the incident history.
+
+jobs:
+  publish:
+    name: compose-ui-samples
+    # Don't let forks push to the delivery branch.
+    if: ${{ github.repository == 'yschimke/compose-ui-samples' }}
+    permissions:
+      contents: write
+    # Pin a release tag, never a PR head: a head commit stops resolving once its branch is deleted.
+    # Moves with `composePreviewPlugin` in libs.versions.toml (Renovate groups them).
+    uses: yschimke/compose-ai-tools/.github/workflows/design-artifacts-reusable.yml@v2.74.1
+    with:
+      system: compose-ui-samples
+      # Only main publishes. A dispatch from a branch renders, merges and validates, then stops short
+      # of the delivery branch.
+      publish: ${{ github.ref == 'refs/heads/main' }}
+      supersede-stale-runs: true
+      # Generated branches live in the -out repository so a clone of this one carries source only.
+      # Needs the ARTIFACTS_TOKEN secret below: GITHUB_TOKEN cannot write to another repository.
+      artifact-repository: yschimke/compose-ui-samples-out
+      spec: catalog/catalog.spec.json
+      module: ':catalog'
+      # No design references. These are AndroidX's sample call sites, not a reproduction of a design
+      # kit, so there is no Figma node for any of them to be scored against. An empty map is the
+      # truthful answer (the workflow warns "0% coverage", which is correct here), and running no
+      # Gradle for it saves a discover round trip. Same as every samples lane in m3-catalog.
+      design-map-command: printf '{"components":[]}\n' > design-map.json
+      # Keep the render CLI lockstep with the applied Gradle plugin — a CLI/plugin skew breaks preview
+      # discovery outright.
+      cli-version: catalog
+      catalog-key: composePreviewPlugin
+      # Compose Multiplatform desktop — no AGP, so the plugin routes it to the Skiko renderer.
+      desktop-render: true
+      # FALSE to start. A live bundle on a trusted delivery branch means preview.coo.ee executing
+      # vendored third-party Compose on request (`serve --allow-render-trusted`). m3-catalog grants
+      # that to `m3-samples` on stated specifics and starts `compose-ui-samples` without it; this
+      # repository starts in the same place. Flip it once this repository's -out branches are trusted
+      # in producers.json and you want device / theme / knob re-rendering — many of these samples are
+      # interaction demos (scroll, drag, AnimatedVisibility) where one frame says little.
+      publish-live-bundle: false
+      # No per-preview split: it writes an addressable copy of every preview onto an append-only
+      # branch on every publish, for a lane nothing reads.
+      split-per-preview: false
+      commit-user-name: Yuri Schimke
+      commit-user-email: yuri@schimke.ee
+      timeout-minutes: 60
+      render-timeout: 1800
+      # ONE. ~440 single-capture previews render warm in about a minute locally; a shard's own
+      # discovery, upload and merge would cost more than it saves.
+      render-shards: 1
+      allow-incomplete: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_incomplete }}
+    secrets:
+      artifacts_token: ${{ secrets.ARTIFACTS_TOKEN }}

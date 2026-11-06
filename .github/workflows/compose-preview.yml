@@ -1,0 +1,82 @@
+name: Compose Preview
+
+# Renders the catalog's @Previews on every PR and posts a before/after visual diff, and refreshes the
+# baseline on every merge to main. An upstream re-pin or a Compose Multiplatform bump moves pixels
+# across the whole sheet, and this is where a reviewer sees it.
+#
+# Same two-phase split as yschimke/m3-catalog: the PR render runs with NO write credential (a PR's
+# code is untrusted), and compose-preview-publish.yml picks the handoff up in a `workflow_run` with
+# the token.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compose-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  apply:
+    name: Render previews (PR)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache-read-only: 'true'
+      - uses: yschimke/compose-ai-tools/.github/actions/apply@v2.74.1
+        with:
+          artifact-repository: yschimke/compose-ui-samples-out
+          artifacts-token: ''
+          phase: render
+          cli-version: catalog
+          catalog-key: composePreviewPlugin
+          only: compose
+          timeout: '1800'
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: compose-preview-handoff
+          path: _compose_preview_handoff/
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    name: Refresh preview baseline
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      # The baseline is pushed to the -out repository with ARTIFACTS_TOKEN; GITHUB_TOKEN stays
+      # read-only here.
+      contents: read
+      pull-requests: write
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          cache-read-only: 'false'
+      - uses: yschimke/compose-ai-tools/.github/actions/apply@v2.74.1
+        with:
+          artifact-repository: yschimke/compose-ui-samples-out
+          artifacts-token: ${{ secrets.ARTIFACTS_TOKEN }}
+          phase: all
+          cli-version: catalog
+          catalog-key: composePreviewPlugin
+          only: compose
+          timeout: '1800'

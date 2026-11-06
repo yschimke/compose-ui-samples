@@ -1,0 +1,57 @@
+[versions]
+kotlin = "2.4.21"
+ktfmt = "0.27.0"
+
+# Compose Multiplatform (desktop). Held on the SAME line as yschimke/m3-catalog, and for the reason
+# catalog/import.json gives: the vendored samples are pinned to the AndroidX commit whose 1.12.0
+# @sample set matches this line exactly. Moving this ref is a re-pin of import.json too, and every
+# Skiko move is a render-pipeline risk — see m3-catalog's libs.versions.toml for the long history
+# (an encoder signature change renders an empty sheet while `assemble` stays green). Render before
+# merging one.
+compose-multiplatform = "1.12.2"
+# Material 3 is versioned independently of the Compose Multiplatform BOM. It is here only because
+# upstream's foundation, ui and animation samples reach for `Text`, `Button` and the rest of
+# Material 3 to show something — the material3 SAMPLES are m3-catalog's, not this repository's.
+compose-multiplatform-material3 = "1.12.0-alpha03"
+# Frozen at 1.7.3 upstream; pure `ImageVector` definitions, resolves cleanly beside the 1.12 line.
+compose-material-icons = "1.7.3"
+androidx-annotation = "1.11.0"
+# `ViewModel` / `viewModelScope` and the Swing `Dispatchers.Main`, for the runtime samples.
+jb-lifecycle = "2.11.0"
+kotlinx-coroutines = "1.11.0"
+
+# compose-ai-tools: the `ee.schimke.composeai.preview` Gradle plugin and the reusable CI
+# actions/workflows are one release — keep both pinned together (Renovate groups them).
+composePreviewPlugin = "2.74.1"
+composePreviewDaemon = "3.26.0"
+composePreviewContracts = "3.39.0"
+
+[libraries]
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+jb-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jb-lifecycle" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+compose-animation = { module = "org.jetbrains.compose.animation:animation", version.ref = "compose-multiplatform" }
+compose-animation-core = { module = "org.jetbrains.compose.animation:animation-core", version.ref = "compose-multiplatform" }
+compose-animation-graphics = { module = "org.jetbrains.compose.animation:animation-graphics", version.ref = "compose-multiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+compose-foundation-layout = { module = "org.jetbrains.compose.foundation:foundation-layout", version.ref = "compose-multiplatform" }
+compose-material = { module = "org.jetbrains.compose.material:material", version.ref = "compose-multiplatform" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-multiplatform-material3" }
+compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "compose-material-icons" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+compose-runtime-saveable = { module = "org.jetbrains.compose.runtime:runtime-saveable", version.ref = "compose-multiplatform" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+compose-ui-graphics = { module = "org.jetbrains.compose.ui:ui-graphics", version.ref = "compose-multiplatform" }
+compose-ui-text = { module = "org.jetbrains.compose.ui:ui-text", version.ref = "compose-multiplatform" }
+compose-ui-unit = { module = "org.jetbrains.compose.ui:ui-unit", version.ref = "compose-multiplatform" }
+compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-multiplatform" }
+compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
+composeai-contracts-bom = { module = "ee.schimke.composeai:compose-preview-contracts-bom", version.ref = "composePreviewContracts" }
+composeai-daemon-bom = { module = "ee.schimke.composeai:compose-preview-daemon-bom", version.ref = "composePreviewDaemon" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composePreview = { id = "ee.schimke.composeai.preview", version.ref = "composePreviewPlugin" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }

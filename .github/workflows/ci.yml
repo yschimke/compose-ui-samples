@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build + discover previews
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/setup
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+      # Compiles the vendored tree AND the generated `@Preview` wrappers. A wrapper is generated from
+      # source text, so the compiler is the only thing that says whether it resolves: a sample that
+      # moves package upstream, or gains a parameter, fails here and nowhere earlier.
+      - name: Assemble
+        run: ./gradlew :catalog:assemble --stacktrace
+      # Discovery is the real contract: a preview that compiles but is not discovered vanishes from
+      # the published sheet silently.
+      - name: Discover previews
+        run: ./gradlew :catalog:composePreviewDiscover --stacktrace
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: previews-manifest
+          path: catalog/build/compose-previews/previews.json
+          if-no-files-found: warn
+
+  ktfmt:
+    name: ktfmtCheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/setup
+        with:
+          cache-read-only: 'true'
+      - run: ./gradlew ktfmtCheck --stacktrace
+
+  scripts:
+    name: Scripts + generated files
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 26.12.0
+      - name: Script tests
+        run: node --test scripts/*.test.mjs
+      # The vendored tree must be byte-identical to upstream at the pinned ref plus the patches.
+      # A blobless sparse clone: ~15 MB, no token.
+      - name: Vendored samples match the pinned upstream
+        run: node scripts/import-samples.mjs --check
+      - name: Generated wrappers are current
+        run: node scripts/samples-previews.mjs --check
+      - name: Generated spec is current
+        run: node scripts/samples-spec.mjs --check
+
+  spec:
+    name: Validate catalog spec
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: yschimke/compose-ai-tools
+          ref: v2.74.1
+          path: compose-ai-tools
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 26.12.0
+      - name: Install catalog validation driver
+        run: |
+          compose-ai-tools/.github/scripts/install-export-driver.sh \
+            --scripts-only "$RUNNER_TEMP/export-driver" >/dev/null
+      # The build-free pre-flight: resolves every spec reference against the module's actual
+      # `@Preview` functions before design-artifacts.yml spends a runner discovering the same thing.
+      # It warns (not fails) on the reverse direction: a handful of upstream demo previews that are
+      # not `@Sampled` are discovered but deliberately outside the inventory.
+      - name: validate-catalog-spec
+        run: |
+          node "$DRIVER_DIR/validate-catalog-spec.mjs" \
+            --spec catalog/catalog.spec.json --module-dir catalog
