@@ -26,22 +26,95 @@
  * Unlike the desktop lane, samples that carry `@Preview` upstream are wrapped too (with the
  * annotation's arguments): discovery only scans this module's own classes, never the AARs.
  *
+ * ## Patched files
+ *
+ * A compiled artifact cannot be patched, but some samples need the same fix the desktop lane makes
+ * in `catalog/patches/` — five draw from the unseeded `kotlin.random.Random` and would render a
+ * different picture on every run. So every file those patches touch is ALSO compiled here: copied
+ * from the snapshot's sources jar, patched with the very same patch files, and moved into the
+ * `ee.schimke.composeuisamples.android.patched.*` package (`androidx.compose.` swapped for that
+ * prefix) so it cannot collide with the class in the AAR. The wrappers for the samples in those
+ * files call the patched copy; every other wrapper calls the artifact. A patch that stops applying
+ * to the snapshot fails here, exactly as it fails the desktop import.
+ *
  *     node scripts/android-samples.mjs            # fetch (cached) and regenerate
  *     node scripts/android-samples.mjs --check    # fail if the generated file is stale
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 
 import { classifySamples, quarantinedPreviews } from "./samples-previews.mjs";
+import { applyPatches } from "./import-samples.mjs";
 
 export const MANIFEST = "catalog/import.json";
 export const QUARANTINE = "catalog/quarantine.json";
 export const VERSIONS = "gradle/libs.versions.toml";
 export const PACKAGE = "ee.schimke.composeuisamples.android";
 export const OUT = `catalog-android/src/main/kotlin/${PACKAGE.replace(/\./g, "/")}/AndroidSamplePreviews.kt`;
+export const PATCHES = "catalog/patches";
+export const PATCHED_OUT = "catalog-android/src/main/kotlin/patched";
+export const PATCHED_PREFIX = `${PACKAGE}.patched.`;
+
+/** The vendored-tree paths the patches in [dir] touch (`+++ b/<path>` lines). */
+export function patchedPaths(dir = PATCHES) {
+  if (!existsSync(dir)) return [];
+  const paths = new Set();
+  for (const name of readdirSync(dir).filter((n) => n.endsWith(".patch"))) {
+    for (const m of readFileSync(join(dir, name), "utf8").matchAll(/^\+\+\+ b\/(\S+)$/gm)) {
+      paths.add(m[1]);
+    }
+  }
+  return [...paths].sort();
+}
+
+/** `androidx.compose.foundation.samples` -> `ee.schimke.composeuisamples.android.patched.foundation.samples`. */
+export function patchedPackage(pkg) {
+  return pkg.replace(/^androidx\.compose\./, PATCHED_PREFIX);
+}
+
+/**
+ * Write the patched copies into [out]: copy each patched path from [src], apply every patch, then
+ * rewrite each file's package (and nothing else — same-package references between the copies keep
+ * resolving because they all move together). Returns the patched paths.
+ */
+export function writePatched(src, out = PATCHED_OUT, dir = PATCHES) {
+  const paths = patchedPaths(dir);
+  rmSync(out, { recursive: true, force: true });
+  if (paths.length === 0) return paths;
+  const work = mkdtempSync(join(tmpdir(), "android-patched-"));
+  try {
+    for (const path of paths) {
+      mkdirSync(dirname(join(work, path)), { recursive: true });
+      copyFileSync(join(src, path), join(work, path));
+    }
+    applyPatches(work, dir);
+    for (const path of paths) {
+      const text = readFileSync(join(work, path), "utf8").replace(
+        /^package\s+([\w.]+)/m,
+        (_, pkg) => `package ${patchedPackage(pkg)}`,
+      );
+      const target = join(out, path.replace(/^androidx\/compose\//, ""));
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, text);
+    }
+  } finally {
+    rmSync(work, { recursive: true, force: true });
+  }
+  return paths;
+}
 
 /** `{ build, version }` of the pinned androidx.dev snapshot, from the version catalog. */
 export function snapshotPin(path = VERSIONS) {
@@ -90,12 +163,21 @@ export function fetchAndroidSources(manifest, pin, cacheBase = join(tmpdir(), "a
 }
 
 /** Classify the Android lane's samples, naming each wrapper `<qualifier><fn>AndroidPreview`. */
-export function classifyAndroid(dir, skip = quarantinedPreviews(QUARANTINE, "android")) {
+export function classifyAndroid(
+  dir,
+  skip = quarantinedPreviews(QUARANTINE, "android"),
+  patched = new Set(),
+) {
   const { wrap, hasPreview, takesArguments, quarantined } = classifySamples(dir, skip);
-  const all = [...wrap, ...hasPreview].map((sample) => ({
-    ...sample,
-    wrapper: `${sample.qualifier}${sample.fn}AndroidPreview`,
-  }));
+  const all = [...wrap, ...hasPreview].map((sample) => {
+    const rel = relative(resolve(dir), resolve(sample.file)).replace(/\\/g, "/");
+    return {
+      ...sample,
+      wrapper: `${sample.qualifier}${sample.fn}AndroidPreview`,
+      // A sample in a patched file is called through its patched copy, never the artifact.
+      ...(patched.has(rel) ? { callPackage: patchedPackage(sample.package) } : {}),
+    };
+  });
   all.sort((a, b) => a.wrapper.localeCompare(b.wrapper));
   return { samples: all, takesArguments, quarantined };
 }
@@ -114,9 +196,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 `;
   const body = samples
-    .map(({ fn, package: pkg, wrapper, previewArgs }) => {
+    .map(({ fn, package: pkg, callPackage, wrapper, previewArgs }) => {
       const annotation = previewArgs ? `@Preview(${previewArgs})` : "@Preview";
-      return `\n${annotation}\n@Composable\nfun ${wrapper}() = ${pkg}.${fn}()\n`;
+      return `\n${annotation}\n@Composable\nfun ${wrapper}() = ${callPackage ?? pkg}.${fn}()\n`;
     })
     .join("");
   return header + body;
@@ -127,12 +209,24 @@ function main(argv) {
   const pin = snapshotPin();
   const dir = fetchAndroidSources(manifest, pin);
   const skip = quarantinedPreviews(QUARANTINE, "android");
-  const { samples, takesArguments, quarantined } = classifyAndroid(dir, skip);
+  const check = argv.includes("--check");
+  const patchedOut = check ? mkdtempSync(join(tmpdir(), "android-patched-check-")) : PATCHED_OUT;
+  const patched = new Set(writePatched(dir, patchedOut));
+  const { samples, takesArguments, quarantined } = classifyAndroid(dir, skip, patched);
   const source = renderAndroidPreviews(samples, pin);
 
-  if (argv.includes("--check")) {
-    if (!existsSync(OUT) || readFileSync(OUT, "utf8") !== source) {
-      console.error(`${OUT} is stale: regenerate it with \`node scripts/android-samples.mjs\`.`);
+  if (check) {
+    let stale = !existsSync(OUT) || readFileSync(OUT, "utf8") !== source;
+    try {
+      execFileSync("diff", ["-r", PATCHED_OUT, patchedOut], { stdio: "ignore" });
+    } catch {
+      stale = true;
+    }
+    rmSync(patchedOut, { recursive: true, force: true });
+    if (stale) {
+      console.error(
+        `${OUT} or ${PATCHED_OUT} is stale: regenerate with \`node scripts/android-samples.mjs\`.`,
+      );
       process.exit(1);
     }
     console.log(`${OUT} is current (${samples.length} wrapper(s), snapshot build ${pin.build}).`);
@@ -143,6 +237,7 @@ function main(argv) {
   writeFileSync(tmp, source);
   renameSync(tmp, OUT);
   console.log(`${OUT}: ${samples.length} wrapper(s) from snapshot build ${pin.build}.`);
+  console.log(`  ${patched.size} patched file(s) compiled into ${PATCHED_OUT}.`);
   for (const fn of quarantined) console.log(`  quarantined: ${fn} — ${skip.get(fn)}`);
   if (takesArguments.length > 0) {
     console.log(`  ${takesArguments.length} @Sampled function(s) take arguments and are not wrapped.`);

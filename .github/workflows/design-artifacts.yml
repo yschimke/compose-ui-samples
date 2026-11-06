@@ -80,7 +80,7 @@ jobs:
       # The Android lane, rendered through Robolectric against the pinned AndroidX snapshot and folded
       # in by function name. Its wrappers are all named `…AndroidPreview`, so the fold only ever ADDS
       # renders (the spec's Android variants and Android-only cards) and never replaces a desktop one.
-      # Pixels-only (`extra-split-mode` stays `view-only`), matching `publish-live-bundle: false`.
+      # Pixels-only (`extra-split-mode` stays `view-only`); see `publish-live-bundle` below.
       extra-module: ':catalog-android'
       # No design references. These are AndroidX's sample call sites, not a reproduction of a design
       # kit, so there is no Figma node for any of them to be scored against. An empty map is the
@@ -93,13 +93,18 @@ jobs:
       catalog-key: composePreviewPlugin
       # Compose Multiplatform desktop — no AGP, so the plugin routes it to the Skiko renderer.
       desktop-render: true
-      # FALSE to start. A live bundle on a trusted delivery branch means preview.coo.ee executing
-      # vendored third-party Compose on request (`serve --allow-render-trusted`). m3-catalog grants
-      # that to `m3-samples` on stated specifics and starts `compose-ui-samples` without it; this
-      # repository starts in the same place. Flip it once this repository's -out branches are trusted
-      # in producers.json and you want device / theme / knob re-rendering — many of these samples are
-      # interaction demos (scroll, drag, AnimatedVisibility) where one frame says little.
-      publish-live-bundle: false
+      # LIVE. A live bundle on a trusted delivery branch means preview.coo.ee runs this catalog's
+      # Compose on request (`serve --allow-render-trusted`), so device, theme and knob controls can
+      # re-render a sample instead of only showing its baked PNG. Granted on the same specifics
+      # m3-catalog's `m3-samples` lane states: the code is public AndroidX samples, vendored from a
+      # pinned commit and re-fetched byte-identically on every import, reviewed here before it
+      # lands, and run in the same sandbox as every other trusted catalog on the box. Many of these
+      # samples are interaction demos (scroll, drag, AnimatedVisibility) where one frame says little.
+      #
+      # It covers the DESKTOP bundle, which the box's shared daemon serves. The Android extra module
+      # stays pixels-only (`extra-split-mode` is left at `view-only`): giving it a live lane would
+      # need `split-per-preview`, which this append-only branch deliberately avoids.
+      publish-live-bundle: true
       # No per-preview split: it writes an addressable copy of every preview onto an append-only
       # branch on every publish, for a lane nothing reads.
       split-per-preview: false
