@@ -356,19 +356,19 @@ fun BlurSampleAndroidPreview() = androidx.compose.ui.samples.BlurSample()
 
 @Preview
 @Composable
-fun BorderSampleAndroidPreview() = androidx.compose.foundation.samples.BorderSample()
+fun BorderSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.BorderSample()
 
 @Preview
 @Composable
-fun BorderSampleWithBrushAndroidPreview() = androidx.compose.foundation.samples.BorderSampleWithBrush()
+fun BorderSampleWithBrushAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.BorderSampleWithBrush()
 
 @Preview
 @Composable
-fun BorderSampleWithDataClassAndroidPreview() = androidx.compose.foundation.samples.BorderSampleWithDataClass()
+fun BorderSampleWithDataClassAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.BorderSampleWithDataClass()
 
 @Preview
 @Composable
-fun BorderSampleWithDynamicDataAndroidPreview() = androidx.compose.foundation.samples.BorderSampleWithDynamicData()
+fun BorderSampleWithDynamicDataAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.BorderSampleWithDynamicData()
 
 @Preview
 @Composable
@@ -548,19 +548,19 @@ fun ContentAlphaSampleAndroidPreview() = androidx.compose.material.samples.Conte
 
 @Preview
 @Composable
-fun ContextualFlowColMaxLineDynamicSeeMoreAndroidPreview() = androidx.compose.foundation.layout.samples.ContextualFlowColMaxLineDynamicSeeMore()
+fun ContextualFlowColMaxLineDynamicSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.ContextualFlowColMaxLineDynamicSeeMore()
 
 @Preview
 @Composable
-fun ContextualFlowColumn_ItemPositionAndroidPreview() = androidx.compose.foundation.layout.samples.ContextualFlowColumn_ItemPosition()
+fun ContextualFlowColumn_ItemPositionAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.ContextualFlowColumn_ItemPosition()
 
 @Preview
 @Composable
-fun ContextualFlowRow_ItemPositionAndroidPreview() = androidx.compose.foundation.layout.samples.ContextualFlowRow_ItemPosition()
+fun ContextualFlowRow_ItemPositionAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.ContextualFlowRow_ItemPosition()
 
 @Preview
 @Composable
-fun ContextualFlowRowMaxLineDynamicSeeMoreAndroidPreview() = androidx.compose.foundation.layout.samples.ContextualFlowRowMaxLineDynamicSeeMore()
+fun ContextualFlowRowMaxLineDynamicSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.ContextualFlowRowMaxLineDynamicSeeMore()
 
 @Preview
 @Composable
@@ -1988,35 +1988,35 @@ fun SimpleFlexBoxAndroidPreview() = androidx.compose.foundation.layout.samples.S
 
 @Preview
 @Composable
-fun SimpleFlowColumn_EqualWidthAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowColumn_EqualWidth()
+fun SimpleFlowColumn_EqualWidthAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowColumn_EqualWidth()
 
 @Preview
 @Composable
-fun SimpleFlowColumnAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowColumn()
+fun SimpleFlowColumnAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowColumn()
 
 @Preview
 @Composable
-fun SimpleFlowColumnMaxLinesDynamicSeeMoreAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowColumnMaxLinesDynamicSeeMore()
+fun SimpleFlowColumnMaxLinesDynamicSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowColumnMaxLinesDynamicSeeMore()
 
 @Preview
 @Composable
-fun SimpleFlowColumnMaxLinesWithSeeMoreAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowColumnMaxLinesWithSeeMore()
+fun SimpleFlowColumnMaxLinesWithSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowColumnMaxLinesWithSeeMore()
 
 @Preview
 @Composable
-fun SimpleFlowRow_EqualHeightAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRow_EqualHeight()
+fun SimpleFlowRow_EqualHeightAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRow_EqualHeight()
 
 @Preview
 @Composable
-fun SimpleFlowRowAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRow()
+fun SimpleFlowRowAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRow()
 
 @Preview
 @Composable
-fun SimpleFlowRowMaxLinesDynamicSeeMoreAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRowMaxLinesDynamicSeeMore()
+fun SimpleFlowRowMaxLinesDynamicSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRowMaxLinesDynamicSeeMore()
 
 @Preview
 @Composable
-fun SimpleFlowRowMaxLinesWithSeeMoreAndroidPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRowMaxLinesWithSeeMore()
+fun SimpleFlowRowMaxLinesWithSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRowMaxLinesWithSeeMore()
 
 @Preview
 @Composable

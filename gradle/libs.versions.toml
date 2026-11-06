@@ -34,6 +34,9 @@ kotlinx-coroutines = "1.11.0"
 # the Android lane stops resolving, and the fix is to move the id forward.
 androidxSnapshotBuild = "16855585"
 androidx-compose-snapshot = "1.14.0-SNAPSHOT"
+# The material3 version the snapshot's `*-samples` POMs depend on (its own train). Only the patched
+# sample copies compile against it; the artifacts already carry it at runtime.
+androidx-compose-material3-snapshot = "1.6.0-SNAPSHOT"
 agp = "9.4.1"
 
 # compose-ai-tools: the `ee.schimke.composeai.preview` Gradle plugin and the reusable CI
@@ -44,6 +47,7 @@ composePreviewContracts = "3.39.0"
 
 [libraries]
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-snapshot" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidx-compose-material3-snapshot" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-compose-snapshot" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 jb-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jb-lifecycle" }

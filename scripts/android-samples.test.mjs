@@ -4,7 +4,13 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { classifyAndroid, renderAndroidPreviews, snapshotPin } from "./android-samples.mjs";
+import {
+  classifyAndroid,
+  patchedPackage,
+  patchedPaths,
+  renderAndroidPreviews,
+  snapshotPin,
+} from "./android-samples.mjs";
 
 function tree(files) {
   const root = mkdtempSync(join(tmpdir(), "android-samples-test-"));
@@ -63,4 +69,40 @@ test("the snapshot pin is read from the version catalog", () => {
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("a patched sample is called through its relocated copy, everything else through the artifact", () => {
+  const root = tree({
+    "androidx/compose/foundation/samples/BorderSamples.kt": SAMPLE("BorderSample").replace(PKG, "androidx.compose.foundation.samples"),
+    "androidx/compose/ui/samples/LightingSamples.kt": SAMPLE("IlluminateSample"),
+  });
+  try {
+    const { samples } = classifyAndroid(
+      root,
+      new Map(),
+      new Set(["androidx/compose/foundation/samples/BorderSamples.kt"]),
+    );
+    const source = renderAndroidPreviews(samples, { build: "1", version: "v" });
+    assert.match(
+      source,
+      /fun BorderSampleAndroidPreview\(\) = ee\.schimke\.composeuisamples\.android\.patched\.foundation\.samples\.BorderSample\(\)/,
+    );
+    assert.match(source, /fun IlluminateSampleAndroidPreview\(\) = androidx\.compose\.ui\.samples\.IlluminateSample\(\)/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("patchedPaths lists every file the desktop patches touch", () => {
+  assert.deepEqual(patchedPaths(), [
+    "androidx/compose/foundation/layout/samples/ContextualFlowColumnSample.kt",
+    "androidx/compose/foundation/layout/samples/ContextualFlowRowSample.kt",
+    "androidx/compose/foundation/layout/samples/FlowColumnSample.kt",
+    "androidx/compose/foundation/layout/samples/FlowRowSample.kt",
+    "androidx/compose/foundation/samples/BorderSamples.kt",
+  ]);
+  assert.equal(
+    patchedPackage("androidx.compose.foundation.layout.samples"),
+    "ee.schimke.composeuisamples.android.patched.foundation.layout.samples",
+  );
 });
