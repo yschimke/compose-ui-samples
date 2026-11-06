@@ -226,6 +226,13 @@
       "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected. Android-lane entry because these samples are newer than the desktop pin."
     },
     {
+      "sample": "CustomFontFamilySample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "Renders correctly (custom faces from the samples artifact's `R.font`), but the figma-svg export cannot name those font families, and the reusable workflow's `bundle pack` refuses to publish text exported as missing-glyph boxes (Design Artifacts run 42210167737). The pack's `--allow-lost-font-families` override has no input on design-artifacts-reusable.yml yet; adding one upstream in compose-ai-tools is the fix that would let this wrapper back in."
+    },
+    {
       "sample": "DelegatedReadOnlyStateSample",
       "reason": "Throws `kotlin.NotImplementedError` at composition on both lanes: the sample's data source is upstream's own `TODO()` placeholder (`observeSampleData`), so it is a code listing rather than something that can render anywhere."
     },
@@ -239,6 +246,13 @@
     {
       "sample": "FoldableAwareSample",
       "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
+    },
+    {
+      "sample": "FontFamilySynthesisSample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "Renders correctly (custom faces from the samples artifact's `R.font`), but the figma-svg export cannot name those font families, and the reusable workflow's `bundle pack` refuses to publish text exported as missing-glyph boxes (Design Artifacts run 42210167737). The pack's `--allow-lost-font-families` override has no input on design-artifacts-reusable.yml yet; adding one upstream in compose-ai-tools is the fix that would let this wrapper back in."
     },
     {
       "sample": "MediaQueryModifierNodeSample",
@@ -275,6 +289,62 @@
         "android"
       ],
       "reason": "`NotImplementedError: Not yet implemented` — upstream's own `TODO()` in the sample body (newer than the desktop pin)."
+    },
+    {
+      "sample": "SubcomponentModifierSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "TextFieldStateApplyOutputTransformation",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "TransitionExtensionAnimatedContentSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "TransitionStateIsIdleSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "TwoInputsKeySample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UiFocusableSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingGridLayoutInfoForSideEffectSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingGridScrollPositionForSideEffectSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingGridScrollPositionInCompositionSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingListLayoutInfoForSideEffectSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingListScrollPositionForSideEffectSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingListScrollPositionInCompositionSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "UsingPagerLayoutInfoForSideEffectSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "WithDensitySample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
     }
   ]
 }

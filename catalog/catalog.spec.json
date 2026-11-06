@@ -390,20 +390,6 @@
           ]
         },
         {
-          "componentId": "BasicTextField/TextFieldStateApplyOutputTransformation",
-          "preview": "TextFieldStateApplyOutputTransformationPreview",
-          "caption": "`TextFieldStateApplyOutputTransformation` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "TextFieldStateApplyOutputTransformationAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`TextFieldStateApplyOutputTransformation` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        },
-        {
           "componentId": "BasicTextField/TextFieldWithIconSample",
           "preview": "TextFieldWithIconSamplePreview",
           "caption": "`TextFieldWithIconSample` — desktop and Android.",
@@ -1316,48 +1302,6 @@
               "caption": "`StickyHeaderListSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
-        },
-        {
-          "componentId": "LazyDsl/UsingListLayoutInfoForSideEffectSample",
-          "preview": "UsingListLayoutInfoForSideEffectSamplePreview",
-          "caption": "`UsingListLayoutInfoForSideEffectSample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "UsingListLayoutInfoForSideEffectSampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`UsingListLayoutInfoForSideEffectSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        },
-        {
-          "componentId": "LazyDsl/UsingListScrollPositionForSideEffectSample",
-          "preview": "UsingListScrollPositionForSideEffectSamplePreview",
-          "caption": "`UsingListScrollPositionForSideEffectSample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "UsingListScrollPositionForSideEffectSampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`UsingListScrollPositionForSideEffectSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        },
-        {
-          "componentId": "LazyDsl/UsingListScrollPositionInCompositionSample",
-          "preview": "UsingListScrollPositionInCompositionSamplePreview",
-          "caption": "`UsingListScrollPositionInCompositionSample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "UsingListScrollPositionInCompositionSampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`UsingListScrollPositionInCompositionSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
         }
       ]
     },
@@ -1409,21 +1353,6 @@
           "componentId": "LazyGrid/LazyVerticalGridSpanSample",
           "preview": "LazyVerticalGridSpanSampleAndroidPreview",
           "caption": "`LazyVerticalGridSpanSample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
-          "componentId": "LazyGrid/UsingGridLayoutInfoForSideEffectSample",
-          "preview": "UsingGridLayoutInfoForSideEffectSampleAndroidPreview",
-          "caption": "`UsingGridLayoutInfoForSideEffectSample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
-          "componentId": "LazyGrid/UsingGridScrollPositionForSideEffectSample",
-          "preview": "UsingGridScrollPositionForSideEffectSampleAndroidPreview",
-          "caption": "`UsingGridScrollPositionForSideEffectSample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
-          "componentId": "LazyGrid/UsingGridScrollPositionInCompositionSample",
-          "preview": "UsingGridScrollPositionInCompositionSampleAndroidPreview",
-          "caption": "`UsingGridScrollPositionInCompositionSample` — Android only (AndroidX snapshot build 16855585)."
         }
       ]
     },
@@ -1744,20 +1673,6 @@
                 "platform": "android"
               },
               "caption": "`SimpleVerticalPagerSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        },
-        {
-          "componentId": "Pager/UsingPagerLayoutInfoForSideEffectSample",
-          "preview": "UsingPagerLayoutInfoForSideEffectSamplePreview",
-          "caption": "`UsingPagerLayoutInfoForSideEffectSample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "UsingPagerLayoutInfoForSideEffectSampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`UsingPagerLayoutInfoForSideEffectSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -4675,20 +4590,6 @@
               "caption": "`SemanticsModifierNodeSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
-        },
-        {
-          "componentId": "Modifier/SubcomponentModifierSample",
-          "preview": "SubcomponentModifierSamplePreview",
-          "caption": "`SubcomponentModifierSample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "SubcomponentModifierSampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`SubcomponentModifierSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
         }
       ]
     },
@@ -5542,11 +5443,6 @@
       "section": "Text",
       "components": [
         {
-          "componentId": "FontFamily/CustomFontFamilySample",
-          "preview": "CustomFontFamilySampleAndroidPreview",
-          "caption": "`CustomFontFamilySample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
           "componentId": "FontFamily/FontFamilyCursiveSample",
           "preview": "FontFamilyCursiveSampleAndroidPreview",
           "caption": "`FontFamilyCursiveSample` — Android only (AndroidX snapshot build 16855585)."
@@ -5565,11 +5461,6 @@
           "componentId": "FontFamily/FontFamilySerifSample",
           "preview": "FontFamilySerifSampleAndroidPreview",
           "caption": "`FontFamilySerifSample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
-          "componentId": "FontFamily/FontFamilySynthesisSample",
-          "preview": "FontFamilySynthesisSampleAndroidPreview",
-          "caption": "`FontFamilySynthesisSample` — Android only (AndroidX snapshot build 16855585)."
         }
       ]
     },
@@ -5833,26 +5724,6 @@
       ]
     },
     {
-      "name": "Density",
-      "section": "Unit",
-      "components": [
-        {
-          "componentId": "Density/WithDensitySample",
-          "preview": "WithDensitySamplePreview",
-          "caption": "`WithDensitySample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "WithDensitySampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`WithDensitySample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "Dp",
       "section": "Unit",
       "components": [
@@ -5914,11 +5785,6 @@
           "componentId": "AnimatedContent/SlideIntoContainerSample",
           "preview": "SlideIntoContainerSampleAndroidPreview",
           "caption": "`SlideIntoContainerSample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
-          "componentId": "AnimatedContent/TransitionExtensionAnimatedContentSample",
-          "preview": "TransitionExtensionAnimatedContentSampleAndroidPreview",
-          "caption": "`TransitionExtensionAnimatedContentSample` — Android only (AndroidX snapshot build 16855585)."
         }
       ]
     },
@@ -6443,11 +6309,6 @@
           "componentId": "Transition (Animation Core)/SnapToSample",
           "preview": "SnapToSampleAndroidPreview",
           "caption": "`SnapToSample` — Android only (AndroidX snapshot build 16855585)."
-        },
-        {
-          "componentId": "Transition (Animation Core)/TransitionStateIsIdleSample",
-          "preview": "TransitionStateIsIdleSampleAndroidPreview",
-          "caption": "`TransitionStateIsIdleSample` — Android only (AndroidX snapshot build 16855585)."
         }
       ]
     },
@@ -6519,20 +6380,6 @@
                 "platform": "android"
               },
               "caption": "`SimpleStateSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        },
-        {
-          "componentId": "Effect/TwoInputsKeySample",
-          "preview": "TwoInputsKeySamplePreview",
-          "caption": "`TwoInputsKeySample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "TwoInputsKeySampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`TwoInputsKeySample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
