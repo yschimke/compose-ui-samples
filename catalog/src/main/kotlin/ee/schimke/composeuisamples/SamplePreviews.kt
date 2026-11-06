@@ -642,6 +642,10 @@ fun FocusableFocusGroupSamplePreview() = androidx.compose.foundation.samples.Foc
 
 @Preview
 @Composable
+fun FocusableSamplePreview() = androidx.compose.foundation.samples.FocusableSample()
+
+@Preview
+@Composable
 fun FocusableSampleUsingLowerLevelFocusTargetPreview() = androidx.compose.ui.samples.FocusableSampleUsingLowerLevelFocusTarget()
 
 @Preview
@@ -663,10 +667,6 @@ fun FocusRestorerSamplePreview() = androidx.compose.ui.samples.FocusRestorerSamp
 @Preview
 @Composable
 fun FocusScrollingInLazyRowSamplePreview() = androidx.compose.foundation.samples.FocusScrollingInLazyRowSample()
-
-@Preview
-@Composable
-fun FoundationFocusableSamplePreview() = androidx.compose.foundation.samples.FocusableSample()
 
 @Preview
 @Composable
@@ -1647,10 +1647,6 @@ fun TriStateToggleableSamplePreview() = androidx.compose.foundation.samples.TriS
 @Preview
 @Composable
 fun TwoLineListItemsPreview() = androidx.compose.material.samples.TwoLineListItems()
-
-@Preview
-@Composable
-fun UiFocusableSamplePreview() = androidx.compose.ui.samples.FocusableSample()
 
 @Preview
 @Composable

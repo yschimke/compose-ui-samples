@@ -1032,6 +1032,10 @@ fun FocusableFocusGroupSampleAndroidPreview() = androidx.compose.foundation.samp
 
 @Preview
 @Composable
+fun FocusableSampleAndroidPreview() = androidx.compose.foundation.samples.FocusableSample()
+
+@Preview
+@Composable
 fun FocusableSampleUsingLowerLevelFocusTargetAndroidPreview() = androidx.compose.ui.samples.FocusableSampleUsingLowerLevelFocusTarget()
 
 @Preview
@@ -1069,10 +1073,6 @@ fun FontFamilySansSerifSampleAndroidPreview() = androidx.compose.ui.text.samples
 @Preview
 @Composable
 fun FontFamilySerifSampleAndroidPreview() = androidx.compose.ui.text.samples.FontFamilySerifSample()
-
-@Preview
-@Composable
-fun FoundationFocusableSampleAndroidPreview() = androidx.compose.foundation.samples.FocusableSample()
 
 @Preview
 @Composable
@@ -2385,10 +2385,6 @@ fun TriStateToggleableSampleAndroidPreview() = androidx.compose.foundation.sampl
 @Preview
 @Composable
 fun TwoLineListItemsAndroidPreview() = androidx.compose.material.samples.TwoLineListItems()
-
-@Preview
-@Composable
-fun UiFocusableSampleAndroidPreview() = androidx.compose.ui.samples.FocusableSample()
 
 @Preview
 @Composable

@@ -195,3 +195,23 @@ test("a preview quarantine entry with `platforms` holds only on the lanes it nam
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("a package-qualified quarantine entry withholds only that package's sample", () => {
+  const root = vendored({
+    "a/A.kt": SAMPLE("FocusableSample", undefined, "", "androidx.compose.foundation.samples"),
+    "b/B.kt": SAMPLE("FocusableSample", undefined, "", "androidx.compose.ui.samples"),
+  });
+  try {
+    const { wrap, quarantined } = classifySamples(
+      root,
+      new Map([["androidx.compose.ui.samples.FocusableSample", "draws nothing"]]),
+    );
+    assert.deepEqual(
+      wrap.map((s) => s.package),
+      ["androidx.compose.foundation.samples"],
+    );
+    assert.deepEqual(quarantined, ["androidx.compose.ui.samples.FocusableSample"]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

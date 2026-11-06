@@ -4,7 +4,14 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { MANIFEST, SPEC, apiName, buildGroups, buildSpec } from "./samples-spec.mjs";
+import {
+  MANIFEST,
+  SPEC,
+  apiName,
+  buildGroups,
+  buildSpec,
+  exemptSemantics,
+} from "./samples-spec.mjs";
 import { fetchAndroidSources, snapshotPin } from "./android-samples.mjs";
 
 const FOUNDATION = "androidx/compose/foundation/samples";
@@ -173,5 +180,13 @@ test("the committed spec matches what the generator produces", () => {
     androidLabel: `AndroidX snapshot build ${pin.build}`,
   });
   const committed = readFileSync(SPEC, "utf8");
-  assert.equal(committed, `${JSON.stringify(buildSpec(manifest, groups), null, 2)}\n`);
+  assert.equal(
+    committed,
+    `${JSON.stringify(buildSpec(manifest, groups, exemptSemantics()), null, 2)}\n`,
+  );
+});
+
+test("semantics exemptions land in completeness, and only when there are any", () => {
+  assert.equal(buildSpec(MANIFEST_FIXTURE, []).completeness, undefined);
+  assert.deepEqual(buildSpec(MANIFEST_FIXTURE, [], ["A/B"]).completeness.exemptSemantics, ["A/B"]);
 });

@@ -24,7 +24,8 @@
  *  - a sample that already carries a preview annotation is left alone, or discovery would find the
  *    same composable twice and publish it twice;
  *  - a sample named in `catalog/quarantine.json`'s `previews` list compiles but cannot RUN here,
- *    and a wrapper for it would fail the whole render job rather than just itself.
+ *    and a wrapper for it would fail the whole render job rather than just itself. An entry names
+ *    the bare function, or `package.function` when two upstream packages share the name.
  *
  * The wrapper's name is the sample's name plus `Preview`. A sample name can repeat across upstream's
  * packages — `InfiniteTransitionSample` exists in both `animation` and `animation-core` — and then
@@ -107,8 +108,11 @@ export function classifySamples(dir = VENDORED, skip = quarantinedPreviews()) {
         hasPreview.set(key, { fn, package: declaredPackage, file, previewArgs });
         continue;
       }
-      if (skip.has(fn)) {
-        quarantined.push(fn);
+      // By bare name, or by `package.fn` for a name two upstream packages share — a bare
+      // `FocusableSample` would take out both foundation's and ui's.
+      const skipKey = skip.has(`${declaredPackage}.${fn}`) ? `${declaredPackage}.${fn}` : fn;
+      if (skip.has(skipKey)) {
+        quarantined.push(skipKey);
         continue;
       }
       if (parameters.trim() !== "") {
