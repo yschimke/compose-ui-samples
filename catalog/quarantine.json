@@ -226,13 +226,6 @@
       "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected. Android-lane entry because these samples are newer than the desktop pin."
     },
     {
-      "sample": "CustomFontFamilySample",
-      "platforms": [
-        "android"
-      ],
-      "reason": "Renders correctly (custom faces from the samples artifact's `R.font`), but the figma-svg export cannot name those font families, and the reusable workflow's `bundle pack` refuses to publish text exported as missing-glyph boxes (Design Artifacts run 42210167737). The pack's `--allow-lost-font-families` override has no input on design-artifacts-reusable.yml yet; adding one upstream in compose-ai-tools is the fix that would let this wrapper back in."
-    },
-    {
       "sample": "DelegatedReadOnlyStateSample",
       "reason": "Throws `kotlin.NotImplementedError` at composition on both lanes: the sample's data source is upstream's own `TODO()` placeholder (`observeSampleData`), so it is a code listing rather than something that can render anywhere."
     },
@@ -246,13 +239,6 @@
     {
       "sample": "FoldableAwareSample",
       "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
-    },
-    {
-      "sample": "FontFamilySynthesisSample",
-      "platforms": [
-        "android"
-      ],
-      "reason": "Renders correctly (custom faces from the samples artifact's `R.font`), but the figma-svg export cannot name those font families, and the reusable workflow's `bundle pack` refuses to publish text exported as missing-glyph boxes (Design Artifacts run 42210167737). The pack's `--allow-lost-font-families` override has no input on design-artifacts-reusable.yml yet; adding one upstream in compose-ai-tools is the fix that would let this wrapper back in."
     },
     {
       "sample": "MediaQueryModifierNodeSample",

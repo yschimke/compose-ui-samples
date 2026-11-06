@@ -41,9 +41,11 @@ agp = "9.4.1"
 
 # compose-ai-tools: the `ee.schimke.composeai.preview` Gradle plugin and the reusable CI
 # actions/workflows are one release — keep both pinned together (Renovate groups them).
-composePreviewPlugin = "2.74.1"
-composePreviewDaemon = "3.26.0"
-composePreviewContracts = "3.39.0"
+# The plugin is released only when it changes, so it can trail the BOM/workflow tag: 2.87.0 (the
+# first tag with `allow-lost-font-families`) shipped with plugin 2.86.0.
+composePreviewPlugin = "2.86.0"
+composePreviewDaemon = "3.27.2"
+composePreviewContracts = "3.39.1"
 
 [libraries]
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-snapshot" }

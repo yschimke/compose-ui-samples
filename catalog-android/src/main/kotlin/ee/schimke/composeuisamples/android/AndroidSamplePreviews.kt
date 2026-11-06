@@ -604,6 +604,10 @@ fun CustomFocusOrderSampleAndroidPreview() = androidx.compose.ui.samples.CustomF
 
 @Preview
 @Composable
+fun CustomFontFamilySampleAndroidPreview() = androidx.compose.ui.text.samples.CustomFontFamilySample()
+
+@Preview
+@Composable
 fun CustomizedLookaheadAnimationVisualDebuggingSampleAndroidPreview() = androidx.compose.animation.samples.CustomizedLookaheadAnimationVisualDebuggingSample()
 
 @Preview
@@ -1073,6 +1077,10 @@ fun FontFamilySansSerifSampleAndroidPreview() = androidx.compose.ui.text.samples
 @Preview
 @Composable
 fun FontFamilySerifSampleAndroidPreview() = androidx.compose.ui.text.samples.FontFamilySerifSample()
+
+@Preview
+@Composable
+fun FontFamilySynthesisSampleAndroidPreview() = androidx.compose.ui.text.samples.FontFamilySynthesisSample()
 
 @Preview
 @Composable
