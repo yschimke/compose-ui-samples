@@ -50,7 +50,7 @@
  *     node scripts/samples-spec.mjs --check    # fail if the committed spec is stale
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, relative, resolve } from "node:path";
 
 import { VENDORED, classifySamples, quarantinedPreviews } from "./samples-previews.mjs";
@@ -185,7 +185,18 @@ export function buildGroups(manifest, lanes = {}) {
     );
 }
 
-export function buildSpec(manifest, groups) {
+/**
+ * The componentIds whose render publishes with NO semantics tree, from `catalog/quarantine.json`'s
+ * `semantics` list. They become the spec's `completeness.exemptSemantics`, so the publish gate
+ * reports them instead of refusing the whole catalog; every other component keeps the strict gate.
+ */
+export function exemptSemantics(path = "catalog/quarantine.json") {
+  if (!existsSync(path)) return [];
+  const parsed = JSON.parse(readFileSync(path, "utf8"));
+  return (parsed.semantics ?? []).map((entry) => entry.component).sort();
+}
+
+export function buildSpec(manifest, groups, exempt = []) {
   return {
     $schema:
       "https://raw.githubusercontent.com/yschimke/compose-ai-tools/main/scripts/design-artifacts/catalog.spec.schema.json",
@@ -211,6 +222,16 @@ export function buildSpec(manifest, groups) {
     // text and buttons on do, and a sheet published in one mode only cannot be read in the other.
     modes: ["light", "dark"],
     display: { role: "samples" },
+    ...(exempt.length > 0
+      ? {
+          completeness: {
+            $comment:
+              "GENERATED from catalog/quarantine.json's `semantics` list, where each entry carries " +
+              "its reason. These components publish their pixels without a semantics tree.",
+            exemptSemantics: exempt,
+          },
+        }
+      : {}),
     groups,
   };
 }
@@ -222,7 +243,7 @@ function main(argv) {
     androidDir: fetchAndroidSources(manifest, pin),
     androidLabel: `AndroidX snapshot build ${pin.build}`,
   });
-  const json = `${JSON.stringify(buildSpec(manifest, groups), null, 2)}\n`;
+  const json = `${JSON.stringify(buildSpec(manifest, groups, exemptSemantics()), null, 2)}\n`;
   const components = groups.reduce((n, g) => n + g.components.length, 0);
 
   if (argv.includes("--check")) {

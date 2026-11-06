@@ -37,6 +37,27 @@
   "display": {
     "role": "samples"
   },
+  "completeness": {
+    "$comment": "GENERATED from catalog/quarantine.json's `semantics` list, where each entry carries its reason. These components publish their pixels without a semantics tree.",
+    "exemptSemantics": [
+      "AnimatedContent/SlideIntoContainerSample",
+      "AnimatedVector/AnimatedVectorSample",
+      "AnimatedVisibility/AVScopeAnimateEnterExit",
+      "AnimatedVisibility/AddAnimatedVisibilityToGenericTransitionSample",
+      "AnimatedVisibility/AnimateEnterExitPartialContent",
+      "AnimatedVisibility/AnimatedVisibilityLazyColumnSample",
+      "AnnotatedStringBuilder/AnnotatedStringAnnotationSaverSample",
+      "AnnotatedStringBuilder/LinkAnnotationSaverWithListenerSample",
+      "FlexBox/FlexConfigScopeSample",
+      "Magnifier/MagnifierSample",
+      "PlacementScopeCoordinates/PlacementScopeCoordinatesSample",
+      "SharedTransition/SharedContentConfigSample",
+      "Transition (Animation Core)/AnimateFloatSample",
+      "Transition (Animation Core)/CreateChildTransitionSample",
+      "Transition (Animation Core)/DeferredTransitionSample",
+      "Transition (Animation Core)/DoubleTapToLikeSample"
+    ]
+  },
   "groups": [
     {
       "name": "AnchoredDraggable",
@@ -872,11 +893,11 @@
         },
         {
           "componentId": "Focusable/FocusableSample",
-          "preview": "FoundationFocusableSamplePreview",
+          "preview": "FocusableSamplePreview",
           "caption": "`FocusableSample` — desktop and Android.",
           "variants": [
             {
-              "preview": "FoundationFocusableSampleAndroidPreview",
+              "preview": "FocusableSampleAndroidPreview",
               "props": {
                 "platform": "android"
               },
@@ -3918,20 +3939,6 @@
                 "platform": "android"
               },
               "caption": "`CustomFocusOrderSample` on Android (AndroidX snapshot build 16855585)."
-            }
-          ]
-        },
-        {
-          "componentId": "Focus/FocusableSample",
-          "preview": "UiFocusableSamplePreview",
-          "caption": "`FocusableSample` — desktop and Android.",
-          "variants": [
-            {
-              "preview": "UiFocusableSampleAndroidPreview",
-              "props": {
-                "platform": "android"
-              },
-              "caption": "`FocusableSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         },

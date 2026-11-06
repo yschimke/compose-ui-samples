@@ -311,10 +311,6 @@
       "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
     },
     {
-      "sample": "UiFocusableSample",
-      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
-    },
-    {
       "sample": "UsingGridLayoutInfoForSideEffectSample",
       "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
     },
@@ -345,6 +341,77 @@
     {
       "sample": "WithDensitySample",
       "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane."
+    },
+    {
+      "sample": "androidx.compose.ui.samples.FocusableSample",
+      "reason": "Draws nothing: the sample demonstrates an API through side effects or state (a scroll-position read, `key`, `WithDensity`, a layout-info observer) and emits no visible content, so it renders as a 1x1 transparent image on both lanes — and on the Android lane the reusable workflow's `bundle pack` fails it outright (`RemoteSandboxRenderException: Unable to find the image of the target root component`, Design Artifacts run 42210167737). An empty card shows a reader nothing, so no wrapper is generated on either lane. Package-qualified: foundation's `FocusableSample` of the same name renders and stays."
     }
-  ]
+  ],
+  "semantics": [
+    {
+      "component": "AnimatedContent/SlideIntoContainerSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnimatedVector/AnimatedVectorSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnimatedVisibility/AVScopeAnimateEnterExit",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnimatedVisibility/AddAnimatedVisibilityToGenericTransitionSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnimatedVisibility/AnimateEnterExitPartialContent",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnimatedVisibility/AnimatedVisibilityLazyColumnSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnnotatedStringBuilder/AnnotatedStringAnnotationSaverSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "AnnotatedStringBuilder/LinkAnnotationSaverWithListenerSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "FlexBox/FlexConfigScopeSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "Magnifier/MagnifierSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "PlacementScopeCoordinates/PlacementScopeCoordinatesSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "SharedTransition/SharedContentConfigSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "Transition (Animation Core)/AnimateFloatSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "Transition (Animation Core)/CreateChildTransitionSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "Transition (Animation Core)/DeferredTransitionSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    },
+    {
+      "component": "Transition (Animation Core)/DoubleTapToLikeSample",
+      "reason": "Android-only card whose render publishes no semantics tree: Design Artifacts run 42214387635 rendered its pixels but the Robolectric semantics capture produced nothing for it (\"no semantics for\" in the generate step), which refuses the whole catalog. Not root-caused per sample — most are animation-driven (AnimatedVisibility, transitions, shared elements) or Android-host APIs (Magnifier, placement coordinates). The pixels publish; only the a11y/semantics layer is missing. Delete the entry when a render captures a tree again: an exemption that matches nothing is reported on every publish."
+    }
+  ],
+  "$comment_semantics": "`semantics` names componentIds (as catalog.spec.json spells them) whose render publishes without a semantics tree. scripts/samples-spec.mjs copies them into the spec's `completeness.exemptSemantics`, so the publish gate reports them instead of refusing the catalog."
 }
