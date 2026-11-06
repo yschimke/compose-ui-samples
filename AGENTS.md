@@ -18,5 +18,7 @@ repository's `AGENTS.md` and `docs/design/ANDROIDX_SAMPLES.md` are the longer ex
 - **Render before merging anything that moves Compose Multiplatform, Skiko or the upstream pin.**
   `assemble` stays green while a renderer break publishes an empty sheet.
 - Run Gradle through `build-brief` (`build-brief ./gradlew …`).
+- Install the git hooks once per clone: `scripts/install-git-hooks.sh`. They run the same
+  attribution scan as the `Reject agent attribution` CI check.
 - `main` takes changes through PRs. Conventional commit subjects (`feat:`, `fix:`, `chore:`); the
   PR title is the squash commit subject. Never attribute a commit to an AI agent.
