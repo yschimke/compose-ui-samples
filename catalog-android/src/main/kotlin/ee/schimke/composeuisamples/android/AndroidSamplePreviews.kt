@@ -604,10 +604,6 @@ fun CustomFocusOrderSampleAndroidPreview() = androidx.compose.ui.samples.CustomF
 
 @Preview
 @Composable
-fun CustomFontFamilySampleAndroidPreview() = androidx.compose.ui.text.samples.CustomFontFamilySample()
-
-@Preview
-@Composable
 fun CustomizedLookaheadAnimationVisualDebuggingSampleAndroidPreview() = androidx.compose.animation.samples.CustomizedLookaheadAnimationVisualDebuggingSample()
 
 @Preview
@@ -1073,10 +1069,6 @@ fun FontFamilySansSerifSampleAndroidPreview() = androidx.compose.ui.text.samples
 @Preview
 @Composable
 fun FontFamilySerifSampleAndroidPreview() = androidx.compose.ui.text.samples.FontFamilySerifSample()
-
-@Preview
-@Composable
-fun FontFamilySynthesisSampleAndroidPreview() = androidx.compose.ui.text.samples.FontFamilySynthesisSample()
 
 @Preview
 @Composable
@@ -2228,10 +2220,6 @@ fun StylusHoverIconSampleAndroidPreview() = androidx.compose.ui.samples.StylusHo
 
 @Preview
 @Composable
-fun SubcomponentModifierSampleAndroidPreview() = androidx.compose.ui.samples.SubcomponentModifierSample()
-
-@Preview
-@Composable
 fun SurfaceSampleAndroidPreview() = androidx.compose.material.samples.SurfaceSample()
 
 @Preview
@@ -2273,10 +2261,6 @@ fun TextDecorationLineThroughSampleAndroidPreview() = androidx.compose.ui.text.s
 @Preview
 @Composable
 fun TextDecorationUnderlineSampleAndroidPreview() = androidx.compose.ui.text.samples.TextDecorationUnderlineSample()
-
-@Preview
-@Composable
-fun TextFieldStateApplyOutputTransformationAndroidPreview() = androidx.compose.foundation.samples.TextFieldStateApplyOutputTransformation()
 
 @Preview
 @Composable
@@ -2392,23 +2376,11 @@ fun TransformedPolygonShapeSampleAndroidPreview() = androidx.compose.foundation.
 
 @Preview
 @Composable
-fun TransitionExtensionAnimatedContentSampleAndroidPreview() = androidx.compose.animation.samples.TransitionExtensionAnimatedContentSample()
-
-@Preview
-@Composable
-fun TransitionStateIsIdleSampleAndroidPreview() = androidx.compose.animation.core.samples.TransitionStateIsIdleSample()
-
-@Preview
-@Composable
 fun TriStateCheckboxSampleAndroidPreview() = androidx.compose.material.samples.TriStateCheckboxSample()
 
 @Preview
 @Composable
 fun TriStateToggleableSampleAndroidPreview() = androidx.compose.foundation.samples.TriStateToggleableSample()
-
-@Preview
-@Composable
-fun TwoInputsKeySampleAndroidPreview() = androidx.compose.runtime.samples.TwoInputsKeySample()
 
 @Preview
 @Composable
@@ -2425,34 +2397,6 @@ fun unconsumedWindowInsetsWithPaddingSampleAndroidPreview() = androidx.compose.f
 @Preview
 @Composable
 fun UnitSpacePolygonShapeSampleAndroidPreview() = androidx.compose.foundation.samples.UnitSpacePolygonShapeSample()
-
-@Preview
-@Composable
-fun UsingGridLayoutInfoForSideEffectSampleAndroidPreview() = androidx.compose.foundation.samples.UsingGridLayoutInfoForSideEffectSample()
-
-@Preview
-@Composable
-fun UsingGridScrollPositionForSideEffectSampleAndroidPreview() = androidx.compose.foundation.samples.UsingGridScrollPositionForSideEffectSample()
-
-@Preview
-@Composable
-fun UsingGridScrollPositionInCompositionSampleAndroidPreview() = androidx.compose.foundation.samples.UsingGridScrollPositionInCompositionSample()
-
-@Preview
-@Composable
-fun UsingListLayoutInfoForSideEffectSampleAndroidPreview() = androidx.compose.foundation.samples.UsingListLayoutInfoForSideEffectSample()
-
-@Preview
-@Composable
-fun UsingListScrollPositionForSideEffectSampleAndroidPreview() = androidx.compose.foundation.samples.UsingListScrollPositionForSideEffectSample()
-
-@Preview
-@Composable
-fun UsingListScrollPositionInCompositionSampleAndroidPreview() = androidx.compose.foundation.samples.UsingListScrollPositionInCompositionSample()
-
-@Preview
-@Composable
-fun UsingPagerLayoutInfoForSideEffectSampleAndroidPreview() = androidx.compose.foundation.samples.UsingPagerLayoutInfoForSideEffectSample()
 
 @Preview
 @Composable
@@ -2477,10 +2421,6 @@ fun windowInsetsNestedScrollDemoAndroidPreview() = androidx.compose.foundation.l
 @Preview
 @Composable
 fun WindowInsetsRulersSampleAndroidPreview() = androidx.compose.ui.samples.WindowInsetsRulersSample()
-
-@Preview
-@Composable
-fun WithDensitySampleAndroidPreview() = androidx.compose.ui.unit.samples.WithDensitySample()
 
 @Preview
 @Composable
