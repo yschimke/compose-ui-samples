@@ -65,7 +65,7 @@ jobs:
       contents: write
     # Pin a release tag, never a PR head: a head commit stops resolving once its branch is deleted.
     # Moves with `composePreviewPlugin` in libs.versions.toml (Renovate groups them).
-    uses: yschimke/compose-ai-tools/.github/workflows/design-artifacts-reusable.yml@v2.74.1
+    uses: yschimke/compose-ai-tools/.github/workflows/design-artifacts-reusable.yml@v2.87.0
     with:
       system: compose-ui-samples
       # Only main publishes. A dispatch from a branch renders, merges and validates, then stops short
@@ -82,6 +82,12 @@ jobs:
       # renders (the spec's Android variants and Android-only cards) and never replaces a desktop one.
       # Pixels-only (`extra-split-mode` stays `view-only`); see `publish-live-bundle` below.
       extra-module: ':catalog-android'
+      # Publish even when a preview's editable figma-svg export loses a font family. Two Android samples
+      # (CustomFontFamilySample, FontFamilySynthesisSample) draw faces from the sample artifacts'
+      # `R.font`, which the export cannot name; their PNGs are correct, only the vector's text falls
+      # back to missing-glyph boxes, and each carries a figma-fonts.warnings.json saying so. Without
+      # this the whole pack refused to publish (Design Artifacts run 42210167737).
+      allow-lost-font-families: true
       # No design references. These are AndroidX's sample call sites, not a reproduction of a design
       # kit, so there is no Figma node for any of them to be scored against. An empty map is the
       # truthful answer (the workflow warns "0% coverage", which is correct here), and running no

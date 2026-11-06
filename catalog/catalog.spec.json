@@ -5450,6 +5450,11 @@
       "section": "Text",
       "components": [
         {
+          "componentId": "FontFamily/CustomFontFamilySample",
+          "preview": "CustomFontFamilySampleAndroidPreview",
+          "caption": "`CustomFontFamilySample` — Android only (AndroidX snapshot build 16855585)."
+        },
+        {
           "componentId": "FontFamily/FontFamilyCursiveSample",
           "preview": "FontFamilyCursiveSampleAndroidPreview",
           "caption": "`FontFamilyCursiveSample` — Android only (AndroidX snapshot build 16855585)."
@@ -5468,6 +5473,11 @@
           "componentId": "FontFamily/FontFamilySerifSample",
           "preview": "FontFamilySerifSampleAndroidPreview",
           "caption": "`FontFamilySerifSample` — Android only (AndroidX snapshot build 16855585)."
+        },
+        {
+          "componentId": "FontFamily/FontFamilySynthesisSample",
+          "preview": "FontFamilySynthesisSampleAndroidPreview",
+          "caption": "`FontFamilySynthesisSample` — Android only (AndroidX snapshot build 16855585)."
         }
       ]
     },
