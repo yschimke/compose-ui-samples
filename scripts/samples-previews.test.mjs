@@ -175,3 +175,23 @@ test("libraryQualifier PascalCases the package between androidx.compose and samp
   assert.equal(libraryQualifier("androidx.compose.animation.core.samples"), "AnimationCore");
   assert.equal(libraryQualifier("androidx.compose.foundation.layout.samples"), "FoundationLayout");
 });
+
+test("a preview quarantine entry with `platforms` holds only on the lanes it names", () => {
+  const dir = mkdtempSync(join(tmpdir(), "q-"));
+  const path = join(dir, "quarantine.json");
+  writeFileSync(
+    path,
+    JSON.stringify({
+      previews: [
+        { sample: "Both", reason: "a" },
+        { sample: "AndroidOnly", platforms: ["android"], reason: "b" },
+      ],
+    }),
+  );
+  try {
+    assert.deepEqual([...quarantinedPreviews(path, "desktop").keys()], ["Both"]);
+    assert.deepEqual([...quarantinedPreviews(path, "android").keys()], ["Both", "AndroidOnly"]);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

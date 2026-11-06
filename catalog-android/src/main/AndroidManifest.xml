@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Nothing to declare: this application exists only to give the Robolectric render lane a merged
+     resource APK for the sample artifacts it depends on. It is never installed. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application />
+</manifest>

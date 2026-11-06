@@ -212,27 +212,69 @@
   "previews": [
     {
       "sample": "AdaptiveButtonSample",
-      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
     },
     {
       "sample": "AdaptiveStylesSample",
-      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
+    },
+    {
+      "sample": "ComputedMediaQuerySample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected. Android-lane entry because these samples are newer than the desktop pin."
     },
     {
       "sample": "DelegatedReadOnlyStateSample",
-      "reason": "Throws `kotlin.NotImplementedError` at composition: the sample's data source is upstream's own `TODO()` placeholder (`observeSampleData`), so it is a code listing rather than something that can render anywhere."
+      "reason": "Throws `kotlin.NotImplementedError` at composition on both lanes: the sample's data source is upstream's own `TODO()` placeholder (`observeSampleData`), so it is a code listing rather than something that can render anywhere."
+    },
+    {
+      "sample": "DerivedMediaQuerySample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected. Android-lane entry because these samples are newer than the desktop pin."
     },
     {
       "sample": "FoldableAwareSample",
-      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
     },
     {
       "sample": "MediaQueryModifierNodeSample",
-      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
     },
     {
       "sample": "MediaQuerySample",
-      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which the Android host provides and the desktop preview renderer does not. Compiles, so only its wrapper is withheld; its siblings in MediaQuerySamples.kt that render are unaffected."
+      "reason": "Throws at composition: `CompositionLocal LocalUiMediaScope not present`. The media-query samples read the window's UI media scope, which neither preview host provides (the desktop renderer, nor the Robolectric renderer's host view). Compiles, so only its wrappers are withheld; the file's other samples are unaffected."
+    },
+    {
+      "sample": "MeshGradientPainterSample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "`IllegalArgumentException: MeshSpecification construction failed` — `android.graphics.Mesh` (API 34) under Robolectric's native graphics, which does not build the mesh shader. Would render on a device."
+    },
+    {
+      "sample": "ModifierLocalChildParentCommunicationInterLayoutNodeSample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "`IllegalStateException: No sender provided by parent.` thrown from the sample's own ModifierLocal read when the Robolectric host tears the activity down (`dispatchActivityPreDestroyed`). The desktop lane renders it."
+    },
+    {
+      "sample": "ModifierLocalChildParentCommunicationWithinLayoutNodeSample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "`IllegalStateException: No sender provided by parent.` thrown from the sample's own ModifierLocal read when the Robolectric host tears the activity down (`dispatchActivityPreDestroyed`). The desktop lane renders it."
+    },
+    {
+      "sample": "SharedElementClipRevealSample",
+      "platforms": [
+        "android"
+      ],
+      "reason": "`NotImplementedError: Not yet implemented` — upstream's own `TODO()` in the sample body (newer than the desktop pin)."
     }
   ]
 }

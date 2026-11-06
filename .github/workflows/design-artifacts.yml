@@ -5,7 +5,13 @@ name: Design Artifacts
 # preview server (preview.coo.ee) serves at /compose-ui-samples/ once that repository is listed in
 # its catalogs.json and producers.json.
 #
-#   :catalog -> design-artifacts/compose-ui-samples   every androidx.compose sample tree but material3
+#   :catalog          (desktop, Skiko)        -> design-artifacts/compose-ui-samples
+#   :catalog-android  (Android, Robolectric)  -> folded into the same catalog (`extra-module`)
+#
+# Every androidx.compose sample tree but material3. A sample both lanes draw is one card with its
+# Android render as a `platform: android` variant; a sample only one lane can draw (an Android API,
+# an `R` resource, an API newer than any Compose Multiplatform release, from the pinned AndroidX
+# snapshot) is a card on that lane alone. scripts/samples-spec.mjs builds that inventory.
 #
 # Modelled on yschimke/m3-catalog's design-artifacts.yml, which publishes that repository's four
 # catalogs (m3-catalog, m3-samples, compose-ui-samples, compose-foundation) to m3-catalog-out the
@@ -26,7 +32,9 @@ on:
     branches: [main]
     paths:
       - 'catalog/**'
+      - 'catalog-android/**'
       - 'scripts/samples-previews.mjs'
+      - 'scripts/android-samples.mjs'
       - 'scripts/samples-spec.mjs'
       - 'gradle/libs.versions.toml'
       - 'gradle/wrapper/gradle-wrapper.properties'
@@ -69,6 +77,11 @@ jobs:
       artifact-repository: yschimke/compose-ui-samples-out
       spec: catalog/catalog.spec.json
       module: ':catalog'
+      # The Android lane, rendered through Robolectric against the pinned AndroidX snapshot and folded
+      # in by function name. Its wrappers are all named `…AndroidPreview`, so the fold only ever ADDS
+      # renders (the spec's Android variants and Android-only cards) and never replaces a desktop one.
+      # Pixels-only (`extra-split-mode` stays `view-only`), matching `publish-live-bundle: false`.
+      extra-module: ':catalog-android'
       # No design references. These are AndroidX's sample call sites, not a reproduction of a design
       # kit, so there is no Figma node for any of them to be scored against. An empty map is the
       # truthful answer (the workflow warns "0% coverage", which is correct here), and running no
@@ -94,8 +107,9 @@ jobs:
       commit-user-email: yuri@schimke.ee
       timeout-minutes: 60
       render-timeout: 1800
-      # ONE. ~440 single-capture previews render warm in about a minute locally; a shard's own
-      # discovery, upload and merge would cost more than it saves.
+      # ONE. ~440 desktop previews render warm in about a minute locally, and the extra module is
+      # never sharded anyway (~620 Robolectric previews, ~5 minutes locally); a shard's own discovery,
+      # upload and merge would cost more than it saves.
       render-shards: 1
       allow-incomplete: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_incomplete }}
     secrets:

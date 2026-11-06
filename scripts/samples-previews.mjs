@@ -62,11 +62,14 @@ export function kotlinSources(dir) {
  * compiles and then throws at composition, where taking out its whole file would drop the siblings
  * that render perfectly well.
  */
-export function quarantinedPreviews(path = QUARANTINE) {
+export function quarantinedPreviews(path = QUARANTINE, lane = "desktop") {
   if (!existsSync(path)) return new Map();
   const parsed = JSON.parse(readFileSync(path, "utf8"));
   return new Map(
-    (parsed.previews ?? []).map((entry) => [entry.sample, entry.reason ?? "(no reason given)"]),
+    (parsed.previews ?? [])
+      // An entry without `platforms` holds on every lane; with it, only on the lanes it names.
+      .filter((entry) => !entry.platforms || entry.platforms.includes(lane))
+      .map((entry) => [entry.sample, entry.reason ?? "(no reason given)"]),
   );
 }
 
@@ -98,7 +101,10 @@ export function classifySamples(dir = VENDORED, skip = quarantinedPreviews()) {
       if (!annotations.includes("@Composable")) continue;
       const key = `${declaredPackage}.${fn}`;
       if (annotations.includes("@Preview")) {
-        hasPreview.set(key, { fn, package: declaredPackage, file });
+        // The annotation's own arguments (`showBackground = true`), so a lane that has to wrap an
+        // upstream-previewed sample anyway can carry them over.
+        const previewArgs = annotations.match(/@Preview\(([^)]*)\)/)?.[1]?.trim() ?? "";
+        hasPreview.set(key, { fn, package: declaredPackage, file, previewArgs });
         continue;
       }
       if (skip.has(fn)) {
@@ -117,12 +123,10 @@ export function classifySamples(dir = VENDORED, skip = quarantinedPreviews()) {
   for (const sample of [...wrap.values(), ...hasPreview.values()]) {
     counts.set(sample.fn, (counts.get(sample.fn) ?? 0) + 1);
   }
-  for (const sample of wrap.values()) {
-    sample.wrapper =
-      counts.get(sample.fn) > 1
-        ? `${libraryQualifier(sample.package)}${sample.fn}Preview`
-        : `${sample.fn}Preview`;
+  for (const sample of [...wrap.values(), ...hasPreview.values()]) {
+    sample.qualifier = counts.get(sample.fn) > 1 ? libraryQualifier(sample.package) : "";
   }
+  for (const sample of wrap.values()) sample.wrapper = `${sample.qualifier}${sample.fn}Preview`;
   const byWrapper = (a, b) => a.wrapper.localeCompare(b.wrapper);
   return {
     wrap: [...wrap.values()].sort(byWrapper),

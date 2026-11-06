@@ -32,6 +32,10 @@ jobs:
       # the published sheet silently.
       - name: Discover previews
         run: ./gradlew :catalog:composePreviewDiscover --stacktrace
+      # The Android lane: compiles every generated `…AndroidPreview` wrapper against the sample
+      # artifacts of the pinned androidx.dev snapshot build. Fails first when that build is pruned.
+      - name: Assemble + discover the Android lane
+        run: ./gradlew :catalog-android:assembleDebug :catalog-android:composePreviewDiscover --stacktrace
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
@@ -67,6 +71,9 @@ jobs:
         run: node scripts/import-samples.mjs --check
       - name: Generated wrappers are current
         run: node scripts/samples-previews.mjs --check
+      # Fetches the snapshot's `*-samples` sources jars from androidx.dev (a few MB, no token).
+      - name: Generated Android wrappers are current
+        run: node scripts/android-samples.mjs --check
       - name: Generated spec is current
         run: node scripts/samples-spec.mjs --check
 
@@ -92,8 +99,9 @@ jobs:
       # The build-free pre-flight: resolves every spec reference against the module's actual
       # `@Preview` functions before design-artifacts.yml spends a runner discovering the same thing.
       # It warns (not fails) on the reverse direction: a handful of upstream demo previews that are
-      # not `@Sampled` are discovered but deliberately outside the inventory.
+      # not `@Sampled` are discovered but deliberately outside the inventory. `--src` adds the
+      # Android lane's wrappers, the same way the Design Artifacts workflow passes its extra module.
       - name: validate-catalog-spec
         run: |
           node "$DRIVER_DIR/validate-catalog-spec.mjs" \
-            --spec catalog/catalog.spec.json --module-dir catalog
+            --spec catalog/catalog.spec.json --module-dir catalog --src catalog-android

@@ -7,8 +7,12 @@ repository's `AGENTS.md` and `docs/design/ANDROIDX_SAMPLES.md` are the longer ex
 - **`catalog/src/main/kotlin/upstream/` is upstream's bytes.** Never edit it and never format it.
   A fix is a patch in `catalog/patches/` with its reason in its header; a file that cannot compile
   is a `catalog/quarantine.json` entry with the compiler's error count and the reason.
-- **Generated files are regenerated, never hand-edited:** `SamplePreviews.kt` and
-  `catalog/catalog.spec.json`. CI runs every generator's `--check`.
+- **Generated files are regenerated, never hand-edited:** `SamplePreviews.kt`,
+  `AndroidSamplePreviews.kt` and `catalog/catalog.spec.json`. CI runs every generator's `--check`.
+- **Two lanes, one catalog.** `:catalog` is desktop (vendored sources, Compose Multiplatform);
+  `:catalog-android` is Android (the `*-samples` artifacts of one pinned androidx.dev snapshot,
+  Robolectric), folded in by function name. Android wrappers must keep the `…AndroidPreview` suffix:
+  a name shared with the desktop lane makes the fold REPLACE the desktop render.
 - **The inventory is generated `groups` in the spec, not `@CatalogComponent` annotations**, because
   an annotation written into a vendored file would not survive the next import.
 - **Render before merging anything that moves Compose Multiplatform, Skiko or the upstream pin.**

@@ -1,7 +1,24 @@
 #!/usr/bin/env node
 /**
- * Generate `catalog/catalog.spec.json` — the `compose-ui-samples` inventory — from the vendored
- * AndroidX sources.
+ * Generate `catalog/catalog.spec.json` — the `compose-ui-samples` inventory — from BOTH render
+ * lanes: the vendored sources the desktop lane (`:catalog`) compiles, and the snapshot `*-samples`
+ * sources the Android lane (`:catalog-android`) renders (see `scripts/android-samples.mjs`).
+ *
+ * ## One card per sample, whichever lanes can draw it
+ *
+ * A sample is keyed by its package and function name, so the same upstream sample on both lanes is
+ * ONE component:
+ *
+ *  - on both: the desktop render is the card, and the Android render is a variant tagged
+ *    `props: { platform: "android" }` — the two side by side, never one replacing the other;
+ *  - Android only (an Android API, an `R` resource, or an API newer than any Compose Multiplatform
+ *    release): the Android render is the card;
+ *  - desktop only (removed upstream since the desktop pin, or quarantined on Android): the desktop
+ *    render is the card.
+ *
+ * The Android renders reach the catalog through the reusable workflow's `extra-module`, which joins
+ * them to this spec by function name — which is why the Android wrappers are named
+ * `…AndroidPreview` and never collide with a desktop one.
  *
  * Ported from yschimke/m3-catalog's `scripts/ui-samples-spec.mjs`, which does the same for the
  * foundation corpus alone. The one addition is a SECTION per library: this catalog spans foundation,
@@ -38,6 +55,7 @@ import { basename, relative, resolve } from "node:path";
 
 import { VENDORED, classifySamples, quarantinedPreviews } from "./samples-previews.mjs";
 import { packageDirOf } from "./import-samples.mjs";
+import { classifyAndroid, fetchAndroidSources, snapshotPin } from "./android-samples.mjs";
 
 export const SPEC = "catalog/catalog.spec.json";
 export const MANIFEST = "catalog/import.json";
@@ -70,24 +88,76 @@ export function sectionOf(file, sections, dir = VENDORED) {
   return hit.section;
 }
 
-/** One group per file (per section), one component per rendered sample. */
-export function buildGroups(manifest, dir = VENDORED, skip = quarantinedPreviews()) {
+/**
+ * One group per file (per section), one component per sample, merging the two lanes.
+ *
+ * @param lanes `{ desktopDir, desktopSkip, androidDir, androidSkip, androidLabel }` — `androidDir`
+ *   may be omitted for a desktop-only spec; `androidLabel` names what the Android lane renders
+ *   against, for the captions.
+ */
+export function buildGroups(manifest, lanes = {}) {
+  const {
+    desktopDir = VENDORED,
+    desktopSkip = quarantinedPreviews(undefined, "desktop"),
+    androidDir = null,
+    androidSkip = quarantinedPreviews(undefined, "android"),
+    androidLabel = "AndroidX",
+  } = lanes;
   const sections = sectionsOf(manifest);
-  const { wrap, hasPreview } = classifySamples(dir, skip);
-  const byKey = new Map();
-  const add = (sample, preview, caption) => {
-    const section = sectionOf(sample.file, sections, dir);
-    const api = apiName(sample.file);
-    const key = `${section}\u0000${api}`;
-    if (!byKey.has(key)) byKey.set(key, { section, api, components: [] });
-    byKey.get(key).components.push({ fn: sample.fn, preview, caption });
-  };
+  const key = (sample) => `${sample.package}.${sample.fn}`;
+
+  const samples = new Map();
+  const { wrap, hasPreview } = classifySamples(desktopDir, desktopSkip);
   for (const sample of wrap) {
-    add(sample, sample.wrapper, `\`${sample.fn}\` — rendered by a generated \`@Preview\` wrapper.`);
+    samples.set(key(sample), { sample, dir: desktopDir, desktop: sample.wrapper, upstream: false });
   }
   for (const sample of hasPreview) {
-    // Upstream previewed this one itself, so the sample function IS the preview.
-    add(sample, sample.fn, `\`${sample.fn}\` — the sample carries its own \`@Preview\` upstream.`);
+    // Upstream previewed this one itself, so on desktop the sample function IS the preview.
+    samples.set(key(sample), { sample, dir: desktopDir, desktop: sample.fn, upstream: true });
+  }
+  if (androidDir) {
+    for (const sample of classifyAndroid(androidDir, androidSkip).samples) {
+      const entry = samples.get(key(sample));
+      if (entry) entry.android = sample.wrapper;
+      else samples.set(key(sample), { sample, dir: androidDir, android: sample.wrapper });
+    }
+  }
+
+  const byKey = new Map();
+  for (const entry of samples.values()) {
+    const { sample, dir } = entry;
+    const section = sectionOf(sample.file, sections, dir);
+    const api = apiName(sample.file);
+    const groupKey = `${section}\u0000${api}`;
+    if (!byKey.has(groupKey)) byKey.set(groupKey, { section, api, components: [] });
+    const fn = `\`${sample.fn}\``;
+    let component;
+    if (entry.desktop && entry.android) {
+      component = {
+        preview: entry.desktop,
+        caption: `${fn} — desktop and Android.`,
+        variants: [
+          {
+            preview: entry.android,
+            props: { platform: "android" },
+            caption: `${fn} on Android (${androidLabel}).`,
+          },
+        ],
+      };
+    } else if (entry.android) {
+      component = {
+        preview: entry.android,
+        caption: `${fn} — Android only (${androidLabel}).`,
+      };
+    } else {
+      component = {
+        preview: entry.desktop,
+        caption: entry.upstream
+          ? `${fn} — desktop only; the sample carries its own \`@Preview\` upstream.`
+          : `${fn} — desktop only.`,
+      };
+    }
+    byKey.get(groupKey).components.push({ fn: sample.fn, ...component });
   }
 
   // An API name produced by more than one section is qualified with the section, so a group name
@@ -104,7 +174,7 @@ export function buildGroups(manifest, dir = VENDORED, skip = quarantinedPreviews
         name,
         section,
         components: components
-          .map(({ fn, preview, caption }) => ({ componentId: `${name}/${fn}`, preview, caption }))
+          .map(({ fn, ...rest }) => ({ componentId: `${name}/${fn}`, ...rest }))
           .sort((a, b) => a.componentId.localeCompare(b.componentId)),
       };
     })
@@ -120,15 +190,21 @@ export function buildSpec(manifest, groups) {
     $schema:
       "https://raw.githubusercontent.com/yschimke/compose-ai-tools/main/scripts/design-artifacts/catalog.spec.schema.json",
     $comment:
-      "GENERATED by scripts/samples-spec.mjs from the vendored sources, catalog/import.json and " +
-      "the wrapper classification — do not edit. The inventory is generated rather than annotated " +
-      "because the sources are upstream's bytes, re-fetched byte-identically on every import. One " +
-      "section per library, one group per source file, one component per rendered sample. No " +
-      "`compareWith`: nothing in this repository reproduces a design kit of these APIs.",
+      "GENERATED by scripts/samples-spec.mjs from both render lanes — the vendored sources " +
+      "(:catalog, desktop) and the AndroidX snapshot sample artifacts (:catalog-android, Android) — " +
+      "do not edit. One section per library, one group per source file, one component per sample: " +
+      "a sample on both lanes carries its Android render as a `platform: android` variant, and a " +
+      "sample only one lane can draw is a card on that lane alone. No `compareWith`: nothing in this " +
+      "repository reproduces a design kit of these APIs.",
     system: "compose-ui-samples",
     title: "Compose UI Samples",
     library: [
-      ...new Set(manifest.libraries.map((l) => l.composeMultiplatformCoordinates.replace(/-desktop$/, ""))),
+      ...new Set(
+        manifest.libraries.flatMap((l) => [
+          l.composeMultiplatformCoordinates.replace(/-desktop$/, ""),
+          l.artifactCoordinates,
+        ]),
+      ),
     ],
     module: ":catalog",
     // A foundation sample says nothing about theming, but the Material surfaces upstream draws its
@@ -141,7 +217,11 @@ export function buildSpec(manifest, groups) {
 
 function main(argv) {
   const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"));
-  const groups = buildGroups(manifest);
+  const pin = snapshotPin();
+  const groups = buildGroups(manifest, {
+    androidDir: fetchAndroidSources(manifest, pin),
+    androidLabel: `AndroidX snapshot build ${pin.build}`,
+  });
   const json = `${JSON.stringify(buildSpec(manifest, groups), null, 2)}\n`;
   const components = groups.reduce((n, g) => n + g.components.length, 0);
 

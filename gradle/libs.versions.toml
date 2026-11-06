@@ -20,6 +20,22 @@ androidx-annotation = "1.11.0"
 jb-lifecycle = "2.11.0"
 kotlinx-coroutines = "1.11.0"
 
+# ── The Android lane (`:catalog-android`) ─────────────────────────────────────────────────────
+#
+# The Android render does not compile vendored sources: it depends on the `*-samples` artifacts
+# AndroidX itself builds and publishes to androidx.dev, all from ONE snapshot build, so every sample
+# and every library it calls come from the same androidx-main commit. That is what lets the catalog
+# show a sample whose API merged into androidx-main but is in no release yet (Modifier.illuminate,
+# aosp/4322706), and samples that need an Android `R` resource table (the AARs carry it).
+#
+# `androidxSnapshotBuild` is the androidx.dev build id: pinned, never `latest`, so a render is
+# reproducible and a bump is a reviewable diff. settings.gradle.kts and scripts/android-samples.mjs
+# read it from here. androidx.dev keeps snapshot builds for a limited time; when this one is pruned
+# the Android lane stops resolving, and the fix is to move the id forward.
+androidxSnapshotBuild = "16855585"
+androidx-compose-snapshot = "1.14.0-SNAPSHOT"
+agp = "9.4.1"
+
 # compose-ai-tools: the `ee.schimke.composeai.preview` Gradle plugin and the reusable CI
 # actions/workflows are one release — keep both pinned together (Renovate groups them).
 composePreviewPlugin = "2.74.1"
@@ -27,6 +43,8 @@ composePreviewDaemon = "3.26.0"
 composePreviewContracts = "3.39.0"
 
 [libraries]
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-snapshot" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-compose-snapshot" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 jb-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jb-lifecycle" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
@@ -50,6 +68,7 @@ composeai-contracts-bom = { module = "ee.schimke.composeai:compose-preview-contr
 composeai-daemon-bom = { module = "ee.schimke.composeai:compose-preview-daemon-bom", version.ref = "composePreviewDaemon" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

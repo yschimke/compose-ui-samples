@@ -1,7 +1,8 @@
 name: Compose Preview
 
-# Renders the catalog's @Previews on every PR and posts a before/after visual diff, and refreshes the
-# baseline on every merge to main. An upstream re-pin or a Compose Multiplatform bump moves pixels
+# Renders the catalog's @Previews — both lanes, `:catalog` (desktop) and `:catalog-android`
+# (Robolectric) — on every PR and posts a before/after visual diff, and refreshes the baseline on
+# every merge to main. An upstream re-pin or a Compose Multiplatform bump moves pixels
 # across the whole sheet, and this is where a reviewer sees it.
 #
 # Same two-phase split as yschimke/m3-catalog: the PR render runs with NO write credential (a PR's

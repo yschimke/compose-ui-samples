@@ -5,15 +5,17 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { MANIFEST, SPEC, apiName, buildGroups, buildSpec } from "./samples-spec.mjs";
+import { fetchAndroidSources, snapshotPin } from "./android-samples.mjs";
 
 const FOUNDATION = "androidx/compose/foundation/samples";
 const ANIMATION = "androidx/compose/animation/samples";
 const ANIMATION_CORE = "androidx/compose/animation/core/samples";
 
-const lib = (section, dir, coordinates = "org.jetbrains.compose.x:x-desktop") => ({
+const lib = (section, dir) => ({
   section,
   paths: [`compose/x/samples/src/main/java/${dir}`],
-  composeMultiplatformCoordinates: coordinates,
+  artifactCoordinates: "androidx.compose.x:x",
+  composeMultiplatformCoordinates: "org.jetbrains.compose.x:x-desktop",
 });
 
 const MANIFEST_FIXTURE = {
@@ -50,7 +52,7 @@ test("one group per file, one component per rendered sample, under its library's
     [`${ANIMATION}/CrossfadeSamples.kt`]: SAMPLE("CrossfadeSample", "androidx.compose.animation.samples"),
   });
   try {
-    const groups = buildGroups(MANIFEST_FIXTURE, root, new Map());
+    const groups = buildGroups(MANIFEST_FIXTURE, { desktopDir: root, desktopSkip: new Map() });
     assert.deepEqual(
       groups.map((g) => [g.section, g.name]),
       [
@@ -76,7 +78,7 @@ test("a group name two sections share is qualified, and the longest package wins
     [`${ANIMATION_CORE}/TransitionSamples.kt`]: SAMPLE("B", "androidx.compose.animation.core.samples"),
   });
   try {
-    const groups = buildGroups(MANIFEST_FIXTURE, root, new Map());
+    const groups = buildGroups(MANIFEST_FIXTURE, { desktopDir: root, desktopSkip: new Map() });
     assert.deepEqual(
       groups.map((g) => [g.section, g.name, g.components[0].componentId]),
       [
@@ -99,7 +101,7 @@ test("a wrapped sample names its generated wrapper, an annotated one names itsel
     ),
   });
   try {
-    const groups = buildGroups(MANIFEST_FIXTURE, root, new Map());
+    const groups = buildGroups(MANIFEST_FIXTURE, { desktopDir: root, desktopSkip: new Map() });
     assert.equal(groups.find((g) => g.name === "Canvas").components[0].preview, "CanvasSample");
     assert.equal(groups.find((g) => g.name === "Column").components[0].preview, "ColumnSamplePreview");
   } finally {
@@ -110,7 +112,7 @@ test("a wrapped sample names its generated wrapper, an annotated one names itsel
 test("a file under no manifest library fails rather than publishing unsectioned", () => {
   const root = vendored({ "elsewhere/XSample.kt": SAMPLE("XSample") });
   try {
-    assert.throws(() => buildGroups(MANIFEST_FIXTURE, root, new Map()), /under no library/);
+    assert.throws(() => buildGroups(MANIFEST_FIXTURE, { desktopDir: root, desktopSkip: new Map() }), /under no library/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -121,11 +123,55 @@ test("the spec names this system and declares no compareWith", () => {
   assert.equal(spec.compareWith, undefined);
   assert.equal(spec.system, "compose-ui-samples");
   assert.equal(spec.module, ":catalog");
-  assert.deepEqual(spec.library, ["org.jetbrains.compose.x:x"]);
+  // Both lanes' artifacts: Compose Multiplatform for desktop, AndroidX for Android.
+  assert.deepEqual(spec.library, ["org.jetbrains.compose.x:x", "androidx.compose.x:x"]);
+});
+
+test("a sample on both lanes is one card with an Android variant; one lane alone is its own card", () => {
+  const desktop = vendored({
+    [`${FOUNDATION}/ColumnSample.kt`]: SAMPLE("ColumnSample") + SAMPLE("GoneUpstreamSample"),
+  });
+  const android = vendored({
+    [`${FOUNDATION}/ColumnSample.kt`]: SAMPLE("ColumnSample"),
+    [`${FOUNDATION}/LightingSamples.kt`]: SAMPLE("IlluminateSample"),
+  });
+  try {
+    const groups = buildGroups(MANIFEST_FIXTURE, {
+      desktopDir: desktop,
+      desktopSkip: new Map(),
+      androidDir: android,
+      androidSkip: new Map(),
+      androidLabel: "snap",
+    });
+    const byId = Object.fromEntries(
+      groups.flatMap((g) => g.components).map((c) => [c.componentId, c]),
+    );
+    assert.equal(byId["Column/ColumnSample"].preview, "ColumnSamplePreview");
+    assert.deepEqual(byId["Column/ColumnSample"].variants, [
+      {
+        preview: "ColumnSampleAndroidPreview",
+        props: { platform: "android" },
+        caption: "`ColumnSample` on Android (snap).",
+      },
+    ]);
+    assert.equal(byId["Column/GoneUpstreamSample"].preview, "GoneUpstreamSamplePreview");
+    assert.equal(byId["Column/GoneUpstreamSample"].variants, undefined);
+    assert.equal(byId["Lighting/IlluminateSample"].preview, "IlluminateSampleAndroidPreview");
+    assert.match(byId["Lighting/IlluminateSample"].caption, /Android only/);
+  } finally {
+    rmSync(desktop, { recursive: true, force: true });
+    rmSync(android, { recursive: true, force: true });
+  }
 });
 
 test("the committed spec matches what the generator produces", () => {
+  // Needs the Android lane's sources: fetched from androidx.dev at the pinned build (cached).
   const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"));
+  const pin = snapshotPin();
+  const groups = buildGroups(manifest, {
+    androidDir: fetchAndroidSources(manifest, pin),
+    androidLabel: `AndroidX snapshot build ${pin.build}`,
+  });
   const committed = readFileSync(SPEC, "utf8");
-  assert.equal(committed, `${JSON.stringify(buildSpec(manifest, buildGroups(manifest)), null, 2)}\n`);
+  assert.equal(committed, `${JSON.stringify(buildSpec(manifest, groups), null, 2)}\n`);
 });
