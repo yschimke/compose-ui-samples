@@ -110,9 +110,11 @@ fun BottomSheetScaffoldSample() {
     }
 }
 
+@Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun BottomSheetScaffoldWithDrawerSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     val drawerState = rememberDrawerState(DrawerValue.Closed)

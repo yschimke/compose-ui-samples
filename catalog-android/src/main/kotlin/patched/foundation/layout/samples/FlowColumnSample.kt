@@ -137,12 +137,15 @@ fun SimpleFlowColumnMaxLinesWithSeeMore() {
     }
 }
 
+@Sampled
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SimpleFlowColumnWithMaxWidth() {
     val initialWidth = 200.dp // Reversed from initialHeight
     var width by remember { mutableStateOf(initialWidth) } // Reversed from height
 
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Column(Modifier.background(Color.White)) {
     Text(
         modifier =
             Modifier.fillMaxWidth(1f).padding(20.dp).wrapContentHeight(align = Alignment.Top),
@@ -177,6 +180,7 @@ fun SimpleFlowColumnWithMaxWidth() {
                 Text(text = it.toString(), fontSize = 18.sp, modifier = Modifier.padding(3.dp))
             }
         }
+    }
     }
 }
 

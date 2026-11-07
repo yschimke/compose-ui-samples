@@ -28,12 +28,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -264,9 +266,12 @@ fun ThreeLineListItems() {
 
 // Demos for mixing RTL and LTR ListItems:
 
+@Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun OneLineRtlLtrListItems() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     Column {
         ListItem(text = { Text("One line list item with no icon") })
         Divider()
@@ -292,19 +297,24 @@ fun OneLineRtlLtrListItems() {
         )
         Divider()
     }
+    }
 }
 
+@Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun TwoLineRtlLtrListItems() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
+    var clicked by remember { mutableIntStateOf(0) }
     Column {
         ListItem(text = { Text("Two line list item") }, secondaryText = { Text("Secondary text") })
         Divider()
         ListItem(text = { Text("بند قائمة من سطرين") }, secondaryText = { Text("نص ثانوي") })
         Divider()
         ListItem(
-            modifier = Modifier.clickable {},
-            text = { Text("Clickable") },
+            modifier = Modifier.clickable { clicked++ },
+            text = { Text(if (clicked == 0) "Clickable" else "Clicked ($clicked)") },
             secondaryText = { Text("Short item") },
         )
         Divider()
@@ -330,15 +340,19 @@ fun TwoLineRtlLtrListItems() {
                     modifier = Modifier.size(40.dp),
                 )
             },
-            modifier = Modifier.clickable {},
+            modifier = Modifier.clickable { clicked++ },
         )
         Divider()
     }
+    }
 }
 
+@Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun ThreeLineRtlLtrListItems() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     Column {
         ListItem(
             text = { Text("Three line list item") },
@@ -371,5 +385,6 @@ fun ThreeLineRtlLtrListItems() {
             },
         )
         Divider()
+    }
     }
 }

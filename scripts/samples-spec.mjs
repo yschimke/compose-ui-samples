@@ -55,7 +55,7 @@ import { basename, relative, resolve } from "node:path";
 
 import { VENDORED, classifySamples, quarantinedPreviews } from "./samples-previews.mjs";
 import { packageDirOf } from "./import-samples.mjs";
-import { classifyAndroid, fetchAndroidSources, snapshotPin } from "./android-samples.mjs";
+import { classifyAndroid, fetchAndroidSources, patchedPaths, snapshotPin } from "./android-samples.mjs";
 
 export const SPEC = "catalog/catalog.spec.json";
 export const MANIFEST = "catalog/import.json";
@@ -116,7 +116,7 @@ export function buildGroups(manifest, lanes = {}) {
     samples.set(key(sample), { sample, dir: desktopDir, desktop: sample.fn, upstream: true });
   }
   if (androidDir) {
-    for (const sample of classifyAndroid(androidDir, androidSkip).samples) {
+    for (const sample of classifyAndroid(androidDir, androidSkip, new Set(patchedPaths())).samples) {
       const entry = samples.get(key(sample));
       if (entry) entry.android = sample.wrapper;
       else samples.set(key(sample), { sample, dir: androidDir, android: sample.wrapper });

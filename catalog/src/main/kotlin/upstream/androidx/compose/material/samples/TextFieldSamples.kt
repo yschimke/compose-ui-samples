@@ -336,13 +336,15 @@ fun TextFieldWithHideKeyboardOnImeAction() {
     )
 }
 
+@Sampled
 @Composable
 fun TextArea() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val state =
         rememberTextFieldState(
             "This is a very long input that extends beyond the height of the text area."
         )
-    TextField(state = state, modifier = Modifier.height(100.dp), label = { Text("Label") })
+    Surface { TextField(state = state, modifier = Modifier.height(100.dp), label = { Text("Label") }) }
 }
 
 @Sampled

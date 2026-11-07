@@ -81,8 +81,11 @@ fun TextTabs() {
     }
 }
 
+@Sampled
 @Composable
 fun IconTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val icons = listOf(Icons.Filled.Favorite, Icons.Filled.Favorite, Icons.Filled.Favorite)
     Column {
@@ -101,10 +104,14 @@ fun IconTabs() {
             style = MaterialTheme.typography.body1,
         )
     }
+    }
 }
 
+@Sampled
 @Composable
 fun TextAndIconTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titlesAndIcons =
         listOf(
@@ -129,10 +136,14 @@ fun TextAndIconTabs() {
             style = MaterialTheme.typography.body1,
         )
     }
+    }
 }
 
+@Sampled
 @Composable
 fun LeadingIconTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titlesAndIcons =
         listOf(
@@ -157,10 +168,14 @@ fun LeadingIconTabs() {
             style = MaterialTheme.typography.body1,
         )
     }
+    }
 }
 
+@Sampled
 @Composable
 fun ScrollingTextTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titles =
         listOf(
@@ -186,6 +201,7 @@ fun ScrollingTextTabs() {
             text = "Scrolling text tab ${state + 1} selected",
             style = MaterialTheme.typography.body1,
         )
+    }
     }
 }
 
@@ -268,8 +284,11 @@ fun FancyIndicatorContainerTabs() {
     }
 }
 
+@Sampled
 @Composable
 fun ScrollingFancyIndicatorContainerTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titles =
         listOf(
@@ -300,6 +319,7 @@ fun ScrollingFancyIndicatorContainerTabs() {
             text = "Scrolling fancy transition tab ${state + 1} selected",
             style = MaterialTheme.typography.body1,
         )
+    }
     }
 }
 

@@ -92,17 +92,21 @@ fun TriStateCheckboxSample() {
     }
 }
 
+@Sampled
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FocusedCheckboxSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Surface { Column {
     Text("The gray circle around this checkbox means it's non-touch focused.  Press Tab to move it")
 
     val focusRequester = FocusRequester()
     Box(Modifier.wrapContentSize(Alignment.TopStart)) {
+        var checked by remember { mutableStateOf(true) }
         Checkbox(
             modifier = Modifier.wrapContentSize(Alignment.TopStart).focusRequester(focusRequester),
-            checked = true,
-            onCheckedChange = {},
+            checked = checked,
+            onCheckedChange = { checked = it },
         )
     }
 
@@ -112,6 +116,7 @@ fun FocusedCheckboxSample() {
             focusRequester.requestFocus()
         }
     }
+    } }
 }
 
 @Sampled

@@ -19,6 +19,7 @@ package androidx.compose.foundation.samples
 import androidx.annotation.Sampled
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
@@ -80,9 +81,11 @@ private enum class AnchoredDraggableSampleValue {
     End,
 }
 
+@Sampled
 @Composable
 @Preview
 fun AnchoredDraggableAnchorsFromCompositionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val density = LocalDensity.current
     val state =
         rememberSaveable(saver = AnchoredDraggableState.Saver()) {
@@ -119,6 +122,7 @@ fun AnchoredDraggableAnchorsFromCompositionSample() {
     }
 }
 
+@Sampled
 @Preview
 @Composable
 fun AnchoredDraggableLayoutDependentAnchorsSample() {
@@ -158,9 +162,11 @@ fun AnchoredDraggableLayoutDependentAnchorsSample() {
     }
 }
 
+@Sampled
 @Preview
 @Composable
 fun AnchoredDraggableCustomAnchoredSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     @Suppress("unused")
     // Using AnchoredDraggableState's anchoredDrag APIs, we can build a custom animation
     suspend fun <T> AnchoredDraggableState<T>.customAnimation(
@@ -184,11 +190,45 @@ fun AnchoredDraggableCustomAnchoredSample() {
             }
         }
     }
+    val state =
+        rememberSaveable(saver = AnchoredDraggableState.Saver()) {
+            AnchoredDraggableState(initialValue = Start)
+        }
+    val scope = rememberCoroutineScope()
+    Column(
+        Modifier.width(200.dp).onSizeChanged { layoutSize ->
+            state.updateAnchors(
+                DraggableAnchors {
+                    Start at 0f
+                    End at (layoutSize.width - 60f).coerceAtLeast(0f)
+                }
+            )
+        }
+    ) {
+        Box(
+            Modifier.size(40.dp)
+                .offset { IntOffset(x = state.requireOffset().roundToInt(), y = 0) }
+                .anchoredDraggable(state, Orientation.Horizontal)
+                .background(Color.Red)
+        )
+        Button(
+            onClick = {
+                scope.launch {
+                    val next = if (state.currentValue == Start) End else Start
+                    state.customAnimation(next, tween(300))
+                }
+            }
+        ) {
+            Text("Animate")
+        }
+    }
 }
 
+@Sampled
 @Preview
 @Composable
 fun AnchoredDraggableWithOverscrollSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val state =
         rememberSaveable(saver = AnchoredDraggableState.Saver()) {
             AnchoredDraggableState(initialValue = Center)
@@ -224,8 +264,10 @@ fun AnchoredDraggableWithOverscrollSample() {
     }
 }
 
+@Sampled
 @Composable
 fun AnchoredDraggableProgressSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val state =
         rememberSaveable(saver = AnchoredDraggableState.Saver()) {
             AnchoredDraggableState(initialValue = Center)
@@ -269,6 +311,7 @@ fun AnchoredDraggableProgressSample() {
     }
 }
 
+@Sampled
 @Preview
 @Composable
 fun DraggableAnchorsSample() {
@@ -389,8 +432,11 @@ fun AnchoredDraggableDynamicAnchorsSample() {
  * Showcases how to perform a programmatic fling through [AnchoredDraggableState] and
  * [AnchoredDraggableDefaults.flingBehavior]. Note that this is an advanced use case.
  */
+@Sampled
 @Composable
 fun AnchoredDraggableProgrammaticFlingSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Box(Modifier.background(Color.White)) {
     val state =
         rememberSaveable(saver = AnchoredDraggableState.Saver()) {
             AnchoredDraggableState(initialValue = Center)
@@ -443,6 +489,7 @@ fun AnchoredDraggableProgrammaticFlingSample() {
         ) {
             Text("Click to call performFling")
         }
+    }
     }
 }
 

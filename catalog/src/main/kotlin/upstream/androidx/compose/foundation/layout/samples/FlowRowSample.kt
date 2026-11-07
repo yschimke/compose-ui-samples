@@ -133,12 +133,15 @@ fun SimpleFlowRowMaxLinesWithSeeMore() {
     }
 }
 
+@Sampled
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SimpleFlowRowWithMaxHeight() {
     var initialHeight = 200.dp
     var height by remember { mutableStateOf(initialHeight) }
 
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    Column(Modifier.background(Color.White)) {
     Text(
         modifier =
             Modifier.fillMaxWidth(1f).padding(20.dp).wrapContentHeight(align = Alignment.Top),
@@ -173,6 +176,7 @@ fun SimpleFlowRowWithMaxHeight() {
                 Text(text = it.toString(), fontSize = 18.sp, modifier = Modifier.padding(3.dp))
             }
         }
+    }
     }
 }
 

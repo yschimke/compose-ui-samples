@@ -44,6 +44,7 @@
 import { execFileSync } from "node:child_process";
 import {
   copyFileSync,
+  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -174,11 +175,31 @@ export function classifyAndroid(
   skip = quarantinedPreviews(QUARANTINE, "android"),
   patched = new Set(),
 ) {
-  const { wrap, hasPreview, takesArguments, quarantined } = classifySamples(dir, skip);
+  const patchList = patchedPaths();
+  const canPatch =
+    patched.size > 0 &&
+    patchList.length > 0 &&
+    patchList.every((p) => existsSync(join(dir, p)));
+  const work = canPatch ? mkdtempSync(join(tmpdir(), "android-classify-")) : null;
+  let classified;
+  try {
+    if (work) {
+      cpSync(dir, work, { recursive: true });
+      applyPatches(work, PATCHES);
+      classified = classifySamples(work, skip);
+    } else {
+      classified = classifySamples(dir, skip);
+    }
+  } finally {
+    if (work) rmSync(work, { recursive: true, force: true });
+  }
+  const baseDir = work ?? dir;
+  const { wrap, hasPreview, takesArguments, quarantined } = classified;
   const all = [...wrap, ...hasPreview].map((sample) => {
-    const rel = relative(resolve(dir), resolve(sample.file)).replace(/\\/g, "/");
+    const rel = relative(resolve(baseDir), resolve(sample.file)).replace(/\\/g, "/");
     return {
       ...sample,
+      file: join(dir, rel),
       wrapper: `${sample.qualifier}${sample.fn}AndroidPreview`,
       // A sample in a patched file is called through its patched copy, never the artifact.
       ...(patched.has(rel) ? { callPackage: patchedPackage(sample.package) } : {}),

@@ -21,6 +21,7 @@ package androidx.compose.foundation.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -131,8 +132,10 @@ fun StyleAnimationSample() {
     )
 }
 
+@Sampled
 @Composable
 fun StyleForegroundBackgroundSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     // Create a styleable clickable box
     @Composable
     fun ClickableStyleableBox(
@@ -221,8 +224,10 @@ fun StyleStateKeySample() {
     )
 }
 
+@Sampled
 @Composable
 fun TextStyleTextMotionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val interactionSource = remember { MutableInteractionSource() }
     val styleState = rememberUpdatedStyleState(interactionSource)
 
@@ -237,7 +242,7 @@ fun TextStyleTextMotionSample() {
     }
 
     Box(
-        Modifier.clickable(interactionSource = interactionSource, indication = null, onClick = {})
+        Modifier.background(Color.White).clickable(interactionSource = interactionSource, indication = null, onClick = {})
             .styleable(styleState = styleState, style = style)
     ) {
         BasicText("Animated Smooth Text")

@@ -64,6 +64,34 @@
       "section": "Foundation",
       "components": [
         {
+          "componentId": "AnchoredDraggable/AnchoredDraggableAnchorsFromCompositionSample",
+          "preview": "AnchoredDraggableAnchorsFromCompositionSample",
+          "caption": "`AnchoredDraggableAnchorsFromCompositionSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "AnchoredDraggableAnchorsFromCompositionSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`AnchoredDraggableAnchorsFromCompositionSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "AnchoredDraggable/AnchoredDraggableCustomAnchoredSample",
+          "preview": "AnchoredDraggableCustomAnchoredSample",
+          "caption": "`AnchoredDraggableCustomAnchoredSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "AnchoredDraggableCustomAnchoredSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`AnchoredDraggableCustomAnchoredSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "AnchoredDraggable/AnchoredDraggableDynamicAnchorsSample",
           "preview": "AnchoredDraggableDynamicAnchorsSamplePreview",
           "caption": "`AnchoredDraggableDynamicAnchorsSample` — desktop and Android.",
@@ -74,6 +102,76 @@
                 "platform": "android"
               },
               "caption": "`AnchoredDraggableDynamicAnchorsSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "AnchoredDraggable/AnchoredDraggableLayoutDependentAnchorsSample",
+          "preview": "AnchoredDraggableLayoutDependentAnchorsSample",
+          "caption": "`AnchoredDraggableLayoutDependentAnchorsSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "AnchoredDraggableLayoutDependentAnchorsSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`AnchoredDraggableLayoutDependentAnchorsSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "AnchoredDraggable/AnchoredDraggableProgrammaticFlingSample",
+          "preview": "AnchoredDraggableProgrammaticFlingSamplePreview",
+          "caption": "`AnchoredDraggableProgrammaticFlingSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "AnchoredDraggableProgrammaticFlingSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`AnchoredDraggableProgrammaticFlingSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "AnchoredDraggable/AnchoredDraggableProgressSample",
+          "preview": "AnchoredDraggableProgressSamplePreview",
+          "caption": "`AnchoredDraggableProgressSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "AnchoredDraggableProgressSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`AnchoredDraggableProgressSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "AnchoredDraggable/AnchoredDraggableWithOverscrollSample",
+          "preview": "AnchoredDraggableWithOverscrollSample",
+          "caption": "`AnchoredDraggableWithOverscrollSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "AnchoredDraggableWithOverscrollSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`AnchoredDraggableWithOverscrollSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "AnchoredDraggable/DraggableAnchorsSample",
+          "preview": "DraggableAnchorsSample",
+          "caption": "`DraggableAnchorsSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "DraggableAnchorsSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`DraggableAnchorsSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -630,6 +728,26 @@
           "componentId": "ContextMenu/FilterProcessTextItemsInTextContextMenu",
           "preview": "FilterProcessTextItemsInTextContextMenuAndroidPreview",
           "caption": "`FilterProcessTextItemsInTextContextMenu` — Android only (AndroidX snapshot build 16855585)."
+        }
+      ]
+    },
+    {
+      "name": "CustomTouchSlop",
+      "section": "Foundation",
+      "components": [
+        {
+          "componentId": "CustomTouchSlop/CustomTouchSlopSample",
+          "preview": "CustomTouchSlopSamplePreview",
+          "caption": "`CustomTouchSlopSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "CustomTouchSlopSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`CustomTouchSlopSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
         }
       ]
     },
@@ -2156,6 +2274,20 @@
           ]
         },
         {
+          "componentId": "Style/StyleForegroundBackgroundSample",
+          "preview": "StyleForegroundBackgroundSamplePreview",
+          "caption": "`StyleForegroundBackgroundSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "StyleForegroundBackgroundSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`StyleForegroundBackgroundSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "Style/StyleStateKeySample",
           "preview": "StyleStateKeySamplePreview",
           "caption": "`StyleStateKeySample` — desktop and Android.",
@@ -2180,6 +2312,20 @@
                 "platform": "android"
               },
               "caption": "`StyleStateSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "Style/TextStyleTextMotionSample",
+          "preview": "TextStyleTextMotionSamplePreview",
+          "caption": "`TextStyleTextMotionSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "TextStyleTextMotionSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`TextStyleTextMotionSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -2798,6 +2944,20 @@
               "caption": "`SimpleFlowColumnMaxLinesWithSeeMore` on Android (AndroidX snapshot build 16855585)."
             }
           ]
+        },
+        {
+          "componentId": "FlowColumn/SimpleFlowColumnWithMaxWidth",
+          "preview": "SimpleFlowColumnWithMaxWidthPreview",
+          "caption": "`SimpleFlowColumnWithMaxWidth` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "SimpleFlowColumnWithMaxWidthAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`SimpleFlowColumnWithMaxWidth` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
         }
       ]
     },
@@ -2858,6 +3018,20 @@
                 "platform": "android"
               },
               "caption": "`SimpleFlowRowMaxLinesWithSeeMore` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "FlowRow/SimpleFlowRowWithMaxHeight",
+          "preview": "SimpleFlowRowWithMaxHeightPreview",
+          "caption": "`SimpleFlowRowWithMaxHeight` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "SimpleFlowRowWithMaxHeightAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`SimpleFlowRowWithMaxHeight` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -6733,6 +6907,20 @@
               "caption": "`BottomNavigationSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
+        },
+        {
+          "componentId": "BottomNavigation/BottomNavigationWithOnlySelectedLabelsSample",
+          "preview": "BottomNavigationWithOnlySelectedLabelsSamplePreview",
+          "caption": "`BottomNavigationWithOnlySelectedLabelsSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "BottomNavigationWithOnlySelectedLabelsSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`BottomNavigationWithOnlySelectedLabelsSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
         }
       ]
     },
@@ -6751,6 +6939,20 @@
                 "platform": "android"
               },
               "caption": "`BottomSheetScaffoldSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "BottomSheetScaffold/BottomSheetScaffoldWithDrawerSample",
+          "preview": "BottomSheetScaffoldWithDrawerSamplePreview",
+          "caption": "`BottomSheetScaffoldWithDrawerSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "BottomSheetScaffoldWithDrawerSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`BottomSheetScaffoldWithDrawerSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -7083,6 +7285,20 @@
           ]
         },
         {
+          "componentId": "FloatingActionButton/SimpleExtendedFabNoIcon",
+          "preview": "SimpleExtendedFabNoIconPreview",
+          "caption": "`SimpleExtendedFabNoIcon` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "SimpleExtendedFabNoIconAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`SimpleExtendedFabNoIcon` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "FloatingActionButton/SimpleExtendedFabWithIcon",
           "preview": "SimpleExtendedFabWithIconPreview",
           "caption": "`SimpleExtendedFabWithIcon` — desktop and Android.",
@@ -7179,6 +7395,20 @@
           ]
         },
         {
+          "componentId": "List/OneLineRtlLtrListItems",
+          "preview": "OneLineRtlLtrListItemsPreview",
+          "caption": "`OneLineRtlLtrListItems` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "OneLineRtlLtrListItemsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`OneLineRtlLtrListItems` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "List/ThreeLineListItems",
           "preview": "ThreeLineListItemsPreview",
           "caption": "`ThreeLineListItems` — desktop and Android.",
@@ -7193,6 +7423,20 @@
           ]
         },
         {
+          "componentId": "List/ThreeLineRtlLtrListItems",
+          "preview": "ThreeLineRtlLtrListItemsPreview",
+          "caption": "`ThreeLineRtlLtrListItems` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "ThreeLineRtlLtrListItemsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`ThreeLineRtlLtrListItems` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "List/TwoLineListItems",
           "preview": "TwoLineListItemsPreview",
           "caption": "`TwoLineListItems` — desktop and Android.",
@@ -7203,6 +7447,20 @@
                 "platform": "android"
               },
               "caption": "`TwoLineListItems` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "List/TwoLineRtlLtrListItems",
+          "preview": "TwoLineRtlLtrListItemsPreview",
+          "caption": "`TwoLineRtlLtrListItems` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "TwoLineRtlLtrListItemsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`TwoLineRtlLtrListItems` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -7267,6 +7525,34 @@
       "section": "Material",
       "components": [
         {
+          "componentId": "NavigationRail/CompactNavigationRailSample",
+          "preview": "CompactNavigationRailSamplePreview",
+          "caption": "`CompactNavigationRailSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "CompactNavigationRailSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`CompactNavigationRailSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "NavigationRail/NavigationRailBottomAlignSample",
+          "preview": "NavigationRailBottomAlignSamplePreview",
+          "caption": "`NavigationRailBottomAlignSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "NavigationRailBottomAlignSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`NavigationRailBottomAlignSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "NavigationRail/NavigationRailSample",
           "preview": "NavigationRailSamplePreview",
           "caption": "`NavigationRailSample` — desktop and Android.",
@@ -7277,6 +7563,20 @@
                 "platform": "android"
               },
               "caption": "`NavigationRailSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "NavigationRail/NavigationRailWithOnlySelectedLabelsSample",
+          "preview": "NavigationRailWithOnlySelectedLabelsSamplePreview",
+          "caption": "`NavigationRailWithOnlySelectedLabelsSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "NavigationRailWithOnlySelectedLabelsSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`NavigationRailWithOnlySelectedLabelsSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         }
@@ -7455,6 +7755,20 @@
                 "platform": "android"
               },
               "caption": "`CheckboxSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "SelectionControls/FocusedCheckboxSample",
+          "preview": "FocusedCheckboxSamplePreview",
+          "caption": "`FocusedCheckboxSample` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "FocusedCheckboxSampleAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`FocusedCheckboxSample` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         },
@@ -7727,6 +8041,76 @@
           ]
         },
         {
+          "componentId": "Tab/IconTabs",
+          "preview": "IconTabsPreview",
+          "caption": "`IconTabs` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "IconTabsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`IconTabs` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "Tab/LeadingIconTabs",
+          "preview": "LeadingIconTabsPreview",
+          "caption": "`LeadingIconTabs` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "LeadingIconTabsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`LeadingIconTabs` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "Tab/ScrollingFancyIndicatorContainerTabs",
+          "preview": "ScrollingFancyIndicatorContainerTabsPreview",
+          "caption": "`ScrollingFancyIndicatorContainerTabs` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "ScrollingFancyIndicatorContainerTabsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`ScrollingFancyIndicatorContainerTabs` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "Tab/ScrollingTextTabs",
+          "preview": "ScrollingTextTabsPreview",
+          "caption": "`ScrollingTextTabs` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "ScrollingTextTabsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`ScrollingTextTabs` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "Tab/TextAndIconTabs",
+          "preview": "TextAndIconTabsPreview",
+          "caption": "`TextAndIconTabs` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "TextAndIconTabsAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`TextAndIconTabs` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
           "componentId": "Tab/TextTabs",
           "preview": "TextTabsPreview",
           "caption": "`TextTabs` — desktop and Android.",
@@ -7829,6 +8213,20 @@
                 "platform": "android"
               },
               "caption": "`SimpleTextFieldSample` on Android (AndroidX snapshot build 16855585)."
+            }
+          ]
+        },
+        {
+          "componentId": "TextField/TextArea",
+          "preview": "TextAreaPreview",
+          "caption": "`TextArea` — desktop and Android.",
+          "variants": [
+            {
+              "preview": "TextAreaAndroidPreview",
+              "props": {
+                "platform": "android"
+              },
+              "caption": "`TextArea` on Android (AndroidX snapshot build 16855585)."
             }
           ]
         },
