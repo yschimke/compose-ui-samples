@@ -18,10 +18,12 @@ package androidx.compose.ui.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,8 +54,9 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun DrawWithCacheModifierSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     Box(
-        Modifier.drawWithCache {
+        Modifier.size(100.dp).drawWithCache {
             val gradient =
                 Brush.linearGradient(
                     colors = listOf(Color.Red, Color.Blue),
@@ -74,11 +77,12 @@ fun DrawWithCacheModifierSample() {
 @Sampled
 @Composable
 fun DrawWithCacheModifierStateParameterSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     val colors1 = listOf(Color.Red, Color.Blue)
     val colors2 = listOf(Color.Yellow, Color.Green)
     var toggle by remember { mutableStateOf(true) }
     Box(
-        Modifier.clickable { toggle = !toggle }
+        Modifier.size(100.dp).clickable { toggle = !toggle }
             .drawWithCache {
                 val gradient =
                     Brush.linearGradient(
@@ -100,6 +104,7 @@ fun DrawWithCacheModifierStateParameterSample() {
 @Sampled
 @Composable
 fun DrawWithCacheContentSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     val vectorPainter =
         rememberVectorPainter(24.dp, 24.dp, autoMirror = true) { viewportWidth, viewportHeight ->
             Path(
@@ -116,7 +121,7 @@ fun DrawWithCacheContentSample() {
         painter = vectorPainter,
         contentDescription = null,
         modifier =
-            Modifier.requiredSize(120.dp).drawWithCache {
+            Modifier.requiredSize(120.dp).background(Color.White).drawWithCache {
                 val gradient =
                     Brush.linearGradient(
                         colors = listOf(Color.Red, Color.Blue),
@@ -134,6 +139,7 @@ fun DrawWithCacheContentSample() {
 @Sampled
 @Composable
 fun DrawModifierNodeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     class CircleNode(var color: Color) : DrawModifierNode, Modifier.Node() {
         override fun ContentDrawScope.draw() {
             drawCircle(color)
@@ -152,5 +158,5 @@ fun DrawModifierNodeSample() {
         }
     }
     fun Modifier.circle(color: Color) = this then CircleElement(color)
-    Box(Modifier.fillMaxSize().circle(Color.Blue))
+    Box(Modifier.size(100.dp).circle(Color.Blue))
 }

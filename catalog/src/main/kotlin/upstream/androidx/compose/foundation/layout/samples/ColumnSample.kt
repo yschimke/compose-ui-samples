@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -37,7 +38,8 @@ import kotlin.math.min
 @Sampled
 @Composable
 fun SimpleColumn() {
-    Column {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.height(200.dp)) {
         // The child with no weight will have the specified size.
         Box(Modifier.size(40.dp, 80.dp).background(Color.Magenta))
         // Has weight, the child will occupy half of the remaining height.

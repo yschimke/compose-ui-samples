@@ -1,0 +1,614 @@
+Connect no-op interactive samples (buttons, chips, FABs, icon buttons, app bars, badges, menus,
+and scaffolds) to local state so clicking or toggling produces visible feedback.
+
+diff --git a/androidx/compose/material/samples/AppBarSamples.kt b/androidx/compose/material/samples/AppBarSamples.kt
+index 6747714..cf40471 100644
+--- a/androidx/compose/material/samples/AppBarSamples.kt
++++ b/androidx/compose/material/samples/AppBarSamples.kt
+@@ -31,25 +31,31 @@ import androidx.compose.material.icons.filled.Favorite
+ import androidx.compose.material.icons.filled.Menu
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.CompositionLocalProvider
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ 
+ @Sampled
+ @Composable
+ fun SimpleTopAppBar() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var likes by remember { mutableStateOf(0) }
+     TopAppBar(
+         windowInsets = AppBarDefaults.topAppBarWindowInsets,
+-        title = { Text("Simple TopAppBar") },
++        title = { Text(if (likes == 0) "Simple TopAppBar" else "Simple TopAppBar ($likes)") },
+         navigationIcon = {
+-            IconButton(onClick = { /* doSomething() */ }) {
++            IconButton(onClick = { likes = 0 }) {
+                 Icon(Icons.Filled.Menu, contentDescription = null)
+             }
+         },
+         actions = {
+             // RowScope here, so these icons will be placed horizontally
+-            IconButton(onClick = { /* doSomething() */ }) {
++            IconButton(onClick = { likes++ }) {
+                 Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
+             }
+-            IconButton(onClick = { /* doSomething() */ }) {
++            IconButton(onClick = { likes++ }) {
+                 Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
+             }
+         },
+@@ -59,20 +65,23 @@ fun SimpleTopAppBar() {
+ @Sampled
+ @Composable
+ fun SimpleBottomAppBar() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var count by remember { mutableStateOf(0) }
+     BottomAppBar(windowInsets = AppBarDefaults.bottomAppBarWindowInsets) {
+         // Leading icons should typically have a high content alpha
+         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+-            IconButton(onClick = { /* doSomething() */ }) {
++            IconButton(onClick = { count = 0 }) {
+                 Icon(Icons.Filled.Menu, contentDescription = "Localized description")
+             }
+         }
+         // The actions should be at the end of the BottomAppBar. They use the default medium
+         // content alpha provided by BottomAppBar
++        if (count > 0) Text("Likes: $count")
+         Spacer(Modifier.weight(1f, true))
+-        IconButton(onClick = { /* doSomething() */ }) {
++        IconButton(onClick = { count++ }) {
+             Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
+         }
+-        IconButton(onClick = { /* doSomething() */ }) {
++        IconButton(onClick = { count++ }) {
+             Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
+         }
+     }
+diff --git a/androidx/compose/material/samples/BadgeSamples.kt b/androidx/compose/material/samples/BadgeSamples.kt
+index 1c1dd8d..d23ddfd 100644
+--- a/androidx/compose/material/samples/BadgeSamples.kt
++++ b/androidx/compose/material/samples/BadgeSamples.kt
+@@ -26,6 +26,10 @@ import androidx.compose.material.Text
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.Favorite
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.semantics.contentDescription
+ import androidx.compose.ui.semantics.semantics
+@@ -33,13 +37,16 @@ import androidx.compose.ui.semantics.semantics
+ @Sampled
+ @Composable
+ fun BottomNavigationItemWithBadge() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var selected by remember { mutableStateOf(false) }
++    var count by remember { mutableStateOf(8) }
+     BottomNavigation {
+         BottomNavigationItem(
+             icon = {
+                 BadgedBox(
+                     badge = {
+                         Badge {
+-                            val badgeNumber = "8"
++                            val badgeNumber = count.toString()
+                             Text(
+                                 badgeNumber,
+                                 modifier =
+@@ -53,8 +60,11 @@ fun BottomNavigationItemWithBadge() {
+                     Icon(Icons.Filled.Favorite, contentDescription = "Favorite")
+                 }
+             },
+-            selected = false,
+-            onClick = {},
++            selected = selected,
++            onClick = {
++                selected = !selected
++                count++
++            },
+         )
+     }
+ }
+diff --git a/androidx/compose/material/samples/ButtonSamples.kt b/androidx/compose/material/samples/ButtonSamples.kt
+index cd7ddd5..5063e89 100644
+--- a/androidx/compose/material/samples/ButtonSamples.kt
++++ b/androidx/compose/material/samples/ButtonSamples.kt
+@@ -28,36 +28,52 @@ import androidx.compose.material.TextButton
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.Favorite
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ 
+ @Sampled
+ @Composable
+ fun ButtonSample() {
+-    Button(onClick = { /* Do something! */ }) { Text("Button") }
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var count by remember { mutableStateOf(0) }
++    Button(onClick = { count++ }) { Text(if (count == 0) "Button" else "Button ($count)") }
+ }
+ 
+ @Sampled
+ @Composable
+ fun OutlinedButtonSample() {
+-    OutlinedButton(onClick = { /* Do something! */ }) { Text("Outlined Button") }
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var count by remember { mutableStateOf(0) }
++    OutlinedButton(onClick = { count++ }) {
++        Text(if (count == 0) "Outlined Button" else "Outlined Button ($count)")
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextButtonSample() {
+-    TextButton(onClick = { /* Do something! */ }) { Text("Text Button") }
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var count by remember { mutableStateOf(0) }
++    TextButton(onClick = { count++ }) {
++        Text(if (count == 0) "Text Button" else "Text Button ($count)")
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ButtonWithIconSample() {
+-    Button(onClick = { /* Do something! */ }) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var liked by remember { mutableStateOf(false) }
++    Button(onClick = { liked = !liked }) {
+         Icon(
+             Icons.Filled.Favorite,
+             contentDescription = null,
+             modifier = Modifier.size(ButtonDefaults.IconSize),
+         )
+         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+-        Text("Like")
++        Text(if (liked) "Liked" else "Like")
+     }
+ }
+diff --git a/androidx/compose/material/samples/ChipSamples.kt b/androidx/compose/material/samples/ChipSamples.kt
+index a0c4cf1..5f0ab60 100644
+--- a/androidx/compose/material/samples/ChipSamples.kt
++++ b/androidx/compose/material/samples/ChipSamples.kt
+@@ -33,14 +33,17 @@ import androidx.compose.material.ChipDefaults
+ import androidx.compose.material.ExperimentalMaterialApi
+ import androidx.compose.material.FilterChip
+ import androidx.compose.material.Icon
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.Done
+ import androidx.compose.material.icons.filled.Home
+ import androidx.compose.material.icons.filled.Settings
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+@@ -49,20 +52,30 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun ChipSample() {
+-    Chip(onClick = { /* Do something! */ }) { Text("Action Chip") }
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
++    var count by remember { mutableStateOf(0) }
++    Chip(onClick = { count++ }) {
++        Text(if (count == 0) "Action Chip" else "Action Chip ($count)")
++    }
++    }
+ }
+ 
+ @OptIn(ExperimentalMaterialApi::class)
+ @Sampled
+ @Composable
+ fun OutlinedChipWithIconSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
++    var clicked by remember { mutableStateOf(false) }
+     Chip(
+-        onClick = { /* Do something! */ },
++        onClick = { clicked = !clicked },
+         border = ChipDefaults.outlinedBorder,
+         colors = ChipDefaults.outlinedChipColors(),
+         leadingIcon = { Icon(Icons.Filled.Settings, contentDescription = "Localized description") },
+     ) {
+-        Text("Change settings")
++        Text(if (clicked) "Settings changed" else "Change settings")
++    }
+     }
+ }
+ 
+@@ -70,6 +83,8 @@ fun OutlinedChipWithIconSample() {
+ @Sampled
+ @Composable
+ fun FilterChipSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
+     val state = remember { mutableStateOf(false) }
+     FilterChip(
+         selected = state.value,
+@@ -84,12 +99,15 @@ fun FilterChipSample() {
+     ) {
+         Text("Filter chip")
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalMaterialApi::class)
+ @Sampled
+ @Composable
+ fun OutlinedFilterChipSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
+     val state = remember { mutableStateOf(false) }
+     FilterChip(
+         selected = state.value,
+@@ -106,12 +124,15 @@ fun OutlinedFilterChipSample() {
+     ) {
+         Text("Filter chip")
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalMaterialApi::class)
+ @Sampled
+ @Composable
+ fun FilterChipWithLeadingIconSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
+     val state = remember { mutableStateOf(false) }
+     FilterChip(
+         selected = state.value,
+@@ -133,30 +154,38 @@ fun FilterChipWithLeadingIconSample() {
+     ) {
+         Text("Filter chip")
+     }
++    }
+ }
+ 
+ @Sampled
+ @OptIn(ExperimentalMaterialApi::class)
+ @Composable
+ fun ChipGroupSingleLineSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
++    var selected by remember { mutableStateOf<Int?>(null) }
+     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+             repeat(9) { index ->
+                 Chip(
+                     modifier = Modifier.padding(horizontal = 4.dp),
+-                    onClick = { /* do something*/ },
++                    onClick = { selected = index },
+                 ) {
+-                    Text("Chip $index")
++                    Text(if (selected == index) "Chip $index ✓" else "Chip $index")
+                 }
+             }
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @OptIn(ExperimentalMaterialApi::class, ExperimentalLayoutApi::class)
+ @Composable
+ fun ChipGroupReflowSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
++    var selected by remember { mutableStateOf<Int?>(null) }
+     Column {
+         FlowRow(
+             Modifier.fillMaxWidth(1f).wrapContentHeight(align = Alignment.Top),
+@@ -167,11 +196,12 @@ fun ChipGroupReflowSample() {
+                     modifier =
+                         Modifier.padding(horizontal = 4.dp)
+                             .align(alignment = Alignment.CenterVertically),
+-                    onClick = { /* do something*/ },
++                    onClick = { selected = index },
+                 ) {
+-                    Text("Chip $index")
++                    Text(if (selected == index) "Chip $index ✓" else "Chip $index")
+                 }
+             }
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/FloatingActionButtonSamples.kt b/androidx/compose/material/samples/FloatingActionButtonSamples.kt
+index 3f3b334..1787ab1 100644
+--- a/androidx/compose/material/samples/FloatingActionButtonSamples.kt
++++ b/androidx/compose/material/samples/FloatingActionButtonSamples.kt
+@@ -25,13 +25,24 @@ import androidx.compose.material.Text
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.Favorite
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
+ 
+ @Sampled
+ @Composable
+ fun SimpleFab() {
+-    FloatingActionButton(onClick = { /*do something*/ }) {
+-        Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var liked by remember { mutableStateOf(false) }
++    FloatingActionButton(onClick = { liked = !liked }) {
++        Icon(
++            Icons.Filled.Favorite,
++            contentDescription = "Localized description",
++            tint = if (liked) Color.Red else Color.Unspecified,
++        )
+     }
+ }
+ 
+@@ -43,20 +54,24 @@ fun SimpleExtendedFabNoIcon() {
+ @Sampled
+ @Composable
+ fun SimpleExtendedFabWithIcon() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var count by remember { mutableStateOf(0) }
+     ExtendedFloatingActionButton(
+         icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+-        text = { Text("ADD TO BASKET") },
+-        onClick = { /*do something*/ },
++        text = { Text(if (count == 0) "ADD TO BASKET" else "IN BASKET ($count)") },
++        onClick = { count++ },
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun FluidExtendedFab() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    var count by remember { mutableStateOf(0) }
+     ExtendedFloatingActionButton(
+         icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+-        text = { Text("FLUID FAB") },
+-        onClick = { /*do something*/ },
++        text = { Text(if (count == 0) "FLUID FAB" else "FLUID FAB ($count)") },
++        onClick = { count++ },
+         modifier = Modifier.fillMaxWidth(),
+     )
+ }
+diff --git a/androidx/compose/material/samples/IconButtonSamples.kt b/androidx/compose/material/samples/IconButtonSamples.kt
+index 847dbb1..e13b340 100644
+--- a/androidx/compose/material/samples/IconButtonSamples.kt
++++ b/androidx/compose/material/samples/IconButtonSamples.kt
+@@ -21,6 +21,7 @@ import androidx.compose.animation.animateColorAsState
+ import androidx.compose.material.Icon
+ import androidx.compose.material.IconButton
+ import androidx.compose.material.IconToggleButton
++import androidx.compose.material.Surface
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.Favorite
+ import androidx.compose.runtime.Composable
+@@ -33,18 +34,29 @@ import androidx.compose.ui.graphics.Color
+ @Sampled
+ @Composable
+ fun IconButtonSample() {
+-    IconButton(onClick = { /* doSomething() */ }) {
+-        Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
++    var clicked by remember { mutableStateOf(false) }
++    IconButton(onClick = { clicked = !clicked }) {
++        Icon(
++            Icons.Filled.Favorite,
++            contentDescription = "Localized description",
++            tint = if (clicked) Color(0xFFEC407A) else Color.Unspecified,
++        )
++    }
+     }
+ }
+ 
+ @Sampled
+ @Composable
+ fun IconToggleButtonSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
+     var checked by remember { mutableStateOf(false) }
+ 
+     IconToggleButton(checked = checked, onCheckedChange = { checked = it }) {
+         val tint by animateColorAsState(if (checked) Color(0xFFEC407A) else Color(0xFFB0BEC5))
+         Icon(Icons.Filled.Favorite, contentDescription = "Localized description", tint = tint)
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/MenuSamples.kt b/androidx/compose/material/samples/MenuSamples.kt
+index fe0f1d2..e477c06 100644
+--- a/androidx/compose/material/samples/MenuSamples.kt
++++ b/androidx/compose/material/samples/MenuSamples.kt
+@@ -19,6 +19,7 @@ package androidx.compose.material.samples
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.wrapContentSize
+ import androidx.compose.foundation.rememberScrollState
+ import androidx.compose.material.Divider
+@@ -26,6 +27,7 @@ import androidx.compose.material.DropdownMenu
+ import androidx.compose.material.DropdownMenuItem
+ import androidx.compose.material.Icon
+ import androidx.compose.material.IconButton
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.MoreVert
+@@ -37,31 +39,37 @@ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun MenuSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
+     var expanded by remember { mutableStateOf(false) }
+ 
+-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.TopStart)) {
++    Box(modifier = Modifier.size(180.dp, 80.dp).wrapContentSize(Alignment.TopStart)) {
+         IconButton(onClick = { expanded = true }) {
+             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
+         }
+         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+-            DropdownMenuItem(onClick = { /* Handle refresh! */ }) { Text("Refresh") }
+-            DropdownMenuItem(onClick = { /* Handle settings! */ }) { Text("Settings") }
++            DropdownMenuItem(onClick = { expanded = false }) { Text("Refresh") }
++            DropdownMenuItem(onClick = { expanded = false }) { Text("Settings") }
+             Divider()
+-            DropdownMenuItem(onClick = { /* Handle send feedback! */ }) { Text("Send Feedback") }
++            DropdownMenuItem(onClick = { expanded = false }) { Text("Send Feedback") }
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun MenuWithScrollStateSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Surface {
+     var expanded by remember { mutableStateOf(false) }
+     val scrollState = rememberScrollState()
+-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.TopStart)) {
++    Box(modifier = Modifier.size(180.dp, 80.dp).wrapContentSize(Alignment.TopStart)) {
+         IconButton(onClick = { expanded = true }) {
+             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
+         }
+@@ -71,7 +79,7 @@ fun MenuWithScrollStateSample() {
+             scrollState = scrollState,
+         ) {
+             repeat(30) {
+-                DropdownMenuItem(onClick = { /* Handle item! */ }) { Text("Item ${it + 1}") }
++                DropdownMenuItem(onClick = { expanded = false }) { Text("Item ${it + 1}") }
+             }
+         }
+         LaunchedEffect(expanded) {
+@@ -81,4 +89,5 @@ fun MenuWithScrollStateSample() {
+             }
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/ScaffoldSamples.kt b/androidx/compose/material/samples/ScaffoldSamples.kt
+index aacaf51..c766fbc 100644
+--- a/androidx/compose/material/samples/ScaffoldSamples.kt
++++ b/androidx/compose/material/samples/ScaffoldSamples.kt
+@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.wrapContentSize
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.shape.CircleShape
+@@ -77,7 +78,10 @@ private val colors =
+ @Sampled
+ @Composable
+ fun SimpleScaffoldWithTopBar() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Box(Modifier.size(320.dp, 360.dp)) {
+     val scaffoldState = rememberScaffoldState()
++    var count by remember { mutableStateOf(0) }
+     val scope = rememberCoroutineScope()
+     Scaffold(
+         scaffoldState = scaffoldState,
+@@ -95,8 +99,8 @@ fun SimpleScaffoldWithTopBar() {
+         floatingActionButtonPosition = FabPosition.End,
+         floatingActionButton = {
+             ExtendedFloatingActionButton(
+-                text = { Text("Inc") },
+-                onClick = { /* fab click handler */ },
++                text = { Text(if (count == 0) "Inc" else "Inc ($count)") },
++                onClick = { count++ },
+             )
+         },
+         contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+@@ -108,11 +112,14 @@ fun SimpleScaffoldWithTopBar() {
+             }
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ScaffoldWithBottomBarAndCutout() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Box(Modifier.size(320.dp, 360.dp)) {
+     val scaffoldState = rememberScaffoldState()
+ 
+     // Consider negative values to mean 'cut corner' and positive values to mean 'round corner'
+@@ -178,11 +185,14 @@ fun ScaffoldWithBottomBarAndCutout() {
+             }
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ScaffoldWithSimpleSnackbar() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Box(Modifier.size(320.dp, 360.dp)) {
+     val scaffoldState = rememberScaffoldState()
+     val scope = rememberCoroutineScope()
+     Scaffold(
+@@ -207,11 +217,14 @@ fun ScaffoldWithSimpleSnackbar() {
+             )
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ScaffoldWithCustomSnackbar() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Box(Modifier.size(320.dp, 360.dp)) {
+     val scaffoldState = rememberScaffoldState()
+     val scope = rememberCoroutineScope()
+     Scaffold(
+@@ -245,11 +258,14 @@ fun ScaffoldWithCustomSnackbar() {
+             )
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ScaffoldWithCoroutinesSnackbar() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
++    Box(Modifier.size(320.dp, 360.dp)) {
+     // decouple snackbar host state from scaffold state for demo purposes
+     // this state, channel and flow is for demo purposes to demonstrate business logic layer
+     val snackbarHostState = remember { SnackbarHostState() }
+@@ -293,4 +309,5 @@ fun ScaffoldWithCoroutinesSnackbar() {
+             )
+         },
+     )
++    }
+ }

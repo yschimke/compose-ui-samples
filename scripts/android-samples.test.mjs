@@ -94,13 +94,12 @@ test("a patched sample is called through its relocated copy, everything else thr
 });
 
 test("patchedPaths lists every file the desktop patches touch", () => {
-  assert.deepEqual(patchedPaths(), [
-    "androidx/compose/foundation/layout/samples/ContextualFlowColumnSample.kt",
-    "androidx/compose/foundation/layout/samples/ContextualFlowRowSample.kt",
-    "androidx/compose/foundation/layout/samples/FlowColumnSample.kt",
-    "androidx/compose/foundation/layout/samples/FlowRowSample.kt",
-    "androidx/compose/foundation/samples/BorderSamples.kt",
-  ]);
+  const paths = patchedPaths();
+  assert.ok(paths.includes("androidx/compose/foundation/samples/BorderSamples.kt"));
+  assert.ok(paths.includes("androidx/compose/material/samples/ButtonSamples.kt"));
+  assert.ok(paths.includes("androidx/compose/ui/samples/LayoutSample.kt"));
+  assert.equal(paths.length, 86);
+  assert.deepEqual(paths, [...new Set(paths)].sort());
   assert.equal(
     patchedPackage("androidx.compose.foundation.layout.samples"),
     "ee.schimke.composeuisamples.android.patched.foundation.layout.samples",

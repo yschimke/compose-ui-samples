@@ -18,6 +18,7 @@ package androidx.compose.foundation.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.clickable
+import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +28,10 @@ import androidx.compose.ui.Modifier
 @Sampled
 @Composable
 fun ClickableSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val count = remember { mutableStateOf(0) }
     // content that you want to make clickable
     Text(text = count.value.toString(), modifier = Modifier.clickable { count.value += 1 })
+    }
 }

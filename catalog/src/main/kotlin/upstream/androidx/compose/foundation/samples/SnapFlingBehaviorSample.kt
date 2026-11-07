@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -41,10 +42,11 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun SnapFlingBehaviorSimpleSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val state = rememberLazyListState()
 
     LazyRow(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.size(350.dp, 220.dp),
         verticalAlignment = Alignment.CenterVertically,
         state = state,
         flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
@@ -52,7 +54,7 @@ fun SnapFlingBehaviorSimpleSample() {
         items(200) {
             Box(
                 modifier =
-                    Modifier.height(400.dp).width(200.dp).padding(8.dp).background(Color.Gray),
+                    Modifier.height(180.dp).width(140.dp).padding(8.dp).background(Color.Gray),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(it.toString(), fontSize = 32.sp)
@@ -64,6 +66,7 @@ fun SnapFlingBehaviorSimpleSample() {
 @Sampled
 @Composable
 fun SnapFlingBehaviorCustomizedSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val state = rememberLazyListState()
 
     // If you'd like to customize either the snap behavior or the layout provider
@@ -71,7 +74,7 @@ fun SnapFlingBehaviorCustomizedSample() {
     val flingBehavior = rememberSnapFlingBehavior(snappingLayout)
 
     LazyRow(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.size(350.dp, 220.dp),
         verticalAlignment = Alignment.CenterVertically,
         state = state,
         flingBehavior = flingBehavior,
@@ -79,7 +82,7 @@ fun SnapFlingBehaviorCustomizedSample() {
         items(200) {
             Box(
                 modifier =
-                    Modifier.height(400.dp).width(200.dp).padding(8.dp).background(Color.Gray),
+                    Modifier.height(180.dp).width(140.dp).padding(8.dp).background(Color.Gray),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(it.toString(), fontSize = 32.sp)
@@ -91,6 +94,7 @@ fun SnapFlingBehaviorCustomizedSample() {
 @Sampled
 @Composable
 fun SnapFlingBehaviorSnapPosition() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val state = rememberLazyListState()
     val density = LocalDensity.current
 
@@ -116,7 +120,7 @@ fun SnapFlingBehaviorSnapPosition() {
     val flingBehavior = rememberSnapFlingBehavior(snappingLayout)
 
     LazyRow(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.size(350.dp, 220.dp),
         verticalAlignment = Alignment.CenterVertically,
         state = state,
         flingBehavior = flingBehavior,
@@ -124,7 +128,7 @@ fun SnapFlingBehaviorSnapPosition() {
         items(200) {
             Box(
                 modifier =
-                    Modifier.height(400.dp).width(200.dp).padding(8.dp).background(Color.Gray),
+                    Modifier.height(180.dp).width(140.dp).padding(8.dp).background(Color.Gray),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(it.toString(), fontSize = 32.sp)

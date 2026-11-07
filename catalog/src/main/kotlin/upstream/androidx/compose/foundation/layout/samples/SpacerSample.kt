@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun SpacerExample() {
-    Row {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Row(Modifier.background(Color.White)) {
         Box(Modifier.size(100.dp).background(Color.Red))
         Spacer(Modifier.width(20.dp))
         Box(Modifier.size(100.dp).background(Color.Magenta))

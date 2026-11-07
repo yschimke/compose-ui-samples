@@ -22,14 +22,19 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextMotion
+import androidx.compose.ui.unit.dp
 
 /**
  * This sample demonstrates how to define TextMotion on a Text composable that scales up and down
@@ -38,6 +43,9 @@ import androidx.compose.ui.text.style.TextMotion
 @Sampled
 @Composable
 fun TextMotionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
+        Box(Modifier.size(200.dp, 80.dp), contentAlignment = Alignment.Center) {
     val infiniteTransition = rememberInfiniteTransition()
     val scale by
         infiniteTransition.animateFloat(
@@ -58,4 +66,6 @@ fun TextMotionSample() {
         // Provide it via style argument but make sure that we are copying from current theme
         style = LocalTextStyle.current.copy(textMotion = TextMotion.Animated),
     )
+        }
+    }
 }

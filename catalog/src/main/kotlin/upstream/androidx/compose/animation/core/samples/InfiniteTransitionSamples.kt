@@ -30,6 +30,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun InfiniteTransitionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun InfinitelyPulsingHeart() {
         // Creates an [InfiniteTransition] instance for managing child animations.
@@ -87,7 +89,7 @@ fun InfiniteTransitionSample() {
                     ),
             )
 
-        Box(Modifier.fillMaxSize()) {
+        Box(Modifier.size(100.dp)) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = null,
@@ -97,6 +99,7 @@ fun InfiniteTransitionSample() {
             )
         }
     }
+    InfinitelyPulsingHeart()
 }
 
 @Sampled

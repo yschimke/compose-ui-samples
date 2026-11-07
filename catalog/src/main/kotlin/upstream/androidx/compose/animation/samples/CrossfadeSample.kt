@@ -18,16 +18,20 @@ package androidx.compose.animation.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.animation.Crossfade
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Sampled
 @Composable
 fun CrossfadeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Crossfade(targetState = "A") { screen ->
         when (screen) {
             "A" -> Text("Page A")
             "B" -> Text("Page B")
         }
+    }
     }
 }

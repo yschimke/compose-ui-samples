@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -39,6 +40,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun FocusableSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // initialize focus reference to be able to request focus programmatically
     val focusRequester = remember { FocusRequester() }
     // MutableInteractionSource to track changes of the component's interactions (like "focused")
@@ -66,11 +69,14 @@ fun FocusableSample() {
             Text("Bring focus to the text above")
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun FocusGroupSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Row {
         Column(Modifier.focusGroup()) {
             Button({}) { Text("Row1 Col1") }
@@ -83,16 +89,20 @@ fun FocusGroupSample() {
             Button({}) { Text("Row3 Col2") }
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun FocusableFocusGroupSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val interactionSource = remember { MutableInteractionSource() }
     LazyRow(
         Modifier.focusable(interactionSource = interactionSource)
             .border(1.dp, if (interactionSource.collectIsFocusedAsState().value) Red else Black)
     ) {
         repeat(10) { item { Button({}) { Text("Button$it") } } }
+    }
     }
 }

@@ -18,7 +18,9 @@ package androidx.compose.foundation.layout.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -124,7 +126,8 @@ fun FillHalfWidthModifier() {
 @Sampled
 @Composable
 fun SimpleFillHeightModifier() {
-    Box(Modifier.fillMaxHeight().background(Color.Red), contentAlignment = Alignment.Center) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Box(Modifier.size(100.dp, 150.dp).background(Color.Red), contentAlignment = Alignment.Center) {
         Box(Modifier.size(100.dp).background(color = Color.Magenta))
     }
 }
@@ -141,7 +144,8 @@ fun FillHalfHeightModifier() {
 @Sampled
 @Composable
 fun SimpleFillModifier() {
-    Box(Modifier.fillMaxSize().background(Color.Red), contentAlignment = Alignment.Center) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Box(Modifier.size(150.dp).background(Color.Red), contentAlignment = Alignment.Center) {
         Box(Modifier.size(100.dp).background(color = Color.Magenta))
     }
 }
@@ -210,6 +214,8 @@ fun SimpleWrapContentHorizontallyAlignedModifier() {
 @Sampled
 @Composable
 fun DefaultMinSizeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
     @Composable
     fun DefaultMinBox(modifier: Modifier = Modifier) {
         Box(modifier.defaultMinSize(minWidth = 100.dp, minHeight = 100.dp).background(Color.Blue))
@@ -223,4 +229,5 @@ fun DefaultMinSizeSample() {
     // Note that if DefaultMinBox used requiredSizeIn or sizeIn rather than
     // defaultMinSize, the min constraints would have been applied with either
     // of the above usages.
+    }
 }

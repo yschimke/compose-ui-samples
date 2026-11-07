@@ -22,6 +22,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,10 +31,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Sampled
 @Composable
 fun ColorAnimationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun ColorAnimation(primary: Boolean) {
         // Animates to primary or secondary color, depending on whether [primary] is true
@@ -43,8 +46,9 @@ fun ColorAnimationSample() {
             animateColorAsState(
                 if (primary) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
             )
-        Box(modifier = Modifier.background(color))
+        Box(modifier = Modifier.size(100.dp).background(color))
     }
+    ColorAnimation(true)
 }
 
 @Sampled

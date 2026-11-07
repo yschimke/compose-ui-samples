@@ -27,6 +27,7 @@ import androidx.compose.animation.core.animateValueAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun AlphaAnimationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun alphaAnimation(visible: Boolean) {
         // Animates to 1f or 0f based on [visible].
@@ -56,8 +58,9 @@ fun AlphaAnimationSample() {
         // limits the invalidation scope of alpha change to graphicsLayer's draw stage (i.e. no
         // recomposition would be needed). The latter triggers recomposition on each animation
         // frame.
-        Box(modifier = Modifier.graphicsLayer { this.alpha = alpha }.background(Color.Red))
+        Box(modifier = Modifier.size(100.dp).graphicsLayer { this.alpha = alpha }.background(Color.Red))
     }
+    alphaAnimation(true)
 }
 
 data class MySize(val width: Dp, val height: Dp)
@@ -65,6 +68,7 @@ data class MySize(val width: Dp, val height: Dp)
 @Sampled
 @Composable
 fun ArbitraryValueTypeTransitionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun ArbitraryValueTypeAnimation(enabled: Boolean) {
         // Sets up the different animation target values based on the [enabled] flag.
@@ -90,23 +94,27 @@ fun ArbitraryValueTypeTransitionSample() {
             )
         Box(Modifier.size(animSize.width, animSize.height).background(color = Color.Red))
     }
+    ArbitraryValueTypeAnimation(false)
 }
 
 @Sampled
 @Composable
 fun DpAnimationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun HeightAnimation(collapsed: Boolean) {
         // Animates a height of [Dp] type to different target values based on the [collapsed] flag.
         val height: Dp by animateDpAsState(if (collapsed) 10.dp else 20.dp)
         Box(Modifier.fillMaxWidth().requiredHeight(height).background(color = Color.Red))
     }
+    HeightAnimation(false)
 }
 
 @Sampled
 @Composable
 @Suppress("UNUSED_VARIABLE")
 fun AnimateOffsetSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun OffsetAnimation(selected: Boolean) {
         // Animates the offset depending on the selected flag.
@@ -120,5 +128,9 @@ fun AnimateOffsetSample() {
         // State object is updated by the animation.
         val intOffset: IntOffset by
             animateIntOffsetAsState(if (selected) IntOffset(0, 0) else IntOffset(50, 50))
+        Box(Modifier.size(100.dp)) {
+            Box(Modifier.offset { intOffset + IntOffset(offset.x.toInt(), offset.y.toInt()) }.size(40.dp).background(Color.Red))
+        }
     }
+    OffsetAnimation(false)
 }

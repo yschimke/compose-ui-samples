@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.text.modifiers.TextAutoSizeLayoutScope
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -35,9 +36,12 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun TextAutoSizeBasicTextSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Box(modifier = Modifier.size(200.dp)) {
         // The text will find the biggest available font size that fits in the box.
         BasicText(text = "Hello World", autoSize = TextAutoSize.StepBased())
+    }
     }
 }
 

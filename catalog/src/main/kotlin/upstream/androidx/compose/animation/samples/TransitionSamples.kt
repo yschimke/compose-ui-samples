@@ -61,6 +61,7 @@ private enum class ComponentState {
 @Sampled
 @Composable
 fun GestureAnimationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // enum class ComponentState { Pressed, Released }
     var useRed by remember { mutableStateOf(false) }
     var toState by remember { mutableStateOf(ComponentState.Released) }
@@ -127,7 +128,7 @@ fun GestureAnimationSample() {
         }
         Box(
             modifier
-                .fillMaxSize()
+                .size(200.dp)
                 .wrapContentSize(Alignment.Center)
                 .size((100 * scale).dp)
                 .background(color)
@@ -138,6 +139,7 @@ fun GestureAnimationSample() {
 @Sampled
 @Composable
 fun InfiniteTransitionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun InfinitelyPulsingHeart() {
         // Creates an [InfiniteTransition] instance for managing child animations.
@@ -179,7 +181,7 @@ fun InfiniteTransitionSample() {
                     ),
             )
 
-        Box(Modifier.fillMaxSize()) {
+        Box(Modifier.size(100.dp)) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = null,
@@ -189,4 +191,5 @@ fun InfiniteTransitionSample() {
             )
         }
     }
+    InfinitelyPulsingHeart()
 }

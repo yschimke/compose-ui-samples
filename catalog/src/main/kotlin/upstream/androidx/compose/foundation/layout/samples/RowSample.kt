@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,8 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun SimpleRow() {
-    Row {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Row(Modifier.width(200.dp)) {
         // The child with no weight will have the specified size.
         Box(Modifier.size(40.dp, 80.dp).background(Color.Magenta))
         // Has weight, the child will occupy half of the remaining width.
@@ -48,7 +50,8 @@ fun SimpleRow() {
 @Sampled
 @Composable
 fun SimpleAlignInRow() {
-    Row(Modifier.fillMaxHeight()) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Row(Modifier.height(100.dp)) {
         // The child with no align modifier is positioned by default so that its top edge is
         // aligned to the top of the vertical axis.
         Box(Modifier.size(80.dp, 40.dp).background(Color.Magenta))
@@ -67,7 +70,8 @@ fun SimpleAlignInRow() {
 @Sampled
 @Composable
 fun SimpleAlignByInRow() {
-    Row(Modifier.fillMaxHeight()) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Row(Modifier.height(100.dp)) {
         // The center of the magenta Box and the baselines of the two texts will be
         // vertically aligned. Note that alignBy() or alignByBaseline() has to be specified
         // for all children we want to take part in the alignment. For example, alignByBaseline()

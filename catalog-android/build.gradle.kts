@@ -65,10 +65,16 @@ kotlin {
       "androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi",
       "androidx.compose.foundation.ExperimentalFoundationApi",
       "androidx.compose.foundation.layout.ExperimentalLayoutApi",
+      "androidx.compose.foundation.layout.ExperimentalFlexBoxApi",
+      "androidx.compose.foundation.layout.ExperimentalGridApi",
+      "androidx.compose.foundation.text.InternalFoundationTextApi",
       "androidx.compose.material.ExperimentalMaterialApi",
+      "androidx.compose.material3.ExperimentalMaterial3Api",
       "androidx.compose.runtime.ExperimentalComposeApi",
       "androidx.compose.ui.ExperimentalComposeUiApi",
+      "androidx.compose.ui.graphics.ExperimentalGraphicsApi",
       "androidx.compose.ui.text.ExperimentalTextApi",
+      "kotlin.ExperimentalStdlibApi",
     )
   }
 }
@@ -84,7 +90,12 @@ val androidSampleArtifacts: List<String> =
     .mapNotNull { it["androidSamples"] as String? }
 
 dependencies {
-  androidSampleArtifacts.forEach { implementation("$it:$androidxComposeSnapshot") }
+  androidSampleArtifacts.forEach {
+    implementation("$it:$androidxComposeSnapshot")
+    // The `*-samples` POMs declare their own libraries `runtime`-only; `patched/` compiles source
+    // copies against them directly.
+    implementation("${it.removeSuffix("-samples")}:$androidxComposeSnapshot")
+  }
   // `androidx.compose.ui.tooling.preview.Preview` — what the generated wrappers carry.
   implementation(libs.androidx.compose.ui.tooling.preview)
   // The sample artifacts declare material3 runtime-only; the patched copies in `patched/` call

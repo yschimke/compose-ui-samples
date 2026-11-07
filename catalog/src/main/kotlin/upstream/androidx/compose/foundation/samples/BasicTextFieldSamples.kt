@@ -60,6 +60,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -93,8 +94,10 @@ import kotlinx.coroutines.flow.debounce
 @Sampled
 @Composable
 fun BasicTextFieldSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var value by
-        rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+        rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("Initial text")) }
     BasicTextField(
         value = value,
         onValueChange = {
@@ -103,11 +106,14 @@ fun BasicTextFieldSample() {
             value = it
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun BasicTextFieldWithStringSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var value by rememberSaveable { mutableStateOf("initial value") }
     BasicTextField(
         value = value,
@@ -117,17 +123,21 @@ fun BasicTextFieldWithStringSample() {
             value = it
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun PlaceholderBasicTextFieldSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var value by rememberSaveable { mutableStateOf("initial value") }
     Box {
         BasicTextField(value = value, onValueChange = { value = it })
         if (value.isEmpty()) {
             Text(text = "Placeholder")
         }
+    }
     }
 }
 
@@ -158,6 +168,7 @@ fun TextFieldWithIconSample() {
 @Sampled
 @Composable
 fun CreditCardSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     /** The offset translator used for credit card input field */
     val creditCardOffsetTranslator =
         object : OffsetMapping {
@@ -196,7 +207,7 @@ fun CreditCardSample() {
         TransformedText(AnnotatedString(transformedText), creditCardOffsetTranslator)
     }
 
-    var text by rememberSaveable { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf("1234567890123456") }
     BasicTextField(
         value = text,
         onValueChange = { input ->
@@ -597,6 +608,8 @@ fun BasicTextFieldTextValuesSample() {
 @Sampled
 @Composable
 fun BasicTextFieldUndoSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val state = rememberTextFieldState()
 
     Column(Modifier.padding(8.dp)) {
@@ -625,6 +638,7 @@ fun BasicTextFieldUndoSample() {
                     .padding(8.dp),
             textStyle = TextStyle(fontSize = 16.sp),
         )
+    }
     }
 }
 
@@ -669,6 +683,8 @@ fun TextFieldStateApplyOutputTransformation() {
 @Sampled
 @Composable
 fun BasicTextFieldTrackedRangeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // This sample demonstrates how to use the `TrackedRange` API to track and modify text ranges
     // dynamically. It implements a basic Markdown-like behavior where text typed inside double
     // asterisks (e.g., **bold**) is automatically bolded, and the asterisks are removed.
@@ -717,11 +733,14 @@ fun BasicTextFieldTrackedRangeSample() {
             inputTransformation = inputTransformation,
         )
     }
+    }
 }
 
 @Sampled
 @Composable
 fun BasicTextFieldTrackedRangeToggleBoldSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // This sample demonstrates a realistic rich-text editor scenario using the `TrackedRange` and
     // `TextFieldTextStyles` APIs. It implements a "Toggle Bold" formatting function on the current
     // selection.
@@ -832,11 +851,14 @@ fun BasicTextFieldTrackedRangeToggleBoldSample() {
 
         BasicTextField(state = state, textStyle = LocalTextStyle.current)
     }
+    }
 }
 
 @Sampled
 @Composable
 fun BasicTextFieldTrackedRangePropertiesSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // This sample demonstrates the use of [TrackedRange.valid] and [TrackedRange.expandPolicy]. It
     // shows how mutating the text can cause a TrackedRange to become invalid, and how to
     // dynamically
@@ -868,5 +890,7 @@ fun BasicTextFieldTrackedRangePropertiesSample() {
                 // Style was completely deleted.
             }
         }
+    }
+    BasicTextField(state)
     }
 }

@@ -122,6 +122,8 @@ fun AnchoredDraggableAnchorsFromCompositionSample() {
 @Preview
 @Composable
 fun AnchoredDraggableLayoutDependentAnchorsSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White)) {
     val state =
         rememberSaveable(saver = AnchoredDraggableState.Saver()) {
             AnchoredDraggableState(initialValue = Center)
@@ -152,6 +154,7 @@ fun AnchoredDraggableLayoutDependentAnchorsSample() {
                 .anchoredDraggable(state = state, orientation = Orientation.Horizontal)
                 .background(Color.Red)
         )
+    }
     }
 }
 
@@ -269,6 +272,8 @@ fun AnchoredDraggableProgressSample() {
 @Preview
 @Composable
 fun DraggableAnchorsSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White)) {
     var anchors by remember { mutableStateOf(DraggableAnchors<AnchoredDraggableSampleValue> {}) }
     var offset by rememberSaveable { mutableFloatStateOf(0f) }
     val thumbSize = 16.dp
@@ -306,11 +311,14 @@ fun DraggableAnchorsSample() {
                 .background(Color.Red)
         )
     }
+    }
 }
 
 @Sampled
 @Composable
 fun AnchoredDraggableDynamicAnchorsSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White)) {
     val open = "Open"
     val closed = "Closed"
 
@@ -373,6 +381,7 @@ fun AnchoredDraggableDynamicAnchorsSample() {
         },
     ) {
         Text("Swipe to expand Drawer")
+    }
     }
 }
 

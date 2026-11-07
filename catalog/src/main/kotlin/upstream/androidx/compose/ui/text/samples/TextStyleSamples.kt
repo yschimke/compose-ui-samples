@@ -17,6 +17,7 @@
 package androidx.compose.ui.text.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
@@ -51,6 +52,8 @@ fun TextStyleSample() {
 @Sampled
 @Composable
 fun TextStyleBrushSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(
         text = "Demo Text",
         style =
@@ -65,4 +68,5 @@ fun TextStyleBrushSample() {
                 textDecoration = TextDecoration.Underline,
             ),
     )
+    }
 }

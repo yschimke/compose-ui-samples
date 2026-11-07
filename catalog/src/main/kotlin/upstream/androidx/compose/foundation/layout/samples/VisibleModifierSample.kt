@@ -18,7 +18,9 @@ package androidx.compose.foundation.layout.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.visible
 import androidx.compose.runtime.Composable
@@ -29,8 +31,10 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun VisibleModifierSample() {
-    Box {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Row(Modifier.border(1.dp, Color.Gray)) {
         // This box will not be visible but will still occupy 50.dp x 50.dp of space.
         Box(modifier = Modifier.size(50.dp).background(Color.Red).visible(false))
+        Box(modifier = Modifier.size(50.dp).background(Color.Blue))
     }
 }

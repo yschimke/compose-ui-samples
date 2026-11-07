@@ -17,11 +17,13 @@
 package androidx.compose.foundation.layout.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.paddingFrom
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun PaddingFromSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // We want to have 30.sp distance from the top of the layout box to the baseline of the
     // first line of text.
     val distanceToBaseline = 30.sp
@@ -39,13 +42,14 @@ fun PaddingFromSample() {
     // baseline of the first line of text.
     Text(
         text = "This is an example.",
-        modifier = Modifier.paddingFrom(FirstBaseline, before = distanceToBaselineDp),
+        modifier = Modifier.background(Color.White).paddingFrom(FirstBaseline, before = distanceToBaselineDp),
     )
 }
 
 @Sampled
 @Composable
 fun PaddingFromBaselineSampleDp() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // We want to have 30.dp distance from the top of the layout box to the baseline of the
     // first line of text, and a 40.dp distance from the bottom of the layout box to the baseline
     // of the last line of text. Note it is good practice to specify these distances in sp for font
@@ -54,13 +58,14 @@ fun PaddingFromBaselineSampleDp() {
     val distanceFromLastBaseline = 40.dp
     Text(
         text = "This line has the first baseline.\nThis line has the last baseline.",
-        modifier = Modifier.paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
+        modifier = Modifier.background(Color.White).paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
     )
 }
 
 @Sampled
 @Composable
 fun PaddingFromBaselineSampleTextUnit() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // We want to have 30.sp distance from the top of the layout box to the baseline of the
     // first line of text, and a 40.sp distance from the bottom of the layout box to the baseline
     // of the last line of text.
@@ -68,6 +73,6 @@ fun PaddingFromBaselineSampleTextUnit() {
     val distanceFromLastBaseline = 40.sp
     Text(
         text = "This line has the first baseline.\nThis line has the last baseline.",
-        modifier = Modifier.paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
+        modifier = Modifier.background(Color.White).paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
     )
 }

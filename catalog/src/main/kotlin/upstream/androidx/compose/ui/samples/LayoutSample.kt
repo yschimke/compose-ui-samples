@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -180,6 +181,7 @@ fun LayoutTagChildrenUsage(header: @Composable () -> Unit, footer: @Composable (
 @Sampled
 @Composable
 fun LayoutModifierSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val verticalPadding =
         object : LayoutModifier {
             override fun MeasureScope.measure(
@@ -195,13 +197,14 @@ fun LayoutModifierSample() {
             }
         }
     Box(Modifier.background(Color.Gray).then(verticalPadding)) {
-        Box(Modifier.fillMaxSize().background(Color.DarkGray))
+        Box(Modifier.size(100.dp).background(Color.DarkGray))
     }
 }
 
 @Sampled
 @Composable
 fun LayoutModifierNodeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     class VerticalPadding(var padding: Dp) : LayoutModifierNode, Modifier.Node() {
         override fun MeasureScope.measure(
             measurable: Measurable,
@@ -228,13 +231,14 @@ fun LayoutModifierNodeSample() {
     }
     fun Modifier.verticalPadding(padding: Dp) = this then VerticalPaddingElement(padding)
     Box(Modifier.background(Color.Gray).verticalPadding(50.dp)) {
-        Box(Modifier.fillMaxSize().background(Color.DarkGray))
+        Box(Modifier.size(100.dp).background(Color.DarkGray))
     }
 }
 
 @Sampled
 @Composable
 fun ConvenienceLayoutModifierSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     Box(
         Modifier.background(Color.Gray).layout { measurable, constraints ->
             // an example modifier that adds 50 pixels of vertical padding.
@@ -245,7 +249,7 @@ fun ConvenienceLayoutModifierSample() {
             }
         }
     ) {
-        Box(Modifier.fillMaxSize().background(Color.DarkGray))
+        Box(Modifier.size(100.dp).background(Color.DarkGray))
     }
 }
 

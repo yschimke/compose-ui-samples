@@ -90,8 +90,9 @@ fun ScrollableSample() {
 @Sampled
 @Composable
 fun CanScrollSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val state = rememberLazyListState()
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.size(200.dp, 220.dp).background(Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
             Icons.Filled.KeyboardArrowUp,
             null,

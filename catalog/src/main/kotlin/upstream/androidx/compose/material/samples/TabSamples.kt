@@ -40,6 +40,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.LeadingIconTab
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScrollableTabRow
+import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
@@ -61,6 +62,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun TextTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titles = listOf("TAB 1", "TAB 2", "TAB 3 WITH LOTS OF TEXT")
     Column {
@@ -74,6 +77,7 @@ fun TextTabs() {
             text = "Text tab ${state + 1} selected",
             style = MaterialTheme.typography.body1,
         )
+    }
     }
 }
 
@@ -188,6 +192,8 @@ fun ScrollingTextTabs() {
 @Sampled
 @Composable
 fun FancyTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titles = listOf("TAB 1", "TAB 2", "TAB 3")
     Column {
@@ -202,11 +208,14 @@ fun FancyTabs() {
             style = MaterialTheme.typography.body1,
         )
     }
+    }
 }
 
 @Sampled
 @Composable
 fun FancyIndicatorTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titles = listOf("TAB 1", "TAB 2", "TAB 3")
 
@@ -228,11 +237,14 @@ fun FancyIndicatorTabs() {
             style = MaterialTheme.typography.body1,
         )
     }
+    }
 }
 
 @Sampled
 @Composable
 fun FancyIndicatorContainerTabs() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var state by remember { mutableStateOf(0) }
     val titles = listOf("TAB 1", "TAB 2", "TAB 3")
 
@@ -252,6 +264,7 @@ fun FancyIndicatorContainerTabs() {
             text = "Fancy transition tab ${state + 1} selected",
             style = MaterialTheme.typography.body1,
         )
+    }
     }
 }
 

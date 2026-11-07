@@ -19,6 +19,7 @@ package androidx.compose.foundation.samples
 import androidx.annotation.Sampled
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,10 +38,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 @Sampled
 @Composable
 fun BasicTextFieldWithValueOnValueChangeSample() {
-    var text by remember { mutableStateOf("") }
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
+    var text by remember { mutableStateOf("Initial text") }
     // A reference implementation that demonstrates how to create a TextField with the legacy
     // state hoisting design around `BasicTextField(TextFieldState)`
     StringTextField(value = text, onValueChange = { text = it })
+    }
 }
 
 @Composable

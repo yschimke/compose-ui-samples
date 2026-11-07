@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun StampedPathEffectSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val size = 20f
     val square =
         Path().apply {
@@ -44,7 +45,7 @@ fun StampedPathEffectSample() {
             lineTo(0f, size)
             close()
         }
-    Column(modifier = Modifier.fillMaxHeight().wrapContentSize(Alignment.Center)) {
+    Column(modifier = Modifier.wrapContentSize(Alignment.Center)) {
         val canvasModifier = Modifier.requiredSize(80.dp).align(Alignment.CenterHorizontally)
 
         // StampedPathEffectStyle.Morph will modify the lines of the square to be curved to fit

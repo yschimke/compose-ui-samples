@@ -102,10 +102,16 @@ export function writePatched(src, out = PATCHED_OUT, dir = PATCHES) {
     }
     applyPatches(work, dir);
     for (const path of paths) {
-      const text = readFileSync(join(work, path), "utf8").replace(
-        /^package\s+([\w.]+)/m,
-        (_, pkg) => `package ${patchedPackage(pkg)}`,
-      );
+      let text = readFileSync(join(work, path), "utf8");
+      const pkg = text.match(/^package\s+([\w.]+)/m)?.[1];
+      if (pkg) {
+        const relocated = patchedPackage(pkg);
+        text = text
+          .replace(/^package\s+[\w.]+/m, `package ${relocated}`)
+          .replaceAll(`import ${pkg}.`, `import ${relocated}.`)
+          .replace(/^import androidx\.compose\.ui\.tooling\.preview\.Preview\n/gm, "")
+          .replace(/@Preview(?:\([^)]*\))?\s*/g, "");
+      }
       const target = join(out, path.replace(/^androidx\/compose\//, ""));
       mkdirSync(dirname(target), { recursive: true });
       writeFileSync(target, text);

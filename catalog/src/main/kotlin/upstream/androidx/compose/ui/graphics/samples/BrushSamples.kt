@@ -43,7 +43,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun GradientBrushSample() {
-    Column(modifier = Modifier.fillMaxSize().wrapContentSize()) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Column {
 
         // Create a linear gradient that shows red in the top left corner
         // and blue in the bottom right corner
@@ -168,9 +169,10 @@ fun SweepGradientSample() {
 @Sampled
 @Composable
 fun CompositeShaderSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     Box(
         modifier =
-            Modifier.size(120.dp).drawWithCache {
+            Modifier.size(120.dp).background(Color.White).drawWithCache {
                 val bitmap = ImageBitmap(size.width.toInt(), size.height.toInt())
                 CanvasDrawScope().draw(this, layoutDirection, Canvas(bitmap), size) {
                     drawRect(Color.Black, style = Stroke(20.dp.toPx()))

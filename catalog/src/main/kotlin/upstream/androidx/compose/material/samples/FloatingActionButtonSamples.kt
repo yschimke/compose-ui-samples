@@ -25,13 +25,24 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Sampled
 @Composable
 fun SimpleFab() {
-    FloatingActionButton(onClick = { /*do something*/ }) {
-        Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var liked by remember { mutableStateOf(false) }
+    FloatingActionButton(onClick = { liked = !liked }) {
+        Icon(
+            Icons.Filled.Favorite,
+            contentDescription = "Localized description",
+            tint = if (liked) Color.Red else Color.Unspecified,
+        )
     }
 }
 
@@ -43,20 +54,24 @@ fun SimpleExtendedFabNoIcon() {
 @Sampled
 @Composable
 fun SimpleExtendedFabWithIcon() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var count by remember { mutableStateOf(0) }
     ExtendedFloatingActionButton(
         icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
-        text = { Text("ADD TO BASKET") },
-        onClick = { /*do something*/ },
+        text = { Text(if (count == 0) "ADD TO BASKET" else "IN BASKET ($count)") },
+        onClick = { count++ },
     )
 }
 
 @Sampled
 @Composable
 fun FluidExtendedFab() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var count by remember { mutableStateOf(0) }
     ExtendedFloatingActionButton(
         icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
-        text = { Text("FLUID FAB") },
-        onClick = { /*do something*/ },
+        text = { Text(if (count == 0) "FLUID FAB" else "FLUID FAB ($count)") },
+        onClick = { count++ },
         modifier = Modifier.fillMaxWidth(),
     )
 }

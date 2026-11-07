@@ -23,6 +23,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -35,6 +36,8 @@ import androidx.compose.runtime.setValue
 @Sampled
 @Composable
 fun ExposedDropdownMenuSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
     var expanded by remember { mutableStateOf(false) }
     val textFieldState = rememberTextFieldState(options[0])
@@ -60,12 +63,15 @@ fun ExposedDropdownMenuSample() {
             }
         }
     }
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Sampled
 @Composable
 fun EditableExposedDropdownMenuSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
     var expanded by remember { mutableStateOf(false) }
     val textFieldState = rememberTextFieldState()
@@ -93,5 +99,6 @@ fun EditableExposedDropdownMenuSample() {
                 }
             }
         }
+    }
     }
 }

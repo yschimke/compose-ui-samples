@@ -17,21 +17,27 @@
 package androidx.compose.material.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.LocalAbsoluteElevation
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Suppress("UNUSED_VARIABLE", "NAME_SHADOWING")
 @Sampled
 @Composable
 fun AbsoluteElevationSample() {
-    Surface(elevation = 4.dp) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Surface(modifier = Modifier.padding(16.dp), elevation = 4.dp) {
         // This will equal 4.dp
         val elevation = LocalAbsoluteElevation.current
-        Surface(elevation = 2.dp) {
+        Surface(modifier = Modifier.padding(16.dp), elevation = 2.dp) {
             // This will equal 6.dp (4 + 2)
             val elevation = LocalAbsoluteElevation.current
+            Box(Modifier.size(60.dp))
         }
     }
 }

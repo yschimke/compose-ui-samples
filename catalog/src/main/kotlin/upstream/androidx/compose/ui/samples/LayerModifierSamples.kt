@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -42,12 +43,17 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun ChangeOpacity() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White)) {
     Text("Hello World", Modifier.graphicsLayer(alpha = 0.5f, clip = true))
+    }
 }
 
 @Sampled
 @Composable
 fun AnimateFadeIn() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White)) {
     val animatedAlpha = remember { Animatable(0f) }
     Text(
         "Hello World",
@@ -57,15 +63,17 @@ fun AnimateFadeIn() {
         },
     )
     LaunchedEffect(animatedAlpha) { animatedAlpha.animateTo(1f) }
+    }
 }
 
 @Sampled
 @Composable
 fun CompositingStrategyModulateAlpha() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     Canvas(
         modifier =
             Modifier.size(100.dp)
-                .background(Color.Black)
+                .background(Color.Black).border(1.dp, Color.White)
                 .graphicsLayer(
                     alpha = 0.5f,
                     compositingStrategy = CompositingStrategy.ModulateAlpha,

@@ -29,6 +29,7 @@ import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -50,6 +52,7 @@ import kotlin.math.sin
 @Composable
 @Sampled
 fun DetectTransformGestures() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     /**
      * Rotates the given offset around the origin by the given angle in degrees.
      *
@@ -99,13 +102,14 @@ fun DetectTransformGestures() {
                 transformOrigin = TransformOrigin(0f, 0f)
             }
             .background(Color.Blue)
-            .fillMaxSize()
+            .size(200.dp)
     )
 }
 
 @Composable
 @Sampled
 fun CalculateRotation() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     var angle by remember { mutableStateOf(0f) }
     Box(
         Modifier.graphicsLayer(rotationZ = angle)
@@ -120,13 +124,14 @@ fun CalculateRotation() {
                     } while (event.changes.any { it.pressed })
                 }
             }
-            .fillMaxSize()
+            .size(200.dp)
     )
 }
 
 @Composable
 @Sampled
 fun CalculateZoom() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     var zoom by remember { mutableStateOf(1f) }
     Box(
         Modifier.graphicsLayer(scaleX = zoom, scaleY = zoom)
@@ -140,13 +145,14 @@ fun CalculateZoom() {
                     } while (event.changes.any { it.pressed })
                 }
             }
-            .fillMaxSize()
+            .size(200.dp)
     )
 }
 
 @Composable
 @Sampled
 fun CalculatePan() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     Box(
@@ -164,15 +170,16 @@ fun CalculatePan() {
                     } while (event.changes.any { it.pressed })
                 }
             }
-            .fillMaxSize()
+            .size(200.dp)
     )
 }
 
 @Composable
 @Sampled
 fun CalculateCentroidSize() {
-    var centroidSize by remember { mutableStateOf(0f) }
-    var position by remember { mutableStateOf(Offset.Zero) }
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    var centroidSize by remember { mutableStateOf(50f) }
+    var position by remember { mutableStateOf(Offset(100f, 100f)) }
     Box(
         Modifier.drawBehind {
                 // Draw a circle where the gesture is
@@ -194,6 +201,6 @@ fun CalculateCentroidSize() {
                     } while (event.changes.any { it.pressed })
                 }
             }
-            .fillMaxSize()
+            .size(200.dp)
     )
 }

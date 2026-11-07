@@ -22,8 +22,10 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,23 +51,26 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
 
 @Sampled
 @Composable
 fun DrawTextSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     val textMeasurer = rememberTextMeasurer()
 
-    Canvas(Modifier.fillMaxSize()) { drawText(textMeasurer, "Hello, World!") }
+    Canvas(Modifier.size(200.dp, 80.dp).background(Color.White)) { drawText(textMeasurer, "Hello, World!") }
 }
 
 @Sampled
 @Composable
 fun DrawTextStyledSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     val textMeasurer = rememberTextMeasurer()
 
-    Canvas(Modifier.fillMaxSize()) {
+    Canvas(Modifier.size(200.dp, 80.dp).background(Color.White)) {
         drawText(
             textMeasurer = textMeasurer,
             text = "Hello, World!",
@@ -82,9 +87,10 @@ fun DrawTextStyledSample() {
 @Sampled
 @Composable
 fun DrawTextAnnotatedStringSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     val textMeasurer = rememberTextMeasurer()
 
-    Canvas(Modifier.fillMaxSize()) {
+    Canvas(Modifier.size(200.dp, 80.dp).background(Color.White)) {
         drawText(
             textMeasurer = textMeasurer,
             text =
@@ -105,11 +111,12 @@ fun DrawTextAnnotatedStringSample() {
 @Sampled
 @Composable
 fun DrawTextMeasureInLayoutSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     val textMeasurer = rememberTextMeasurer()
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
 
     Canvas(
-        Modifier.fillMaxSize().layout { measurable, constraints ->
+        Modifier.size(200.dp, 80.dp).background(Color.White).layout { measurable, constraints ->
             val placeable = measurable.measure(constraints)
             // TextLayout can be done any time prior to its use in draw, including in a
             // background thread.
@@ -137,6 +144,7 @@ fun DrawTextMeasureInLayoutSample() {
 @Sampled
 @Composable
 fun DrawTextDrawWithCacheSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // We can disable implicit caching since we will cache in DrawWithCache
     val textMeasurer = rememberTextMeasurer(cacheSize = 0)
     // Apply the current text style from theme, otherwise TextStyle.Default will be used.
@@ -152,7 +160,7 @@ fun DrawTextDrawWithCacheSample() {
         )
 
     Box(
-        Modifier.fillMaxSize().drawWithCache {
+        Modifier.size(200.dp, 80.dp).background(Color.White).drawWithCache {
             // Text layout will be measured just once until the size of the drawing area or
             // materialTextStyle changes.
             val textLayoutResult =

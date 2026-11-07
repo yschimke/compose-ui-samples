@@ -26,6 +26,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -33,13 +37,16 @@ import androidx.compose.ui.semantics.semantics
 @Sampled
 @Composable
 fun BottomNavigationItemWithBadge() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var selected by remember { mutableStateOf(false) }
+    var count by remember { mutableStateOf(8) }
     BottomNavigation {
         BottomNavigationItem(
             icon = {
                 BadgedBox(
                     badge = {
                         Badge {
-                            val badgeNumber = "8"
+                            val badgeNumber = count.toString()
                             Text(
                                 badgeNumber,
                                 modifier =
@@ -53,8 +60,11 @@ fun BottomNavigationItemWithBadge() {
                     Icon(Icons.Filled.Favorite, contentDescription = "Favorite")
                 }
             },
-            selected = false,
-            onClick = {},
+            selected = selected,
+            onClick = {
+                selected = !selected
+                count++
+            },
         )
     }
 }

@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +45,10 @@ import kotlin.random.Random
 @Composable
 @Sampled
 fun BorderSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text("Text with  square border", modifier = Modifier.border(4.dp, Color.Magenta).padding(10.dp))
+    }
 }
 
 @Composable
@@ -68,17 +72,23 @@ fun BorderSampleWithBrush() {
 @Composable
 @Sampled
 fun BorderSampleWithDataClass() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(
         "Text with gradient border",
         modifier =
             Modifier.border(border = BorderStroke(2.dp, Color.Blue), shape = CutCornerShape(8.dp))
                 .padding(10.dp),
     )
+    }
 }
 
 @Composable
 @Sampled
 fun BorderSampleWithDynamicData() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0001-seed-random-samples.patch
     val random = remember { Random(0) }
     val widthRange = (1..10)
     var width by remember { mutableStateOf((widthRange.random(random)).dp) }
@@ -115,13 +125,11 @@ fun BorderSampleWithDynamicData() {
         Text(text = "Update border with buttons")
         Row {
             Button(
-                modifier = Modifier.width(60.dp),
                 onClick = { width = (widthRange.random(random)).dp },
             ) {
                 Text(fontSize = 8.sp, text = "width")
             }
             Button(
-                modifier = Modifier.width(60.dp),
                 onClick = {
                     gradientBrush =
                         Brush.horizontalGradient(
@@ -135,7 +143,6 @@ fun BorderSampleWithDynamicData() {
                 Text(fontSize = 8.sp, text = "brush")
             }
             Button(
-                modifier = Modifier.width(60.dp),
                 onClick = { selectedShape = shapes.random(random) },
             ) {
                 Text(fontSize = 8.sp, text = "shape")
@@ -147,5 +154,6 @@ fun BorderSampleWithDynamicData() {
                 Modifier.border(width = width, brush = gradientBrush, shape = selectedShape)
                     .padding(10.dp),
         )
+    }
     }
 }

@@ -17,6 +17,7 @@
 package androidx.compose.ui.text.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextDecoration
@@ -24,17 +25,26 @@ import androidx.compose.ui.text.style.TextDecoration
 @Sampled
 @Composable
 fun TextDecorationLineThroughSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(text = "Demo Text", textDecoration = TextDecoration.LineThrough)
+    }
 }
 
 @Sampled
 @Composable
 fun TextDecorationUnderlineSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(text = "Demo Text", textDecoration = TextDecoration.Underline)
+    }
 }
 
 @Sampled
 @Composable
 fun TextDecorationCombinedSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(text = "Demo Text", textDecoration = TextDecoration.Underline + TextDecoration.LineThrough)
+    }
 }

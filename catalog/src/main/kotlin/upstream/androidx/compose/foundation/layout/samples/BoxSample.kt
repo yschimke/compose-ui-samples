@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun SimpleBox() {
-    Box {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Box(Modifier.size(350.dp)) {
         Box(Modifier.fillMaxSize().background(Color.Cyan))
         Box(
             Modifier.matchParentSize().padding(top = 20.dp, bottom = 20.dp).background(Color.Yellow)

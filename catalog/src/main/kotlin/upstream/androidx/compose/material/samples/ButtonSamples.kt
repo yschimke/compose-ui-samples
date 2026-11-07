@@ -28,36 +28,52 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Sampled
 @Composable
 fun ButtonSample() {
-    Button(onClick = { /* Do something! */ }) { Text("Button") }
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var count by remember { mutableStateOf(0) }
+    Button(onClick = { count++ }) { Text(if (count == 0) "Button" else "Button ($count)") }
 }
 
 @Sampled
 @Composable
 fun OutlinedButtonSample() {
-    OutlinedButton(onClick = { /* Do something! */ }) { Text("Outlined Button") }
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var count by remember { mutableStateOf(0) }
+    OutlinedButton(onClick = { count++ }) {
+        Text(if (count == 0) "Outlined Button" else "Outlined Button ($count)")
+    }
 }
 
 @Sampled
 @Composable
 fun TextButtonSample() {
-    TextButton(onClick = { /* Do something! */ }) { Text("Text Button") }
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var count by remember { mutableStateOf(0) }
+    TextButton(onClick = { count++ }) {
+        Text(if (count == 0) "Text Button" else "Text Button ($count)")
+    }
 }
 
 @Sampled
 @Composable
 fun ButtonWithIconSample() {
-    Button(onClick = { /* Do something! */ }) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var liked by remember { mutableStateOf(false) }
+    Button(onClick = { liked = !liked }) {
         Icon(
             Icons.Filled.Favorite,
             contentDescription = null,
             modifier = Modifier.size(ButtonDefaults.IconSize),
         )
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        Text("Like")
+        Text(if (liked) "Liked" else "Like")
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflowScope
@@ -51,6 +52,8 @@ import kotlin.random.Random
 @Sampled
 @Composable
 fun ContextualFlowRowMaxLineDynamicSeeMore() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     val totalCount = 300
     var maxLines by remember { mutableStateOf(2) }
 
@@ -100,12 +103,15 @@ fun ContextualFlowRowMaxLineDynamicSeeMore() {
             )
         }
     }
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Sampled
 @Composable
 fun ContextualFlowRow_ItemPosition() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     Text("Ln: Line No\nPs: Position No. in Line", modifier = Modifier.padding(20.dp))
     ContextualFlowRow(
         modifier = Modifier.fillMaxWidth(1f).height(210.dp).padding(20.dp),
@@ -114,6 +120,7 @@ fun ContextualFlowRow_ItemPosition() {
         maxItemsInEachRow = 4,
         itemCount = 12,
     ) {
+        // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0001-seed-random-samples.patch
         val width = Random(it).nextInt(80, 100).dp.coerceAtMost(maxWidthInLine)
         val height = 50.dp.coerceAtMost(maxHeight)
         Box(
@@ -129,6 +136,7 @@ fun ContextualFlowRow_ItemPosition() {
                 modifier = Modifier.padding(3.dp),
             )
         }
+    }
     }
 }
 

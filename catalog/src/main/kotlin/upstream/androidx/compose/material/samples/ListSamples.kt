@@ -17,6 +17,7 @@
 package androidx.compose.material.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
@@ -26,6 +27,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -43,7 +45,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun ClickableListItems() {
-    Column {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Column(Modifier.background(MaterialTheme.colors.surface)) {
         var switched by remember { mutableStateOf(false) }
         val onSwitchedChange: (Boolean) -> Unit = { switched = it }
         ListItem(
@@ -87,7 +90,9 @@ fun ClickableListItems() {
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun OneLineListItems() {
-    Column {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    var clicked by remember { mutableStateOf(false) }
+    Column(Modifier.background(MaterialTheme.colors.surface)) {
         ListItem(text = { Text("One line list item with no icon") })
         Divider()
         ListItem(
@@ -118,7 +123,7 @@ fun OneLineListItems() {
         )
         Divider()
         ListItem(
-            text = { Text("One line clickable list item") },
+            text = { Text(if (clicked) "One line clickable list item (Clicked)" else "One line clickable list item") },
             icon = {
                 Icon(
                     Icons.Filled.Favorite,
@@ -126,7 +131,7 @@ fun OneLineListItems() {
                     modifier = Modifier.size(56.dp),
                 )
             },
-            modifier = Modifier.clickable {},
+            modifier = Modifier.clickable { clicked = !clicked },
         )
         Divider()
         ListItem(
@@ -153,7 +158,8 @@ fun OneLineListItems() {
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun TwoLineListItems() {
-    Column {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Column(Modifier.background(MaterialTheme.colors.surface)) {
         ListItem(text = { Text("Two line list item") }, secondaryText = { Text("Secondary text") })
         Divider()
         ListItem(text = { Text("Two line list item") }, overlineText = { Text("OVERLINE") })
@@ -196,7 +202,8 @@ fun TwoLineListItems() {
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun ThreeLineListItems() {
-    Column {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Column(Modifier.background(MaterialTheme.colors.surface)) {
         ListItem(
             text = { Text("Three line list item") },
             secondaryText = {
