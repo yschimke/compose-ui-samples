@@ -46,9 +46,15 @@ fun SimpleFab() {
     }
 }
 
+@Sampled
 @Composable
 fun SimpleExtendedFabNoIcon() {
-    ExtendedFloatingActionButton(text = { Text("EXTENDED") }, onClick = {})
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
+    var clicked by remember { mutableStateOf(false) }
+    ExtendedFloatingActionButton(
+        text = { Text(if (clicked) "CLICKED" else "EXTENDED") },
+        onClick = { clicked = !clicked },
+    )
 }
 
 @Sampled

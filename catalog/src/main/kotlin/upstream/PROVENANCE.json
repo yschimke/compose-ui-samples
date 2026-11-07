@@ -162,6 +162,7 @@
     "0001-seed-random-samples.patch",
     "0002-sample-backgrounds.patch",
     "0003-connect-interactive-samples.patch",
-    "0004-sample-sizes.patch"
+    "0004-sample-sizes.patch",
+    "0005-missing-sampled-annotations.patch"
   ]
 }

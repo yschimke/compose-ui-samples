@@ -98,7 +98,7 @@ test("patchedPaths lists every file the desktop patches touch", () => {
   assert.ok(paths.includes("androidx/compose/foundation/samples/BorderSamples.kt"));
   assert.ok(paths.includes("androidx/compose/material/samples/ButtonSamples.kt"));
   assert.ok(paths.includes("androidx/compose/ui/samples/LayoutSample.kt"));
-  assert.equal(paths.length, 86);
+  assert.equal(paths.length, 91);
   assert.deepEqual(paths, [...new Set(paths)].sort());
   assert.equal(
     patchedPackage("androidx.compose.foundation.layout.samples"),

@@ -16,6 +16,7 @@
 
 package androidx.compose.foundation.samples
 
+import androidx.annotation.Sampled
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -33,12 +34,14 @@ import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.unit.dp
 
+@Sampled
 @Composable
 fun CustomTouchSlopSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     val originalTouchSlop = LocalViewConfiguration.current.touchSlop
 
     CustomTouchSlopProvider(newTouchSlop = originalTouchSlop * 3) {
-        LazyColumn {
+        LazyColumn(Modifier.size(300.dp)) {
             items(100) {
                 Spacer(Modifier.padding(10.dp))
                 LongListOfItems(originalTouchSlop)

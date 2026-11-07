@@ -50,6 +50,14 @@ fun AnchoredDraggableDynamicAnchorsSamplePreview() = androidx.compose.foundation
 
 @Preview
 @Composable
+fun AnchoredDraggableProgrammaticFlingSamplePreview() = androidx.compose.foundation.samples.AnchoredDraggableProgrammaticFlingSample()
+
+@Preview
+@Composable
+fun AnchoredDraggableProgressSamplePreview() = androidx.compose.foundation.samples.AnchoredDraggableProgressSample()
+
+@Preview
+@Composable
 fun AnimateContentPreview() = androidx.compose.animation.samples.AnimateContent()
 
 @Preview
@@ -238,7 +246,15 @@ fun BottomNavigationSamplePreview() = androidx.compose.material.samples.BottomNa
 
 @Preview
 @Composable
+fun BottomNavigationWithOnlySelectedLabelsSamplePreview() = androidx.compose.material.samples.BottomNavigationWithOnlySelectedLabelsSample()
+
+@Preview
+@Composable
 fun BottomSheetScaffoldSamplePreview() = androidx.compose.material.samples.BottomSheetScaffoldSample()
+
+@Preview
+@Composable
+fun BottomSheetScaffoldWithDrawerSamplePreview() = androidx.compose.material.samples.BottomSheetScaffoldWithDrawerSample()
 
 @Preview
 @Composable
@@ -354,6 +370,10 @@ fun ColorAnimationSamplePreview() = androidx.compose.animation.samples.ColorAnim
 
 @Preview
 @Composable
+fun CompactNavigationRailSamplePreview() = androidx.compose.material.samples.CompactNavigationRailSample()
+
+@Preview
+@Composable
 fun CompositeShaderSamplePreview() = androidx.compose.ui.graphics.samples.CompositeShaderSample()
 
 @Preview
@@ -451,6 +471,10 @@ fun CustomSaverSamplePreview() = androidx.compose.runtime.saveable.samples.Custo
 @Preview
 @Composable
 fun CustomTextFieldBasedOnDecorationBoxPreview() = androidx.compose.material.samples.CustomTextFieldBasedOnDecorationBox()
+
+@Preview
+@Composable
+fun CustomTouchSlopSamplePreview() = androidx.compose.foundation.samples.CustomTouchSlopSample()
 
 @Preview
 @Composable
@@ -650,6 +674,10 @@ fun FocusableSampleUsingLowerLevelFocusTargetPreview() = androidx.compose.ui.sam
 
 @Preview
 @Composable
+fun FocusedCheckboxSamplePreview() = androidx.compose.material.samples.FocusedCheckboxSample()
+
+@Preview
+@Composable
 fun FocusGroupSamplePreview() = androidx.compose.foundation.samples.FocusGroupSample()
 
 @Preview
@@ -731,6 +759,10 @@ fun HoverableSamplePreview() = androidx.compose.foundation.samples.HoverableSamp
 @Preview
 @Composable
 fun IconButtonSamplePreview() = androidx.compose.material.samples.IconButtonSample()
+
+@Preview
+@Composable
+fun IconTabsPreview() = androidx.compose.material.samples.IconTabs()
 
 @Preview
 @Composable
@@ -846,6 +878,10 @@ fun LazyRowSamplePreview() = androidx.compose.foundation.samples.LazyRowSample()
 
 @Preview
 @Composable
+fun LeadingIconTabsPreview() = androidx.compose.material.samples.LeadingIconTabs()
+
+@Preview
+@Composable
 fun LinearProgressIndicatorSamplePreview() = androidx.compose.material.samples.LinearProgressIndicatorSample()
 
 @Preview
@@ -954,7 +990,15 @@ fun MoveFocusSamplePreview() = androidx.compose.ui.samples.MoveFocusSample()
 
 @Preview
 @Composable
+fun NavigationRailBottomAlignSamplePreview() = androidx.compose.material.samples.NavigationRailBottomAlignSample()
+
+@Preview
+@Composable
 fun NavigationRailSamplePreview() = androidx.compose.material.samples.NavigationRailSample()
+
+@Preview
+@Composable
+fun NavigationRailWithOnlySelectedLabelsSamplePreview() = androidx.compose.material.samples.NavigationRailWithOnlySelectedLabelsSample()
 
 @Preview
 @Composable
@@ -983,6 +1027,10 @@ fun OffsetPxModifierPreview() = androidx.compose.foundation.layout.samples.Offse
 @Preview
 @Composable
 fun OneLineListItemsPreview() = androidx.compose.material.samples.OneLineListItems()
+
+@Preview
+@Composable
+fun OneLineRtlLtrListItemsPreview() = androidx.compose.material.samples.OneLineRtlLtrListItems()
 
 @Preview
 @Composable
@@ -1206,6 +1254,14 @@ fun ScrollableSamplePreview() = androidx.compose.foundation.samples.ScrollableSa
 
 @Preview
 @Composable
+fun ScrollingFancyIndicatorContainerTabsPreview() = androidx.compose.material.samples.ScrollingFancyIndicatorContainerTabs()
+
+@Preview
+@Composable
+fun ScrollingTextTabsPreview() = androidx.compose.material.samples.ScrollingTextTabs()
+
+@Preview
+@Composable
 fun ScrollToPageSamplePreview() = androidx.compose.foundation.samples.ScrollToPageSample()
 
 @Preview
@@ -1274,6 +1330,10 @@ fun SimpleColumnPreview() = androidx.compose.foundation.layout.samples.SimpleCol
 
 @Preview
 @Composable
+fun SimpleExtendedFabNoIconPreview() = androidx.compose.material.samples.SimpleExtendedFabNoIcon()
+
+@Preview
+@Composable
 fun SimpleExtendedFabWithIconPreview() = androidx.compose.material.samples.SimpleExtendedFabWithIcon()
 
 @Preview
@@ -1310,6 +1370,10 @@ fun SimpleFlowColumnPreview() = androidx.compose.foundation.layout.samples.Simpl
 
 @Preview
 @Composable
+fun SimpleFlowColumnWithMaxWidthPreview() = androidx.compose.foundation.layout.samples.SimpleFlowColumnWithMaxWidth()
+
+@Preview
+@Composable
 fun SimpleFlowRow_EqualHeightPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRow_EqualHeight()
 
 @Preview
@@ -1323,6 +1387,10 @@ fun SimpleFlowRowMaxLinesWithSeeMorePreview() = androidx.compose.foundation.layo
 @Preview
 @Composable
 fun SimpleFlowRowPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRow()
+
+@Preview
+@Composable
+fun SimpleFlowRowWithMaxHeightPreview() = androidx.compose.foundation.layout.samples.SimpleFlowRowWithMaxHeight()
 
 @Preview
 @Composable
@@ -1486,6 +1554,10 @@ fun StyleAnimationSamplePreview() = androidx.compose.foundation.samples.StyleAni
 
 @Preview
 @Composable
+fun StyleForegroundBackgroundSamplePreview() = androidx.compose.foundation.samples.StyleForegroundBackgroundSample()
+
+@Preview
+@Composable
 fun StyleStateKeySamplePreview() = androidx.compose.foundation.samples.StyleStateKeySample()
 
 @Preview
@@ -1515,6 +1587,14 @@ fun SwitchSamplePreview() = androidx.compose.material.samples.SwitchSample()
 @Preview
 @Composable
 fun SymmetricPaddingModifierPreview() = androidx.compose.foundation.layout.samples.SymmetricPaddingModifier()
+
+@Preview
+@Composable
+fun TextAndIconTabsPreview() = androidx.compose.material.samples.TextAndIconTabs()
+
+@Preview
+@Composable
+fun TextAreaPreview() = androidx.compose.material.samples.TextArea()
 
 @Preview
 @Composable
@@ -1594,6 +1674,10 @@ fun TextStyleSamplePreview() = androidx.compose.ui.text.samples.TextStyleSample(
 
 @Preview
 @Composable
+fun TextStyleTextMotionSamplePreview() = androidx.compose.foundation.samples.TextStyleTextMotionSample()
+
+@Preview
+@Composable
 fun TextTabsPreview() = androidx.compose.material.samples.TextTabs()
 
 @Preview
@@ -1611,6 +1695,10 @@ fun ThemeTextStyleSamplePreview() = androidx.compose.material.samples.ThemeTextS
 @Preview
 @Composable
 fun ThreeLineListItemsPreview() = androidx.compose.material.samples.ThreeLineListItems()
+
+@Preview
+@Composable
+fun ThreeLineRtlLtrListItemsPreview() = androidx.compose.material.samples.ThreeLineRtlLtrListItems()
 
 @Preview
 @Composable
@@ -1647,6 +1735,10 @@ fun TriStateToggleableSamplePreview() = androidx.compose.foundation.samples.TriS
 @Preview
 @Composable
 fun TwoLineListItemsPreview() = androidx.compose.material.samples.TwoLineListItems()
+
+@Preview
+@Composable
+fun TwoLineRtlLtrListItemsPreview() = androidx.compose.material.samples.TwoLineRtlLtrListItems()
 
 @Preview
 @Composable

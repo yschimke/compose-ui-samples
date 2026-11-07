@@ -52,7 +52,31 @@ fun AlphaSampleAndroidPreview() = androidx.compose.ui.samples.AlphaSample()
 
 @Preview
 @Composable
+fun AnchoredDraggableAnchorsFromCompositionSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableAnchorsFromCompositionSample()
+
+@Preview
+@Composable
+fun AnchoredDraggableCustomAnchoredSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableCustomAnchoredSample()
+
+@Preview
+@Composable
 fun AnchoredDraggableDynamicAnchorsSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableDynamicAnchorsSample()
+
+@Preview
+@Composable
+fun AnchoredDraggableLayoutDependentAnchorsSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableLayoutDependentAnchorsSample()
+
+@Preview
+@Composable
+fun AnchoredDraggableProgrammaticFlingSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableProgrammaticFlingSample()
+
+@Preview
+@Composable
+fun AnchoredDraggableProgressSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableProgressSample()
+
+@Preview
+@Composable
+fun AnchoredDraggableWithOverscrollSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.AnchoredDraggableWithOverscrollSample()
 
 @Preview
 @Composable
@@ -380,11 +404,19 @@ fun BottomNavigationItemWithBadgeAndroidPreview() = ee.schimke.composeuisamples.
 
 @Preview
 @Composable
-fun BottomNavigationSampleAndroidPreview() = androidx.compose.material.samples.BottomNavigationSample()
+fun BottomNavigationSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.BottomNavigationSample()
 
 @Preview
 @Composable
-fun BottomSheetScaffoldSampleAndroidPreview() = androidx.compose.material.samples.BottomSheetScaffoldSample()
+fun BottomNavigationWithOnlySelectedLabelsSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.BottomNavigationWithOnlySelectedLabelsSample()
+
+@Preview
+@Composable
+fun BottomSheetScaffoldSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.BottomSheetScaffoldSample()
+
+@Preview
+@Composable
+fun BottomSheetScaffoldWithDrawerSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.BottomSheetScaffoldWithDrawerSample()
 
 @Preview
 @Composable
@@ -516,6 +548,10 @@ fun ColumnAnimatedVisibilitySampleAndroidPreview() = androidx.compose.animation.
 
 @Preview
 @Composable
+fun CompactNavigationRailSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.CompactNavigationRailSample()
+
+@Preview
+@Composable
 fun ComposeInCooperatingViewNestedScrollInteropSampleAndroidPreview() = androidx.compose.ui.samples.ComposeInCooperatingViewNestedScrollInteropSample()
 
 @Preview
@@ -625,6 +661,10 @@ fun CustomPullRefreshSampleAndroidPreview() = androidx.compose.material.samples.
 @Preview
 @Composable
 fun CustomSaverSampleAndroidPreview() = androidx.compose.runtime.saveable.samples.CustomSaverSample()
+
+@Preview
+@Composable
+fun CustomTouchSlopSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.CustomTouchSlopSample()
 
 @Preview
 @Composable
@@ -741,6 +781,10 @@ fun DpSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.ui.un
 @Preview
 @Composable
 fun Draggable2DSampleAndroidPreview() = androidx.compose.foundation.samples.Draggable2DSample()
+
+@Preview
+@Composable
+fun DraggableAnchorsSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.DraggableAnchorsSample()
 
 @Preview
 @Composable
@@ -1044,6 +1088,10 @@ fun FocusableSampleUsingLowerLevelFocusTargetAndroidPreview() = androidx.compose
 
 @Preview
 @Composable
+fun FocusedCheckboxSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.FocusedCheckboxSample()
+
+@Preview
+@Composable
 fun FocusGroupSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.FocusGroupSample()
 
 @Preview
@@ -1161,6 +1209,10 @@ fun HoverableSampleAndroidPreview() = androidx.compose.foundation.samples.Hovera
 @Preview
 @Composable
 fun IconButtonSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.IconButtonSample()
+
+@Preview
+@Composable
+fun IconTabsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.IconTabs()
 
 @Preview
 @Composable
@@ -1384,6 +1436,10 @@ fun LazyVerticalStaggeredGridSpanSampleAndroidPreview() = androidx.compose.found
 
 @Preview
 @Composable
+fun LeadingIconTabsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.LeadingIconTabs()
+
+@Preview
+@Composable
 fun LightAnchorSampleAndroidPreview() = androidx.compose.ui.samples.LightAnchorSample()
 
 @Preview
@@ -1512,7 +1568,15 @@ fun MultiStopProgressiveBlurSampleAndroidPreview() = androidx.compose.ui.samples
 
 @Preview
 @Composable
-fun NavigationRailSampleAndroidPreview() = androidx.compose.material.samples.NavigationRailSample()
+fun NavigationRailBottomAlignSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.NavigationRailBottomAlignSample()
+
+@Preview
+@Composable
+fun NavigationRailSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.NavigationRailSample()
+
+@Preview
+@Composable
+fun NavigationRailWithOnlySelectedLabelsSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.NavigationRailWithOnlySelectedLabelsSample()
 
 @Preview
 @Composable
@@ -1545,6 +1609,10 @@ fun OffsetPxModifierAndroidPreview() = ee.schimke.composeuisamples.android.patch
 @Preview
 @Composable
 fun OneLineListItemsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.OneLineListItems()
+
+@Preview
+@Composable
+fun OneLineRtlLtrListItemsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.OneLineRtlLtrListItems()
 
 @Preview
 @Composable
@@ -1852,6 +1920,14 @@ fun ScrollableSampleAndroidPreview() = ee.schimke.composeuisamples.android.patch
 
 @Preview
 @Composable
+fun ScrollingFancyIndicatorContainerTabsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.ScrollingFancyIndicatorContainerTabs()
+
+@Preview
+@Composable
+fun ScrollingTextTabsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.ScrollingTextTabs()
+
+@Preview
+@Composable
 fun ScrollToPageSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.ScrollToPageSample()
 
 @Preview
@@ -1972,6 +2048,10 @@ fun SimpleColumnAndroidPreview() = ee.schimke.composeuisamples.android.patched.f
 
 @Preview
 @Composable
+fun SimpleExtendedFabNoIconAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.SimpleExtendedFabNoIcon()
+
+@Preview
+@Composable
 fun SimpleExtendedFabWithIconAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.SimpleExtendedFabWithIcon()
 
 @Preview
@@ -2012,6 +2092,10 @@ fun SimpleFlowColumnMaxLinesWithSeeMoreAndroidPreview() = ee.schimke.composeuisa
 
 @Preview
 @Composable
+fun SimpleFlowColumnWithMaxWidthAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowColumnWithMaxWidth()
+
+@Preview
+@Composable
 fun SimpleFlowRow_EqualHeightAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRow_EqualHeight()
 
 @Preview
@@ -2025,6 +2109,10 @@ fun SimpleFlowRowMaxLinesDynamicSeeMoreAndroidPreview() = ee.schimke.composeuisa
 @Preview
 @Composable
 fun SimpleFlowRowMaxLinesWithSeeMoreAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRowMaxLinesWithSeeMore()
+
+@Preview
+@Composable
+fun SimpleFlowRowWithMaxHeightAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.layout.samples.SimpleFlowRowWithMaxHeight()
 
 @Preview
 @Composable
@@ -2092,7 +2180,7 @@ fun SimpleStateSampleAndroidPreview() = androidx.compose.runtime.samples.SimpleS
 
 @Preview
 @Composable
-fun SimpleStyleSampleAndroidPreview() = androidx.compose.foundation.samples.SimpleStyleSample()
+fun SimpleStyleSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.SimpleStyleSample()
 
 @Preview
 @Composable
@@ -2212,15 +2300,19 @@ fun StickyHeaderListSampleAndroidPreview() = androidx.compose.foundation.samples
 
 @Preview
 @Composable
-fun StyleAnimationSampleAndroidPreview() = androidx.compose.foundation.samples.StyleAnimationSample()
+fun StyleAnimationSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.StyleAnimationSample()
 
 @Preview
 @Composable
-fun StyleStateKeySampleAndroidPreview() = androidx.compose.foundation.samples.StyleStateKeySample()
+fun StyleForegroundBackgroundSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.StyleForegroundBackgroundSample()
 
 @Preview
 @Composable
-fun StyleStateSampleAndroidPreview() = androidx.compose.foundation.samples.StyleStateSample()
+fun StyleStateKeySampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.StyleStateKeySample()
+
+@Preview
+@Composable
+fun StyleStateSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.StyleStateSample()
 
 @Preview
 @Composable
@@ -2249,6 +2341,14 @@ fun SymmetricPaddingModifierAndroidPreview() = androidx.compose.foundation.layou
 @Preview
 @Composable
 fun TaskDispatchersSampleAndroidPreview() = androidx.compose.ui.samples.TaskDispatchersSample()
+
+@Preview
+@Composable
+fun TextAndIconTabsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.TextAndIconTabs()
+
+@Preview
+@Composable
+fun TextAreaAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.TextArea()
 
 @Preview
 @Composable
@@ -2336,6 +2436,10 @@ fun TextStyleSampleAndroidPreview() = ee.schimke.composeuisamples.android.patche
 
 @Preview
 @Composable
+fun TextStyleTextMotionSampleAndroidPreview() = ee.schimke.composeuisamples.android.patched.foundation.samples.TextStyleTextMotionSample()
+
+@Preview
+@Composable
 fun TextTabsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.TextTabs()
 
 @Preview
@@ -2353,6 +2457,10 @@ fun ThemeTextStyleSampleAndroidPreview() = ee.schimke.composeuisamples.android.p
 @Preview
 @Composable
 fun ThreeLineListItemsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.ThreeLineListItems()
+
+@Preview
+@Composable
+fun ThreeLineRtlLtrListItemsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.ThreeLineRtlLtrListItems()
 
 @Preview
 @Composable
@@ -2393,6 +2501,10 @@ fun TriStateToggleableSampleAndroidPreview() = ee.schimke.composeuisamples.andro
 @Preview
 @Composable
 fun TwoLineListItemsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.TwoLineListItems()
+
+@Preview
+@Composable
+fun TwoLineRtlLtrListItemsAndroidPreview() = ee.schimke.composeuisamples.android.patched.material.samples.TwoLineRtlLtrListItems()
 
 @Preview
 @Composable

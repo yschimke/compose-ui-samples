@@ -48,8 +48,10 @@ fun BottomNavigationSample() {
     }
 }
 
+@Sampled
 @Composable
 fun BottomNavigationWithOnlySelectedLabelsSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0005-missing-sampled-annotations.patch
     var selectedItem by remember { mutableStateOf(0) }
     val items = listOf("Songs", "Artists", "Playlists")
 
