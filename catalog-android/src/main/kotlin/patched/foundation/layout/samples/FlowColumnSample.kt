@@ -25,6 +25,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.FlowColumnOverflow
@@ -54,6 +55,8 @@ import kotlin.random.Random
 @Sampled
 @Composable
 fun SimpleFlowColumn() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
 
     Text(
         modifier =
@@ -85,12 +88,15 @@ fun SimpleFlowColumn() {
             }
         }
     }
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Sampled
 @Composable
 fun SimpleFlowColumnMaxLinesWithSeeMore() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     val totalCount = 20
     var maxLines by remember { mutableStateOf(2) }
 
@@ -127,6 +133,7 @@ fun SimpleFlowColumnMaxLinesWithSeeMore() {
                 )
             }
         }
+    }
     }
 }
 
@@ -177,6 +184,8 @@ fun SimpleFlowColumnWithMaxWidth() {
 @Sampled
 @Composable
 fun SimpleFlowColumnMaxLinesDynamicSeeMore() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     val totalCount = 20
     var maxLines by remember { mutableStateOf(2) }
 
@@ -228,6 +237,7 @@ fun SimpleFlowColumnMaxLinesDynamicSeeMore() {
             }
         }
     }
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -244,6 +254,7 @@ fun SimpleFlowColumn_EqualWidth() {
     ) {
         repeat(9) {
             Box(Modifier.height(100.dp).fillMaxColumnWidth(1f).background(Color.Green)) {
+                // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0001-seed-random-samples.patch
                 val random = Random(it)
                 val text = generateRandomString(IntRange(1, 5).random(random), random)
                 Text(text = text, fontSize = 18.sp, modifier = Modifier.padding(3.dp))

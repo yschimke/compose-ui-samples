@@ -32,6 +32,7 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TriStateCheckbox
@@ -56,6 +57,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun TriStateCheckboxSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Column {
         // define dependent checkboxes states
         val (state, onStateChange) = remember { mutableStateOf(true) }
@@ -86,6 +89,7 @@ fun TriStateCheckboxSample() {
             Checkbox(state2, onStateChange2)
         }
     }
+    }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -113,20 +117,28 @@ fun FocusedCheckboxSample() {
 @Sampled
 @Composable
 fun CheckboxSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val checkedState = remember { mutableStateOf(true) }
     Checkbox(checked = checkedState.value, onCheckedChange = { checkedState.value = it })
+    }
 }
 
 @Sampled
 @Composable
 fun SwitchSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val checkedState = remember { mutableStateOf(true) }
     Switch(checked = checkedState.value, onCheckedChange = { checkedState.value = it })
+    }
 }
 
 @Sampled
 @Composable
 fun RadioButtonSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // We have two radio buttons and only one can be selected
     var state by remember { mutableStateOf(true) }
     // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
@@ -134,11 +146,14 @@ fun RadioButtonSample() {
         RadioButton(selected = state, onClick = { state = true })
         RadioButton(selected = !state, onClick = { state = false })
     }
+    }
 }
 
 @Sampled
 @Composable
 fun RadioGroupSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val radioOptions = listOf("Calls", "Missed", "Friends")
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
     // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
@@ -166,5 +181,6 @@ fun RadioGroupSample() {
                 )
             }
         }
+    }
     }
 }

@@ -17,6 +17,7 @@
 package androidx.compose.ui.text.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.SpanStyle
@@ -28,6 +29,8 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun BaselineShiftSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(
         fontSize = 20.sp,
         text =
@@ -41,14 +44,18 @@ fun BaselineShiftSample() {
                 }
             },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun BaselineShiftAnnotatedStringSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val annotatedString = buildAnnotatedString {
         append("Text ")
         withStyle(SpanStyle(baselineShift = BaselineShift.Superscript)) { append("Demo") }
     }
     Text(text = annotatedString)
+    }
 }

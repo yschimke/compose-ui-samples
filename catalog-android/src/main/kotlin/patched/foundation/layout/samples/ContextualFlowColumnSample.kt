@@ -23,6 +23,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ContextualFlowColumn
 import androidx.compose.foundation.layout.ContextualFlowColumnOverflow
 import androidx.compose.foundation.layout.ContextualFlowColumnOverflowScope
@@ -52,6 +53,8 @@ import kotlin.random.Random
 @Sampled
 @Composable
 fun ContextualFlowColMaxLineDynamicSeeMore() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     val totalCount = 300
     var maxLines by remember { mutableStateOf(2) }
 
@@ -106,20 +109,24 @@ fun ContextualFlowColMaxLineDynamicSeeMore() {
             )
         }
     }
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Sampled
 @Composable
 fun ContextualFlowColumn_ItemPosition() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     Text("Ln: Line No\nPs: Position No. in Line", modifier = Modifier.padding(20.dp))
     ContextualFlowColumn(
-        modifier = Modifier.fillMaxHeight(1f).width(210.dp).padding(20.dp),
+        modifier = Modifier.height(300.dp).width(210.dp).padding(20.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         maxItemsInEachColumn = 4,
         itemCount = 12,
     ) {
+        // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0001-seed-random-samples.patch
         val width = 50.dp.coerceAtMost(maxWidth)
         val height = Random(it).nextInt(80, 100).dp.coerceAtMost(maxHeightInLine)
         Box(
@@ -135,5 +142,6 @@ fun ContextualFlowColumn_ItemPosition() {
                 modifier = Modifier.padding(3.dp),
             )
         }
+    }
     }
 }

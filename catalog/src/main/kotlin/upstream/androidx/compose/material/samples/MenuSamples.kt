@@ -19,6 +19,7 @@ package androidx.compose.material.samples
 import androidx.annotation.Sampled
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
@@ -26,6 +27,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -37,31 +39,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Sampled
 @Composable
 fun MenuSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
     var expanded by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.TopStart)) {
+    Box(modifier = Modifier.size(180.dp, 80.dp).wrapContentSize(Alignment.TopStart)) {
         IconButton(onClick = { expanded = true }) {
             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            DropdownMenuItem(onClick = { /* Handle refresh! */ }) { Text("Refresh") }
-            DropdownMenuItem(onClick = { /* Handle settings! */ }) { Text("Settings") }
+            DropdownMenuItem(onClick = { expanded = false }) { Text("Refresh") }
+            DropdownMenuItem(onClick = { expanded = false }) { Text("Settings") }
             Divider()
-            DropdownMenuItem(onClick = { /* Handle send feedback! */ }) { Text("Send Feedback") }
+            DropdownMenuItem(onClick = { expanded = false }) { Text("Send Feedback") }
         }
+    }
     }
 }
 
 @Sampled
 @Composable
 fun MenuWithScrollStateSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.TopStart)) {
+    Box(modifier = Modifier.size(180.dp, 80.dp).wrapContentSize(Alignment.TopStart)) {
         IconButton(onClick = { expanded = true }) {
             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
         }
@@ -71,7 +79,7 @@ fun MenuWithScrollStateSample() {
             scrollState = scrollState,
         ) {
             repeat(30) {
-                DropdownMenuItem(onClick = { /* Handle item! */ }) { Text("Item ${it + 1}") }
+                DropdownMenuItem(onClick = { expanded = false }) { Text("Item ${it + 1}") }
             }
         }
         LaunchedEffect(expanded) {
@@ -80,5 +88,6 @@ fun MenuWithScrollStateSample() {
                 scrollState.scrollTo(scrollState.maxValue)
             }
         }
+    }
     }
 }

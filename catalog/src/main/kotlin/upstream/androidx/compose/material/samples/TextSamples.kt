@@ -17,6 +17,7 @@
 package androidx.compose.material.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.LinkAnnotation
@@ -26,6 +27,8 @@ import androidx.compose.ui.text.withLink
 @Sampled
 @Composable
 fun TextWithLinks() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val url = "https://developer.android.com/jetpack/compose"
     val annotatedString = buildAnnotatedString {
         append("Build better apps faster with ")
@@ -34,4 +37,5 @@ fun TextWithLinks() {
         withLink(LinkAnnotation.Url(url = url)) { append("Jetpack Compose") }
     }
     Text(annotatedString)
+    }
 }

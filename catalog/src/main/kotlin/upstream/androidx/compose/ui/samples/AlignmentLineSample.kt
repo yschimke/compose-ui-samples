@@ -26,6 +26,7 @@ import kotlin.math.min
 @Sampled
 @Composable
 fun AlignmentLineSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // Create a horizontal alignment line. Note it is not common for alignment lines to be created
     // in the scope of one composable, since they are usually used across more than one function.
     // We use ::min as merging strategy, which means that the parent will have the minimum of
@@ -46,9 +47,9 @@ fun AlignmentLineSample() {
         val placeables = measurables.map { it.measure(constraints) }
         // placeables[0][line] will be 5
         // placeables[1][line] will be 10
-        layout(constraints.maxWidth, constraints.maxHeight) {
+        layout(100, 40) {
             placeables[0].place(0, 3)
-            placeables[1].place(constraints.maxWidth / 2, 0)
+            placeables[1].place(50, 0)
         }
     }
     // Note that if the parent of this Layout (the parent of AlignmentLineSample) was able to

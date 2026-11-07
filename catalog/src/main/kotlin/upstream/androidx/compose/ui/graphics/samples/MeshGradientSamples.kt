@@ -19,6 +19,7 @@ package androidx.compose.ui.graphics.samples
 import androidx.annotation.Sampled
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,10 +27,12 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.MeshGradientPainter
+import androidx.compose.ui.unit.dp
 
 @Sampled
 @Composable
 fun MeshGradientPainterSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val gradientPainter = remember {
         MeshGradientPainter(1, 1, hasBicubicColor = true) {
             // (row, column, position, color)
@@ -46,5 +49,5 @@ fun MeshGradientPainterSample() {
         }
     }
 
-    Box(Modifier.fillMaxSize().paint(gradientPainter))
+    Box(Modifier.size(200.dp).paint(gradientPainter))
 }

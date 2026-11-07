@@ -32,6 +32,7 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.SecureTextField
 import androidx.compose.material.Text
@@ -68,26 +69,34 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun SimpleTextFieldSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     TextField(
         state = rememberTextFieldState(),
         label = { Text("Label") },
         lineLimits = TextFieldLineLimits.SingleLine,
     )
+    }
 }
 
 @Sampled
 @Composable
 fun SimpleOutlinedTextFieldSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     OutlinedTextField(
         state = rememberTextFieldState(),
         label = { Text("Label") },
         lineLimits = TextFieldLineLimits.SingleLine,
     )
+    }
 }
 
 @Sampled
 @Composable
 fun TextFieldWithIcons() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val state = rememberTextFieldState()
     TextField(
         state = state,
@@ -100,22 +109,28 @@ fun TextFieldWithIcons() {
             }
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun TextFieldWithPlaceholder() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     TextField(
         state = rememberTextFieldState(),
         lineLimits = TextFieldLineLimits.SingleLine,
         label = { Text("Email") },
         placeholder = { Text("example@gmail.com") },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun TextFieldWithErrorState() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val state = rememberTextFieldState()
     var isError by rememberSaveable { mutableStateOf(false) }
 
@@ -144,11 +159,14 @@ fun TextFieldWithErrorState() {
                 if (isError) error("Email format is invalid.")
             },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun TextFieldWithHelperMessage() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Column {
         TextField(
             state = rememberTextFieldState(),
@@ -161,6 +179,7 @@ fun TextFieldWithHelperMessage() {
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 16.dp),
         )
+    }
     }
 }
 
@@ -284,19 +303,25 @@ private var _visibilityOff: ImageVector? = null
 @Sampled
 @Composable
 fun TextFieldWithInitialValueAndSelection() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val state = rememberTextFieldState("Initial text", TextRange(0, 12))
     TextField(state = state, label = { Text("Label") }, lineLimits = TextFieldLineLimits.SingleLine)
+    }
 }
 
 @Sampled
 @Composable
 fun OutlinedTextFieldWithInitialValueAndSelection() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val state = rememberTextFieldState("Initial text", TextRange(0, 12))
     OutlinedTextField(
         state = state,
         label = { Text("Label") },
         lineLimits = TextFieldLineLimits.SingleLine,
     )
+    }
 }
 
 @Sampled

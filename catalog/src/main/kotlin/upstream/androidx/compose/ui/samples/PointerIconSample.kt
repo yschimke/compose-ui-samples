@@ -18,6 +18,7 @@ package androidx.compose.ui.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun PointerIconSample() {
-    Column(Modifier.pointerHoverIcon(PointerIcon.Crosshair)) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Column(Modifier.background(Color.White).pointerHoverIcon(PointerIcon.Crosshair)) {
         SelectionContainer {
             Column {
                 Text("Selectable text")
@@ -54,8 +56,9 @@ fun PointerIconSample() {
 @Sampled
 @Composable
 fun StylusHoverIconSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     Box(
-        Modifier.requiredSize(200.dp)
+        Modifier.requiredSize(200.dp).background(Color.White)
             .border(BorderStroke(2.dp, SolidColor(Color.Red)))
             .stylusHoverIcon(PointerIcon.Crosshair)
     ) {

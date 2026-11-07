@@ -24,6 +24,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.FlowRowOverflow
@@ -59,6 +60,8 @@ import kotlin.random.Random
 @Sampled
 @Composable
 fun SimpleFlowRow() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     Text(
         modifier =
             Modifier.fillMaxWidth(1f).padding(20.dp).wrapContentHeight(align = Alignment.Top),
@@ -84,12 +87,15 @@ fun SimpleFlowRow() {
             }
         }
     }
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Sampled
 @Composable
 fun SimpleFlowRowMaxLinesWithSeeMore() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     val totalCount = 20
     var maxLines by remember { mutableStateOf(2) }
 
@@ -123,6 +129,7 @@ fun SimpleFlowRowMaxLinesWithSeeMore() {
                 )
             }
         }
+    }
     }
 }
 
@@ -173,6 +180,8 @@ fun SimpleFlowRowWithMaxHeight() {
 @Sampled
 @Composable
 fun SimpleFlowRowMaxLinesDynamicSeeMore() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Column(Modifier.background(Color.White)) {
     val totalCount = 40
     var maxLines by remember { mutableStateOf(2) }
 
@@ -225,6 +234,7 @@ fun SimpleFlowRowMaxLinesDynamicSeeMore() {
                 )
             }
         }
+    }
     }
 }
 
@@ -320,6 +330,7 @@ fun SimpleFlowRow_EqualHeight() {
     ) {
         repeat(9) {
             Box(Modifier.width(100.dp).background(Color.Green).fillMaxRowHeight(1f)) {
+                // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0001-seed-random-samples.patch
                 val random = Random(it)
                 val text = generateRandomString(IntRange(10, 50).random(random), random)
                 Text(text = text, fontSize = 18.sp, modifier = Modifier.padding(3.dp))

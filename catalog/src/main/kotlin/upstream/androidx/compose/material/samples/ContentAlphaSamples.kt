@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -27,6 +28,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 @Sampled
 @Composable
 fun ContentAlphaSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // Note the alpha values listed below are the values for light theme. The values are slightly
     // different in dark theme to provide proper contrast against the background.
     Column {
@@ -46,5 +49,6 @@ fun ContentAlphaSample() {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
             Text("Disabled content alpha applied - 38% alpha")
         }
+    }
     }
 }

@@ -17,6 +17,7 @@
 package androidx.compose.material.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.BottomDrawer
@@ -35,6 +37,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.ModalDrawer
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -52,6 +55,8 @@ import kotlinx.coroutines.launch
 @Sampled
 @Composable
 fun ModalDrawerSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.size(320.dp, 320.dp)) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalDrawer(
@@ -74,12 +79,15 @@ fun ModalDrawerSample() {
             }
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun BottomDrawerSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface(Modifier.size(320.dp, 360.dp)) {
     val (gesturesEnabled, toggleGesturesEnabled) = remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
     Column {
@@ -129,5 +137,6 @@ fun BottomDrawerSample() {
                 }
             },
         )
+    }
     }
 }

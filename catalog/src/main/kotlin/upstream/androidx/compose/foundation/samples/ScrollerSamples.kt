@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -54,6 +55,7 @@ private val colors =
 @Sampled
 @Composable
 fun HorizontalScrollSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val scrollState = rememberScrollState()
     val gradient =
         Brush.horizontalGradient(
@@ -63,7 +65,7 @@ fun HorizontalScrollSample() {
             TileMode.Repeated,
         )
     Box(
-        Modifier.horizontalScroll(scrollState)
+        Modifier.width(300.dp).horizontalScroll(scrollState)
             .size(width = 10000.dp, height = 200.dp)
             .background(brush = gradient)
     )
@@ -72,6 +74,7 @@ fun HorizontalScrollSample() {
 @Sampled
 @Composable
 fun VerticalScrollExample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val scrollState = rememberScrollState()
     val gradient =
         Brush.verticalGradient(
@@ -81,8 +84,8 @@ fun VerticalScrollExample() {
             TileMode.Repeated,
         )
     Box(
-        Modifier.verticalScroll(scrollState)
-            .fillMaxWidth()
+        Modifier.size(200.dp)
+            .verticalScroll(scrollState)
             .requiredHeight(10000.dp)
             .background(brush = gradient)
     )
@@ -91,10 +94,11 @@ fun VerticalScrollExample() {
 @Sampled
 @Composable
 fun ControlledScrollableRowSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // Create ScrollState to own it and be able to control scroll behaviour of scrollable Row below
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
-    Column {
+    Column(Modifier.width(320.dp).background(Color.White)) {
         Row(Modifier.horizontalScroll(scrollState)) { repeat(1000) { index -> Square(index) } }
         // Controls for scrolling
         Row(verticalAlignment = Alignment.CenterVertically) {

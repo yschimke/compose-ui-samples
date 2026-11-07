@@ -21,17 +21,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fitInside
 import androidx.compose.foundation.layout.fitOutside
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.WindowInsetsRulers.Companion.NavigationBars
 import androidx.compose.ui.layout.WindowInsetsRulers.Companion.SafeContent
 import androidx.compose.ui.layout.WindowInsetsRulers.Companion.StatusBars
+import androidx.compose.ui.unit.dp
 
 @Sampled
 @Composable
 fun FitInsideOutsideExample() {
-    Box(Modifier.fillMaxSize()) {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Box(Modifier.size(200.dp)) {
         // Drawn behind the status bar
         Box(Modifier.fillMaxSize().fitOutside(StatusBars.current).background(Color.Blue))
         // Drawn behind the navigation bar

@@ -45,14 +45,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 @Sampled
 fun AwaitLongPressOrCancellationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     var count by remember { mutableStateOf(0) }
 
-    Column {
+    Column(Modifier.background(Color.White)) {
         Text("Long Press to increase count. Long Press count: $count")
         Box(
-            Modifier.fillMaxSize()
-                .wrapContentSize(Alignment.Center)
-                .size(192.dp)
+            Modifier.size(192.dp)
                 .pointerInput(Unit) {
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)

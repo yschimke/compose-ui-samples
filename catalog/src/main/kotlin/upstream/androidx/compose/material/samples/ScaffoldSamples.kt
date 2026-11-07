@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -77,7 +78,10 @@ private val colors =
 @Sampled
 @Composable
 fun SimpleScaffoldWithTopBar() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Box(Modifier.size(320.dp, 360.dp)) {
     val scaffoldState = rememberScaffoldState()
+    var count by remember { mutableStateOf(0) }
     val scope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
@@ -95,8 +99,8 @@ fun SimpleScaffoldWithTopBar() {
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                text = { Text("Inc") },
-                onClick = { /* fab click handler */ },
+                text = { Text(if (count == 0) "Inc" else "Inc ($count)") },
+                onClick = { count++ },
             )
         },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
@@ -108,11 +112,14 @@ fun SimpleScaffoldWithTopBar() {
             }
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun ScaffoldWithBottomBarAndCutout() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Box(Modifier.size(320.dp, 360.dp)) {
     val scaffoldState = rememberScaffoldState()
 
     // Consider negative values to mean 'cut corner' and positive values to mean 'round corner'
@@ -178,11 +185,14 @@ fun ScaffoldWithBottomBarAndCutout() {
             }
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun ScaffoldWithSimpleSnackbar() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Box(Modifier.size(320.dp, 360.dp)) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     Scaffold(
@@ -207,11 +217,14 @@ fun ScaffoldWithSimpleSnackbar() {
             )
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun ScaffoldWithCustomSnackbar() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Box(Modifier.size(320.dp, 360.dp)) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     Scaffold(
@@ -245,11 +258,14 @@ fun ScaffoldWithCustomSnackbar() {
             )
         },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun ScaffoldWithCoroutinesSnackbar() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Box(Modifier.size(320.dp, 360.dp)) {
     // decouple snackbar host state from scaffold state for demo purposes
     // this state, channel and flow is for demo purposes to demonstrate business logic layer
     val snackbarHostState = remember { SnackbarHostState() }
@@ -293,4 +309,5 @@ fun ScaffoldWithCoroutinesSnackbar() {
             )
         },
     )
+    }
 }

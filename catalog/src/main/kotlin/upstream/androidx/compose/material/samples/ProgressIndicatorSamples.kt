@@ -25,6 +25,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.ProgressIndicatorDefaults
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +39,8 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun LinearProgressIndicatorSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var progress by remember { mutableStateOf(0.1f) }
     val animatedProgress by
         animateFloatAsState(
@@ -50,11 +53,14 @@ fun LinearProgressIndicatorSample() {
         Spacer(Modifier.requiredHeight(30.dp))
         OutlinedButton(onClick = { if (progress < 1f) progress += 0.1f }) { Text("Increase") }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun CircularProgressIndicatorSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var progress by remember { mutableStateOf(0.1f) }
     val animatedProgress by
         animateFloatAsState(
@@ -66,5 +72,6 @@ fun CircularProgressIndicatorSample() {
         CircularProgressIndicator(progress = animatedProgress)
         Spacer(Modifier.requiredHeight(30.dp))
         OutlinedButton(onClick = { if (progress < 1f) progress += 0.1f }) { Text("Increase") }
+    }
     }
 }

@@ -159,6 +159,9 @@
     "androidx/compose/ui/text/samples/LineBreakSamples.kt"
   ],
   "patches": [
-    "0001-seed-random-samples.patch"
+    "0001-seed-random-samples.patch",
+    "0002-sample-backgrounds.patch",
+    "0003-connect-interactive-samples.patch",
+    "0004-sample-sizes.patch"
   ]
 }

@@ -31,25 +31,31 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Sampled
 @Composable
 fun SimpleTopAppBar() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var likes by remember { mutableStateOf(0) }
     TopAppBar(
         windowInsets = AppBarDefaults.topAppBarWindowInsets,
-        title = { Text("Simple TopAppBar") },
+        title = { Text(if (likes == 0) "Simple TopAppBar" else "Simple TopAppBar ($likes)") },
         navigationIcon = {
-            IconButton(onClick = { /* doSomething() */ }) {
+            IconButton(onClick = { likes = 0 }) {
                 Icon(Icons.Filled.Menu, contentDescription = null)
             }
         },
         actions = {
             // RowScope here, so these icons will be placed horizontally
-            IconButton(onClick = { /* doSomething() */ }) {
+            IconButton(onClick = { likes++ }) {
                 Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
             }
-            IconButton(onClick = { /* doSomething() */ }) {
+            IconButton(onClick = { likes++ }) {
                 Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
             }
         },
@@ -59,20 +65,23 @@ fun SimpleTopAppBar() {
 @Sampled
 @Composable
 fun SimpleBottomAppBar() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    var count by remember { mutableStateOf(0) }
     BottomAppBar(windowInsets = AppBarDefaults.bottomAppBarWindowInsets) {
         // Leading icons should typically have a high content alpha
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-            IconButton(onClick = { /* doSomething() */ }) {
+            IconButton(onClick = { count = 0 }) {
                 Icon(Icons.Filled.Menu, contentDescription = "Localized description")
             }
         }
         // The actions should be at the end of the BottomAppBar. They use the default medium
         // content alpha provided by BottomAppBar
+        if (count > 0) Text("Likes: $count")
         Spacer(Modifier.weight(1f, true))
-        IconButton(onClick = { /* doSomething() */ }) {
+        IconButton(onClick = { count++ }) {
             Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
         }
-        IconButton(onClick = { /* doSomething() */ }) {
+        IconButton(onClick = { count++ }) {
             Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
         }
     }

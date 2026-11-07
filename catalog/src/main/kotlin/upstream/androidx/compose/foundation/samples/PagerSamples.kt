@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.layout.LazyLayoutScrollScope
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.LazyLayoutScrollScope
@@ -65,9 +66,10 @@ import kotlinx.coroutines.launch
 @Sampled
 @Composable
 fun SimpleHorizontalPagerSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // Creates a 1-pager/viewport horizontal pager with single page snapping
     val state = rememberPagerState { 10 }
-    HorizontalPager(state = state, modifier = Modifier.fillMaxSize()) { page ->
+    HorizontalPager(state = state, modifier = Modifier.size(250.dp)) { page ->
         Box(
             modifier =
                 Modifier.padding(10.dp).background(Color.Blue).fillMaxWidth().aspectRatio(1f),
@@ -81,9 +83,10 @@ fun SimpleHorizontalPagerSample() {
 @Sampled
 @Composable
 fun SimpleVerticalPagerSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // Creates a 1-pager/viewport vertical pager with single page snapping
     val state = rememberPagerState { 10 }
-    VerticalPager(state = state, modifier = Modifier.fillMaxSize()) { page ->
+    VerticalPager(state = state, modifier = Modifier.size(250.dp)) { page ->
         Box(
             modifier =
                 Modifier.padding(10.dp).background(Color.Blue).fillMaxWidth().aspectRatio(1f),
@@ -97,9 +100,10 @@ fun SimpleVerticalPagerSample() {
 @Sampled
 @Composable
 fun PagerWithStateSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // You can use PagerState to define an initial page
     val state = rememberPagerState(initialPage = 5) { 10 }
-    HorizontalPager(modifier = Modifier.fillMaxSize(), state = state) { page ->
+    HorizontalPager(modifier = Modifier.size(250.dp), state = state) { page ->
         Box(
             modifier =
                 Modifier.padding(10.dp).background(Color.Blue).fillMaxWidth().aspectRatio(1f),
@@ -113,6 +117,7 @@ fun PagerWithStateSample() {
 @Sampled
 @Composable
 fun PagerCustomAnimateScrollToPage() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     suspend fun PagerState.customAnimateScrollToPage(page: Int) {
         val preJumpPosition =
             if (page > currentPage) {
@@ -138,7 +143,7 @@ fun PagerCustomAnimateScrollToPage() {
     val state = rememberPagerState(initialPage = 5) { 10 }
     val scope = rememberCoroutineScope()
 
-    Column {
+    Column(Modifier.size(250.dp, 300.dp)) {
         HorizontalPager(modifier = Modifier.fillMaxSize().weight(0.9f), state = state) { page ->
             Box(
                 modifier =
@@ -158,6 +163,7 @@ fun PagerCustomAnimateScrollToPage() {
 @Sampled
 @Composable
 fun CustomPageSizeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
 
     // [PageSize] should be defined as a top level constant in order to avoid unnecessary re-
     // creations.
@@ -176,7 +182,7 @@ fun CustomPageSizeSample() {
         }
 
     val state = rememberPagerState { 10 }
-    HorizontalPager(state = state, modifier = Modifier.fillMaxSize(), pageSize = CustomPageSize) {
+    HorizontalPager(state = state, modifier = Modifier.size(250.dp), pageSize = CustomPageSize) {
         page ->
         Box(
             modifier =
@@ -191,8 +197,9 @@ fun CustomPageSizeSample() {
 @Sampled
 @Composable
 fun ObservingStateChangesInPagerStateSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val pagerState = rememberPagerState { 10 }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.size(250.dp, 320.dp).background(Color.White)) {
         HorizontalPager(modifier = Modifier.weight(0.9f), state = pagerState) { page ->
             Box(
                 modifier =
@@ -214,9 +221,10 @@ fun ObservingStateChangesInPagerStateSample() {
 @Sampled
 @Composable
 fun AnimateScrollPageSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val state = rememberPagerState { 10 }
     val animationScope = rememberCoroutineScope()
-    Column {
+    Column(Modifier.size(250.dp, 300.dp)) {
         HorizontalPager(modifier = Modifier.weight(0.7f), state = state) { page ->
             Box(
                 modifier =
@@ -266,6 +274,7 @@ fun ScrollToPageSample() {
 @Sampled
 @Composable
 fun HorizontalPagerWithScrollableContent() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // This is a sample using NestedScroll and Pager.
     // We use the toolbar offset changing example from
     // androidx.compose.ui.samples.NestedScrollConnectionSample
@@ -286,7 +295,7 @@ fun HorizontalPagerWithScrollableContent() {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
+    Box(modifier = Modifier.size(250.dp, 300.dp).nestedScroll(nestedScrollConnection)) {
         // This Box simulates a collapsing top bar. It stands in for a component like TopAppBar.
         Box(
             modifier =

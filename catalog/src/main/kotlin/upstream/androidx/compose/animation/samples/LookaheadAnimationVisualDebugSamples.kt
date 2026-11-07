@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,14 +41,15 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun LookaheadAnimationVisualDebuggingSample() {
-    var isExpanded by mutableStateOf(false)
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    var isExpanded by remember { mutableStateOf(false) }
     // Wrap content with LookaheadAnimationVisualDebugging to enable visual debugging.
     // Optional parameters allow color customization and decision of whether to show key labels.
     // Note that enabling LookaheadAnimationVisualDebugging affects the entire UI subtree generated
     // by the content lambda. It applies to all descendants, regardless of whether they are defined
     // within the same lexical scope.
     LookaheadAnimationVisualDebugging(isShowKeyLabelEnabled = true) {
-        SharedTransitionLayout(Modifier.fillMaxSize().clickable { isExpanded = !isExpanded }) {
+        SharedTransitionLayout(Modifier.size(250.dp).background(Color.White).clickable { isExpanded = !isExpanded }) {
             AnimatedVisibility(visible = isExpanded) {
                 Box(
                     Modifier.offset(100.dp, 100.dp)
@@ -78,7 +80,8 @@ fun LookaheadAnimationVisualDebuggingSample() {
 @Sampled
 @Composable
 fun CustomizedLookaheadAnimationVisualDebuggingSample() {
-    var isExpanded by mutableStateOf(false)
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    var isExpanded by remember { mutableStateOf(false) }
     // Wrap content with LookaheadAnimationVisualDebugging to enable visual debugging.
     // Optional parameters allow color customization and decision of whether to show key labels.
     // Note that enabling LookaheadAnimationVisualDebugging affects the entire UI subtree generated
@@ -88,7 +91,7 @@ fun CustomizedLookaheadAnimationVisualDebuggingSample() {
         // Wrap content with CustomizedLookaheadAnimationVisualDebugging to customize the color of
         // the bounds visualizations in the specified scope.
         CustomizedLookaheadAnimationVisualDebugging(Color.Black) {
-            SharedTransitionLayout(Modifier.fillMaxSize().clickable { isExpanded = !isExpanded }) {
+            SharedTransitionLayout(Modifier.size(250.dp).background(Color.White).clickable { isExpanded = !isExpanded }) {
                 AnimatedVisibility(visible = isExpanded) {
                     Box(
                         Modifier.offset(100.dp, 100.dp)

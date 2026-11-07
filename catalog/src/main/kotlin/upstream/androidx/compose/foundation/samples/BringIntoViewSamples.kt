@@ -18,6 +18,7 @@ package androidx.compose.foundation.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -45,6 +47,7 @@ import kotlinx.coroutines.launch
 @Sampled
 @Composable
 fun BringIntoViewSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     Row(Modifier.horizontalScroll(rememberScrollState())) {
         repeat(100) {
             val bringIntoViewRequester = remember { BringIntoViewRequester() }
@@ -63,7 +66,7 @@ fun BringIntoViewSample() {
                             }
                         }
                     }
-                    .focusTarget()
+                    .size(32.dp).border(1.dp, Color.Black).background(Color.LightGray).focusTarget()
             )
         }
     }
@@ -72,6 +75,8 @@ fun BringIntoViewSample() {
 @Sampled
 @Composable
 fun BringPartOfComposableIntoViewSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     with(LocalDensity.current) {
         val bringIntoViewRequester = remember { BringIntoViewRequester() }
         val coroutineScope = rememberCoroutineScope()
@@ -103,5 +108,6 @@ fun BringPartOfComposableIntoViewSample() {
                 Text("Bring circle into View")
             }
         }
+    }
     }
 }

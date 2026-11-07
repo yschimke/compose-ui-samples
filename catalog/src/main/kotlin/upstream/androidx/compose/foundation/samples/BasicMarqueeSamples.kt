@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -51,18 +52,23 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun BasicMarqueeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     // Marquee only animates when the content doesn't fit in the max width.
-    Column(Modifier.width(30.dp)) { Text("hello world", Modifier.basicMarquee()) }
+    Column(Modifier.width(60.dp)) { Text("hello world", Modifier.basicMarquee()) }
+    }
 }
 
 @Preview(showBackground = true)
 @Sampled
 @Composable
 fun BasicFocusableMarqueeSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val focusRequester = remember { FocusRequester() }
 
     // Marquee only animates when the content doesn't fit in the max width.
-    Column(Modifier.width(30.dp)) {
+    Column(Modifier.width(60.dp)) {
         Text(
             "hello world",
             Modifier.clickable { focusRequester.requestFocus() }
@@ -71,12 +77,15 @@ fun BasicFocusableMarqueeSample() {
                 .focusable(),
         )
     }
+    }
 }
 
 @Preview(showBackground = true)
 @Sampled
 @Composable
 fun BasicMarqueeWithFadedEdgesSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val edgeWidth = 32.dp
     fun ContentDrawScope.drawFadedEdge(leftEdge: Boolean) {
         val edgeWidthPx = edgeWidth.toPx()
@@ -112,4 +121,5 @@ fun BasicMarqueeWithFadedEdgesSample() {
             )
             .padding(start = edgeWidth),
     )
+    }
 }

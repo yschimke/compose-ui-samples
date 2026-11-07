@@ -61,10 +61,11 @@ import kotlin.math.roundToInt
 @Composable
 @Sampled
 fun AwaitHorizontalDragOrCancellationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var width by remember { mutableStateOf(0f) }
-    Box(Modifier.fillMaxSize().onSizeChanged { width = it.width.toFloat() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { width = it.width.toFloat() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .fillMaxHeight()
@@ -102,10 +103,11 @@ fun AwaitHorizontalDragOrCancellationSample() {
 @Composable
 @Sampled
 fun HorizontalDragSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var width by remember { mutableStateOf(0f) }
-    Box(Modifier.fillMaxSize().onSizeChanged { width = it.width.toFloat() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { width = it.width.toFloat() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .fillMaxHeight()
@@ -142,10 +144,11 @@ fun HorizontalDragSample() {
 @Composable
 @Sampled
 fun DetectHorizontalDragGesturesSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var width by remember { mutableStateOf(0f) }
-    Box(Modifier.fillMaxSize().onSizeChanged { width = it.width.toFloat() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { width = it.width.toFloat() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .fillMaxHeight()
@@ -165,10 +168,11 @@ fun DetectHorizontalDragGesturesSample() {
 @Composable
 @Sampled
 fun AwaitVerticalDragOrCancellationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var height by remember { mutableStateOf(0f) }
-    Box(Modifier.fillMaxSize().onSizeChanged { height = it.height.toFloat() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { height = it.height.toFloat() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .fillMaxWidth()
@@ -207,10 +211,11 @@ fun AwaitVerticalDragOrCancellationSample() {
 @Composable
 @Sampled
 fun VerticalDragSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var height by remember { mutableStateOf(0f) }
-    Box(Modifier.fillMaxSize().onSizeChanged { height = it.height.toFloat() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { height = it.height.toFloat() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .fillMaxWidth()
@@ -248,10 +253,11 @@ fun VerticalDragSample() {
 @Composable
 @Sampled
 fun DetectVerticalDragGesturesSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var height by remember { mutableStateOf(0f) }
-    Box(Modifier.fillMaxSize().onSizeChanged { height = it.height.toFloat() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { height = it.height.toFloat() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .fillMaxWidth()
@@ -271,10 +277,11 @@ fun DetectVerticalDragGesturesSample() {
 @Composable
 @Sampled
 fun AwaitDragOrCancellationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var size by remember { mutableStateOf(Size.Zero) }
-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .size(50.dp)
@@ -319,10 +326,11 @@ fun AwaitDragOrCancellationSample() {
 @Composable
 @Sampled
 fun DragSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var size by remember { mutableStateOf(Size.Zero) }
-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .size(50.dp)
@@ -366,10 +374,11 @@ fun DragSample() {
 @Composable
 @Sampled
 fun DetectDragGesturesSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var size by remember { mutableStateOf(Size.Zero) }
-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .size(50.dp)
@@ -394,10 +403,11 @@ fun DetectDragGesturesSample() {
 @Composable
 @Sampled
 fun DetectDragWithLongPressGesturesSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val offsetX = remember { mutableStateOf(0f) }
     val offsetY = remember { mutableStateOf(0f) }
     var size by remember { mutableStateOf(Size.Zero) }
-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
+    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
         Box(
             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
                 .size(50.dp)

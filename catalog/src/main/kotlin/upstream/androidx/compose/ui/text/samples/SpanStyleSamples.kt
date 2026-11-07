@@ -17,6 +17,7 @@
 package androidx.compose.ui.text.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun SpanStyleSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     Text(
         fontSize = 16.sp,
         text =
@@ -37,11 +40,14 @@ fun SpanStyleSample() {
                 withStyle(SpanStyle(color = Color.Blue)) { append(" World") }
             },
     )
+    }
 }
 
 @Sampled
 @Composable
 fun SpanStyleBrushSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val brushColors = listOf(Color.Red, Color.Blue, Color.Green, Color.Yellow)
     Text(
         fontSize = 16.sp,
@@ -53,4 +59,5 @@ fun SpanStyleBrushSample() {
                 }
             },
     )
+    }
 }

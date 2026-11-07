@@ -24,6 +24,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RangeSlider
 import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,16 +38,21 @@ import kotlin.math.roundToInt
 @Sampled
 @Composable
 fun SliderSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var sliderPosition by remember { mutableStateOf(0f) }
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(text = "%.2f".format(sliderPosition))
         Slider(value = sliderPosition, onValueChange = { sliderPosition = it })
+    }
     }
 }
 
 @Sampled
 @Composable
 fun StepsSliderSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var sliderPosition by remember { mutableStateOf(0f) }
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(text = sliderPosition.roundToInt().toString())
@@ -68,12 +74,15 @@ fun StepsSliderSample() {
                 ),
         )
     }
+    }
 }
 
 @Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun RangeSliderSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var sliderPosition by remember { mutableStateOf(0f..100f) }
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         val rangeStart = "%.2f".format(sliderPosition.start)
@@ -89,12 +98,15 @@ fun RangeSliderSample() {
             },
         )
     }
+    }
 }
 
 @Sampled
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun StepRangeSliderSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     var sliderPosition by remember { mutableStateOf(0f..100f) }
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         val rangeStart = sliderPosition.start.roundToInt()
@@ -117,5 +129,6 @@ fun StepRangeSliderSample() {
                     activeTrackColor = MaterialTheme.colors.secondary,
                 ),
         )
+    }
     }
 }

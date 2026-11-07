@@ -1,0 +1,1490 @@
+Fix sample sizes where `@Sampled` composables render as 1x1 (local composable defined but never
+invoked, or empty box without size), overlap bare root siblings without a Column/Row container,
+or stretch small demos across the full preview canvas with `Modifier.fillMaxSize()`.
+
+diff --git a/androidx/compose/animation/core/samples/AnimatedValueSamples.kt b/androidx/compose/animation/core/samples/AnimatedValueSamples.kt
+index ba633b1..b4e1db6 100644
+--- a/androidx/compose/animation/core/samples/AnimatedValueSamples.kt
++++ b/androidx/compose/animation/core/samples/AnimatedValueSamples.kt
+@@ -27,6 +27,7 @@ import androidx.compose.animation.core.animateValueAsState
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.offset
+ import androidx.compose.foundation.layout.requiredHeight
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun AlphaAnimationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun alphaAnimation(visible: Boolean) {
+         // Animates to 1f or 0f based on [visible].
+@@ -56,8 +58,9 @@ fun AlphaAnimationSample() {
+         // limits the invalidation scope of alpha change to graphicsLayer's draw stage (i.e. no
+         // recomposition would be needed). The latter triggers recomposition on each animation
+         // frame.
+-        Box(modifier = Modifier.graphicsLayer { this.alpha = alpha }.background(Color.Red))
++        Box(modifier = Modifier.size(100.dp).graphicsLayer { this.alpha = alpha }.background(Color.Red))
+     }
++    alphaAnimation(true)
+ }
+ 
+ data class MySize(val width: Dp, val height: Dp)
+@@ -65,6 +68,7 @@ data class MySize(val width: Dp, val height: Dp)
+ @Sampled
+ @Composable
+ fun ArbitraryValueTypeTransitionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun ArbitraryValueTypeAnimation(enabled: Boolean) {
+         // Sets up the different animation target values based on the [enabled] flag.
+@@ -90,23 +94,27 @@ fun ArbitraryValueTypeTransitionSample() {
+             )
+         Box(Modifier.size(animSize.width, animSize.height).background(color = Color.Red))
+     }
++    ArbitraryValueTypeAnimation(false)
+ }
+ 
+ @Sampled
+ @Composable
+ fun DpAnimationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun HeightAnimation(collapsed: Boolean) {
+         // Animates a height of [Dp] type to different target values based on the [collapsed] flag.
+         val height: Dp by animateDpAsState(if (collapsed) 10.dp else 20.dp)
+         Box(Modifier.fillMaxWidth().requiredHeight(height).background(color = Color.Red))
+     }
++    HeightAnimation(false)
+ }
+ 
+ @Sampled
+ @Composable
+ @Suppress("UNUSED_VARIABLE")
+ fun AnimateOffsetSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun OffsetAnimation(selected: Boolean) {
+         // Animates the offset depending on the selected flag.
+@@ -120,5 +128,9 @@ fun AnimateOffsetSample() {
+         // State object is updated by the animation.
+         val intOffset: IntOffset by
+             animateIntOffsetAsState(if (selected) IntOffset(0, 0) else IntOffset(50, 50))
++        Box(Modifier.size(100.dp)) {
++            Box(Modifier.offset { intOffset + IntOffset(offset.x.toInt(), offset.y.toInt()) }.size(40.dp).background(Color.Red))
++        }
+     }
++    OffsetAnimation(false)
+ }
+diff --git a/androidx/compose/animation/core/samples/InfiniteTransitionSamples.kt b/androidx/compose/animation/core/samples/InfiniteTransitionSamples.kt
+index 626d58b..a9bde36 100644
+--- a/androidx/compose/animation/core/samples/InfiniteTransitionSamples.kt
++++ b/androidx/compose/animation/core/samples/InfiniteTransitionSamples.kt
+@@ -30,6 +30,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
+ import androidx.compose.animation.core.tween
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.offset
+ import androidx.compose.material.Icon
+ import androidx.compose.material.icons.Icons
+@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun InfiniteTransitionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun InfinitelyPulsingHeart() {
+         // Creates an [InfiniteTransition] instance for managing child animations.
+@@ -87,7 +89,7 @@ fun InfiniteTransitionSample() {
+                     ),
+             )
+ 
+-        Box(Modifier.fillMaxSize()) {
++        Box(Modifier.size(100.dp)) {
+             Icon(
+                 Icons.Filled.Favorite,
+                 contentDescription = null,
+@@ -97,6 +99,7 @@ fun InfiniteTransitionSample() {
+             )
+         }
+     }
++    InfinitelyPulsingHeart()
+ }
+ 
+ @Sampled
+diff --git a/androidx/compose/animation/core/samples/PathEasingSamples.kt b/androidx/compose/animation/core/samples/PathEasingSamples.kt
+index 2dd7b42..33a9ac6 100644
+--- a/androidx/compose/animation/core/samples/PathEasingSamples.kt
++++ b/androidx/compose/animation/core/samples/PathEasingSamples.kt
+@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun PathEasingSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // Creates a custom PathEasing curve and applies it to an animation
+     var toggled by remember { mutableStateOf(true) }
+     val pathForAnimation = remember {
+@@ -55,7 +56,7 @@ fun PathEasingSample() {
+             label = "offset",
+             animationSpec = tween(durationMillis = 1000, easing = PathEasing(pathForAnimation)),
+         )
+-    Box(modifier = Modifier.fillMaxSize().clickable { toggled = !toggled }) {
++    Box(modifier = Modifier.size(200.dp).clickable { toggled = !toggled }) {
+         Box(modifier = Modifier.offset { offset }.size(100.dp).background(Color.Blue))
+     }
+ }
+diff --git a/androidx/compose/animation/samples/AnimatedValueSamples.kt b/androidx/compose/animation/samples/AnimatedValueSamples.kt
+index e626ed6..c60d4af 100644
+--- a/androidx/compose/animation/samples/AnimatedValueSamples.kt
++++ b/androidx/compose/animation/samples/AnimatedValueSamples.kt
+@@ -22,6 +22,7 @@ import androidx.compose.animation.animateColorAsState
+ import androidx.compose.animation.core.AnimationSpec
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.size
+ import androidx.compose.material.MaterialTheme
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
+@@ -30,10 +31,12 @@ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberUpdatedState
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun ColorAnimationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun ColorAnimation(primary: Boolean) {
+         // Animates to primary or secondary color, depending on whether [primary] is true
+@@ -43,8 +46,9 @@ fun ColorAnimationSample() {
+             animateColorAsState(
+                 if (primary) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
+             )
+-        Box(modifier = Modifier.background(color))
++        Box(modifier = Modifier.size(100.dp).background(color))
+     }
++    ColorAnimation(true)
+ }
+ 
+ @Sampled
+diff --git a/androidx/compose/animation/samples/TransitionSamples.kt b/androidx/compose/animation/samples/TransitionSamples.kt
+index e82876f..ca6ae6e 100644
+--- a/androidx/compose/animation/samples/TransitionSamples.kt
++++ b/androidx/compose/animation/samples/TransitionSamples.kt
+@@ -61,6 +61,7 @@ private enum class ComponentState {
+ @Sampled
+ @Composable
+ fun GestureAnimationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // enum class ComponentState { Pressed, Released }
+     var useRed by remember { mutableStateOf(false) }
+     var toState by remember { mutableStateOf(ComponentState.Released) }
+@@ -127,7 +128,7 @@ fun GestureAnimationSample() {
+         }
+         Box(
+             modifier
+-                .fillMaxSize()
++                .size(200.dp)
+                 .wrapContentSize(Alignment.Center)
+                 .size((100 * scale).dp)
+                 .background(color)
+@@ -138,6 +139,7 @@ fun GestureAnimationSample() {
+ @Sampled
+ @Composable
+ fun InfiniteTransitionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun InfinitelyPulsingHeart() {
+         // Creates an [InfiniteTransition] instance for managing child animations.
+@@ -179,7 +181,7 @@ fun InfiniteTransitionSample() {
+                     ),
+             )
+ 
+-        Box(Modifier.fillMaxSize()) {
++        Box(Modifier.size(100.dp)) {
+             Icon(
+                 Icons.Filled.Favorite,
+                 contentDescription = null,
+@@ -189,4 +191,5 @@ fun InfiniteTransitionSample() {
+             )
+         }
+     }
++    InfinitelyPulsingHeart()
+ }
+diff --git a/androidx/compose/foundation/layout/samples/BoxSample.kt b/androidx/compose/foundation/layout/samples/BoxSample.kt
+index 4f34cad..0d45f80 100644
+--- a/androidx/compose/foundation/layout/samples/BoxSample.kt
++++ b/androidx/compose/foundation/layout/samples/BoxSample.kt
+@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun SimpleBox() {
+-    Box {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.size(350.dp)) {
+         Box(Modifier.fillMaxSize().background(Color.Cyan))
+         Box(
+             Modifier.matchParentSize().padding(top = 20.dp, bottom = 20.dp).background(Color.Yellow)
+diff --git a/androidx/compose/foundation/layout/samples/ColumnSample.kt b/androidx/compose/foundation/layout/samples/ColumnSample.kt
+index ef49012..abe44f4 100644
+--- a/androidx/compose/foundation/layout/samples/ColumnSample.kt
++++ b/androidx/compose/foundation/layout/samples/ColumnSample.kt
+@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.width
+ import androidx.compose.runtime.Composable
+@@ -37,7 +38,8 @@ import kotlin.math.min
+ @Sampled
+ @Composable
+ fun SimpleColumn() {
+-    Column {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.height(200.dp)) {
+         // The child with no weight will have the specified size.
+         Box(Modifier.size(40.dp, 80.dp).background(Color.Magenta))
+         // Has weight, the child will occupy half of the remaining height.
+diff --git a/androidx/compose/foundation/layout/samples/ContextualFlowColumnSample.kt b/androidx/compose/foundation/layout/samples/ContextualFlowColumnSample.kt
+index 40e2fd5..3714fa1 100644
+--- a/androidx/compose/foundation/layout/samples/ContextualFlowColumnSample.kt
++++ b/androidx/compose/foundation/layout/samples/ContextualFlowColumnSample.kt
+@@ -23,6 +23,7 @@ import androidx.compose.foundation.background
+ import androidx.compose.foundation.horizontalScroll
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.ContextualFlowColumn
+ import androidx.compose.foundation.layout.ContextualFlowColumnOverflow
+ import androidx.compose.foundation.layout.ContextualFlowColumnOverflowScope
+@@ -52,6 +53,8 @@ import kotlin.random.Random
+ @Sampled
+ @Composable
+ fun ContextualFlowColMaxLineDynamicSeeMore() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     val totalCount = 300
+     var maxLines by remember { mutableStateOf(2) }
+ 
+@@ -106,15 +109,18 @@ fun ContextualFlowColMaxLineDynamicSeeMore() {
+             )
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+ @Sampled
+ @Composable
+ fun ContextualFlowColumn_ItemPosition() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     Text("Ln: Line No\nPs: Position No. in Line", modifier = Modifier.padding(20.dp))
+     ContextualFlowColumn(
+-        modifier = Modifier.fillMaxHeight(1f).width(210.dp).padding(20.dp),
++        modifier = Modifier.height(300.dp).width(210.dp).padding(20.dp),
+         horizontalArrangement = Arrangement.spacedBy(10.dp),
+         verticalArrangement = Arrangement.spacedBy(20.dp),
+         maxItemsInEachColumn = 4,
+@@ -137,4 +143,5 @@ fun ContextualFlowColumn_ItemPosition() {
+             )
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/layout/samples/ContextualFlowRowSample.kt b/androidx/compose/foundation/layout/samples/ContextualFlowRowSample.kt
+index ce44ed8..cb812be 100644
+--- a/androidx/compose/foundation/layout/samples/ContextualFlowRowSample.kt
++++ b/androidx/compose/foundation/layout/samples/ContextualFlowRowSample.kt
+@@ -23,6 +23,7 @@ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.ContextualFlowRow
+ import androidx.compose.foundation.layout.ContextualFlowRowOverflow
+ import androidx.compose.foundation.layout.ContextualFlowRowOverflowScope
+@@ -51,6 +52,8 @@ import kotlin.random.Random
+ @Sampled
+ @Composable
+ fun ContextualFlowRowMaxLineDynamicSeeMore() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     val totalCount = 300
+     var maxLines by remember { mutableStateOf(2) }
+ 
+@@ -100,12 +103,15 @@ fun ContextualFlowRowMaxLineDynamicSeeMore() {
+             )
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+ @Sampled
+ @Composable
+ fun ContextualFlowRow_ItemPosition() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     Text("Ln: Line No\nPs: Position No. in Line", modifier = Modifier.padding(20.dp))
+     ContextualFlowRow(
+         modifier = Modifier.fillMaxWidth(1f).height(210.dp).padding(20.dp),
+@@ -131,6 +137,7 @@ fun ContextualFlowRow_ItemPosition() {
+             )
+         }
+     }
++    }
+ }
+ 
+ enum class MatchingColors(val index: Int, val color: Color) {
+diff --git a/androidx/compose/foundation/layout/samples/FlowColumnSample.kt b/androidx/compose/foundation/layout/samples/FlowColumnSample.kt
+index ce6c413..9eebea8 100644
+--- a/androidx/compose/foundation/layout/samples/FlowColumnSample.kt
++++ b/androidx/compose/foundation/layout/samples/FlowColumnSample.kt
+@@ -25,6 +25,7 @@ import androidx.compose.foundation.border
+ import androidx.compose.foundation.horizontalScroll
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.ExperimentalLayoutApi
+ import androidx.compose.foundation.layout.FlowColumn
+ import androidx.compose.foundation.layout.FlowColumnOverflow
+@@ -54,6 +55,8 @@ import kotlin.random.Random
+ @Sampled
+ @Composable
+ fun SimpleFlowColumn() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+ 
+     Text(
+         modifier =
+@@ -85,12 +88,15 @@ fun SimpleFlowColumn() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+ @Sampled
+ @Composable
+ fun SimpleFlowColumnMaxLinesWithSeeMore() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     val totalCount = 20
+     var maxLines by remember { mutableStateOf(2) }
+ 
+@@ -128,6 +134,7 @@ fun SimpleFlowColumnMaxLinesWithSeeMore() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+@@ -177,6 +184,8 @@ fun SimpleFlowColumnWithMaxWidth() {
+ @Sampled
+ @Composable
+ fun SimpleFlowColumnMaxLinesDynamicSeeMore() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     val totalCount = 20
+     var maxLines by remember { mutableStateOf(2) }
+ 
+@@ -228,6 +237,7 @@ fun SimpleFlowColumnMaxLinesDynamicSeeMore() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+diff --git a/androidx/compose/foundation/layout/samples/FlowRowSample.kt b/androidx/compose/foundation/layout/samples/FlowRowSample.kt
+index 79f41f2..dbcbdc7 100644
+--- a/androidx/compose/foundation/layout/samples/FlowRowSample.kt
++++ b/androidx/compose/foundation/layout/samples/FlowRowSample.kt
+@@ -24,6 +24,7 @@ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.ExperimentalLayoutApi
+ import androidx.compose.foundation.layout.FlowRow
+ import androidx.compose.foundation.layout.FlowRowOverflow
+@@ -59,6 +60,8 @@ import kotlin.random.Random
+ @Sampled
+ @Composable
+ fun SimpleFlowRow() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     Text(
+         modifier =
+             Modifier.fillMaxWidth(1f).padding(20.dp).wrapContentHeight(align = Alignment.Top),
+@@ -84,12 +87,15 @@ fun SimpleFlowRow() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+ @Sampled
+ @Composable
+ fun SimpleFlowRowMaxLinesWithSeeMore() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     val totalCount = 20
+     var maxLines by remember { mutableStateOf(2) }
+ 
+@@ -124,6 +130,7 @@ fun SimpleFlowRowMaxLinesWithSeeMore() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalLayoutApi::class)
+@@ -173,6 +180,8 @@ fun SimpleFlowRowWithMaxHeight() {
+ @Sampled
+ @Composable
+ fun SimpleFlowRowMaxLinesDynamicSeeMore() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(Modifier.background(Color.White)) {
+     val totalCount = 40
+     var maxLines by remember { mutableStateOf(2) }
+ 
+@@ -226,6 +235,7 @@ fun SimpleFlowRowMaxLinesDynamicSeeMore() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @Composable
+diff --git a/androidx/compose/foundation/layout/samples/RowSample.kt b/androidx/compose/foundation/layout/samples/RowSample.kt
+index a5e8a74..1366069 100644
+--- a/androidx/compose/foundation/layout/samples/RowSample.kt
++++ b/androidx/compose/foundation/layout/samples/RowSample.kt
+@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.fillMaxHeight
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.size
++import androidx.compose.foundation.layout.width
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Alignment
+@@ -34,7 +35,8 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun SimpleRow() {
+-    Row {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Row(Modifier.width(200.dp)) {
+         // The child with no weight will have the specified size.
+         Box(Modifier.size(40.dp, 80.dp).background(Color.Magenta))
+         // Has weight, the child will occupy half of the remaining width.
+@@ -48,7 +50,8 @@ fun SimpleRow() {
+ @Sampled
+ @Composable
+ fun SimpleAlignInRow() {
+-    Row(Modifier.fillMaxHeight()) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Row(Modifier.height(100.dp)) {
+         // The child with no align modifier is positioned by default so that its top edge is
+         // aligned to the top of the vertical axis.
+         Box(Modifier.size(80.dp, 40.dp).background(Color.Magenta))
+@@ -67,7 +70,8 @@ fun SimpleAlignInRow() {
+ @Sampled
+ @Composable
+ fun SimpleAlignByInRow() {
+-    Row(Modifier.fillMaxHeight()) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Row(Modifier.height(100.dp)) {
+         // The center of the magenta Box and the baselines of the two texts will be
+         // vertically aligned. Note that alignBy() or alignByBaseline() has to be specified
+         // for all children we want to take part in the alignment. For example, alignByBaseline()
+diff --git a/androidx/compose/foundation/layout/samples/SizeModifierSample.kt b/androidx/compose/foundation/layout/samples/SizeModifierSample.kt
+index fcbeaeb..b37ece2 100644
+--- a/androidx/compose/foundation/layout/samples/SizeModifierSample.kt
++++ b/androidx/compose/foundation/layout/samples/SizeModifierSample.kt
+@@ -18,7 +18,9 @@ package androidx.compose.foundation.layout.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.aspectRatio
+ import androidx.compose.foundation.layout.defaultMinSize
+ import androidx.compose.foundation.layout.fillMaxHeight
+@@ -124,7 +126,8 @@ fun FillHalfWidthModifier() {
+ @Sampled
+ @Composable
+ fun SimpleFillHeightModifier() {
+-    Box(Modifier.fillMaxHeight().background(Color.Red), contentAlignment = Alignment.Center) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.size(100.dp, 150.dp).background(Color.Red), contentAlignment = Alignment.Center) {
+         Box(Modifier.size(100.dp).background(color = Color.Magenta))
+     }
+ }
+@@ -141,7 +144,8 @@ fun FillHalfHeightModifier() {
+ @Sampled
+ @Composable
+ fun SimpleFillModifier() {
+-    Box(Modifier.fillMaxSize().background(Color.Red), contentAlignment = Alignment.Center) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.size(150.dp).background(Color.Red), contentAlignment = Alignment.Center) {
+         Box(Modifier.size(100.dp).background(color = Color.Magenta))
+     }
+ }
+@@ -210,6 +214,8 @@ fun SimpleWrapContentHorizontallyAlignedModifier() {
+ @Sampled
+ @Composable
+ fun DefaultMinSizeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+     @Composable
+     fun DefaultMinBox(modifier: Modifier = Modifier) {
+         Box(modifier.defaultMinSize(minWidth = 100.dp, minHeight = 100.dp).background(Color.Blue))
+@@ -223,4 +229,5 @@ fun DefaultMinSizeSample() {
+     // Note that if DefaultMinBox used requiredSizeIn or sizeIn rather than
+     // defaultMinSize, the min constraints would have been applied with either
+     // of the above usages.
++    }
+ }
+diff --git a/androidx/compose/foundation/layout/samples/VisibleModifierSample.kt b/androidx/compose/foundation/layout/samples/VisibleModifierSample.kt
+index f818bbf..f724d06 100644
+--- a/androidx/compose/foundation/layout/samples/VisibleModifierSample.kt
++++ b/androidx/compose/foundation/layout/samples/VisibleModifierSample.kt
+@@ -18,7 +18,9 @@ package androidx.compose.foundation.layout.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.border
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.visible
+ import androidx.compose.runtime.Composable
+@@ -29,8 +31,10 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun VisibleModifierSample() {
+-    Box {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Row(Modifier.border(1.dp, Color.Gray)) {
+         // This box will not be visible but will still occupy 50.dp x 50.dp of space.
+         Box(modifier = Modifier.size(50.dp).background(Color.Red).visible(false))
++        Box(modifier = Modifier.size(50.dp).background(Color.Blue))
+     }
+ }
+diff --git a/androidx/compose/foundation/layout/samples/WindowInsetsSample.kt b/androidx/compose/foundation/layout/samples/WindowInsetsSample.kt
+index 55839f7..b96c2f9 100644
+--- a/androidx/compose/foundation/layout/samples/WindowInsetsSample.kt
++++ b/androidx/compose/foundation/layout/samples/WindowInsetsSample.kt
+@@ -21,17 +21,20 @@ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fitInside
+ import androidx.compose.foundation.layout.fitOutside
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.WindowInsetsRulers.Companion.NavigationBars
+ import androidx.compose.ui.layout.WindowInsetsRulers.Companion.SafeContent
+ import androidx.compose.ui.layout.WindowInsetsRulers.Companion.StatusBars
++import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun FitInsideOutsideExample() {
+-    Box(Modifier.fillMaxSize()) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.size(200.dp)) {
+         // Drawn behind the status bar
+         Box(Modifier.fillMaxSize().fitOutside(StatusBars.current).background(Color.Blue))
+         // Drawn behind the navigation bar
+diff --git a/androidx/compose/foundation/samples/DragGestureDetectorSamples.kt b/androidx/compose/foundation/samples/DragGestureDetectorSamples.kt
+index d394917..3b524fe 100644
+--- a/androidx/compose/foundation/samples/DragGestureDetectorSamples.kt
++++ b/androidx/compose/foundation/samples/DragGestureDetectorSamples.kt
+@@ -61,10 +61,11 @@ import kotlin.math.roundToInt
+ @Composable
+ @Sampled
+ fun AwaitHorizontalDragOrCancellationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var width by remember { mutableStateOf(0f) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { width = it.width.toFloat() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { width = it.width.toFloat() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .fillMaxHeight()
+@@ -102,10 +103,11 @@ fun AwaitHorizontalDragOrCancellationSample() {
+ @Composable
+ @Sampled
+ fun HorizontalDragSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var width by remember { mutableStateOf(0f) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { width = it.width.toFloat() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { width = it.width.toFloat() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .fillMaxHeight()
+@@ -142,10 +144,11 @@ fun HorizontalDragSample() {
+ @Composable
+ @Sampled
+ fun DetectHorizontalDragGesturesSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var width by remember { mutableStateOf(0f) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { width = it.width.toFloat() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { width = it.width.toFloat() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .fillMaxHeight()
+@@ -165,10 +168,11 @@ fun DetectHorizontalDragGesturesSample() {
+ @Composable
+ @Sampled
+ fun AwaitVerticalDragOrCancellationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var height by remember { mutableStateOf(0f) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { height = it.height.toFloat() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { height = it.height.toFloat() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .fillMaxWidth()
+@@ -207,10 +211,11 @@ fun AwaitVerticalDragOrCancellationSample() {
+ @Composable
+ @Sampled
+ fun VerticalDragSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var height by remember { mutableStateOf(0f) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { height = it.height.toFloat() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { height = it.height.toFloat() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .fillMaxWidth()
+@@ -248,10 +253,11 @@ fun VerticalDragSample() {
+ @Composable
+ @Sampled
+ fun DetectVerticalDragGesturesSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var height by remember { mutableStateOf(0f) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { height = it.height.toFloat() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { height = it.height.toFloat() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .fillMaxWidth()
+@@ -271,10 +277,11 @@ fun DetectVerticalDragGesturesSample() {
+ @Composable
+ @Sampled
+ fun AwaitDragOrCancellationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var size by remember { mutableStateOf(Size.Zero) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .size(50.dp)
+@@ -319,10 +326,11 @@ fun AwaitDragOrCancellationSample() {
+ @Composable
+ @Sampled
+ fun DragSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var size by remember { mutableStateOf(Size.Zero) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .size(50.dp)
+@@ -366,10 +374,11 @@ fun DragSample() {
+ @Composable
+ @Sampled
+ fun DetectDragGesturesSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var size by remember { mutableStateOf(Size.Zero) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .size(50.dp)
+@@ -394,10 +403,11 @@ fun DetectDragGesturesSample() {
+ @Composable
+ @Sampled
+ fun DetectDragWithLongPressGesturesSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     var size by remember { mutableStateOf(Size.Zero) }
+-    Box(Modifier.fillMaxSize().onSizeChanged { size = it.toSize() }) {
++    Box(Modifier.size(200.dp).background(Color.LightGray).onSizeChanged { size = it.toSize() }) {
+         Box(
+             Modifier.offset { IntOffset(offsetX.value.roundToInt(), offsetY.value.roundToInt()) }
+                 .size(50.dp)
+diff --git a/androidx/compose/foundation/samples/PagerSamples.kt b/androidx/compose/foundation/samples/PagerSamples.kt
+index 23f6115..b8d1158 100644
+--- a/androidx/compose/foundation/samples/PagerSamples.kt
++++ b/androidx/compose/foundation/samples/PagerSamples.kt
+@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.offset
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.lazy.layout.LazyLayoutScrollScope
+ import androidx.compose.foundation.pager.HorizontalPager
+ import androidx.compose.foundation.pager.LazyLayoutScrollScope
+@@ -65,9 +66,10 @@ import kotlinx.coroutines.launch
+ @Sampled
+ @Composable
+ fun SimpleHorizontalPagerSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // Creates a 1-pager/viewport horizontal pager with single page snapping
+     val state = rememberPagerState { 10 }
+-    HorizontalPager(state = state, modifier = Modifier.fillMaxSize()) { page ->
++    HorizontalPager(state = state, modifier = Modifier.size(250.dp)) { page ->
+         Box(
+             modifier =
+                 Modifier.padding(10.dp).background(Color.Blue).fillMaxWidth().aspectRatio(1f),
+@@ -81,9 +83,10 @@ fun SimpleHorizontalPagerSample() {
+ @Sampled
+ @Composable
+ fun SimpleVerticalPagerSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // Creates a 1-pager/viewport vertical pager with single page snapping
+     val state = rememberPagerState { 10 }
+-    VerticalPager(state = state, modifier = Modifier.fillMaxSize()) { page ->
++    VerticalPager(state = state, modifier = Modifier.size(250.dp)) { page ->
+         Box(
+             modifier =
+                 Modifier.padding(10.dp).background(Color.Blue).fillMaxWidth().aspectRatio(1f),
+@@ -97,9 +100,10 @@ fun SimpleVerticalPagerSample() {
+ @Sampled
+ @Composable
+ fun PagerWithStateSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // You can use PagerState to define an initial page
+     val state = rememberPagerState(initialPage = 5) { 10 }
+-    HorizontalPager(modifier = Modifier.fillMaxSize(), state = state) { page ->
++    HorizontalPager(modifier = Modifier.size(250.dp), state = state) { page ->
+         Box(
+             modifier =
+                 Modifier.padding(10.dp).background(Color.Blue).fillMaxWidth().aspectRatio(1f),
+@@ -113,6 +117,7 @@ fun PagerWithStateSample() {
+ @Sampled
+ @Composable
+ fun PagerCustomAnimateScrollToPage() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     suspend fun PagerState.customAnimateScrollToPage(page: Int) {
+         val preJumpPosition =
+             if (page > currentPage) {
+@@ -138,7 +143,7 @@ fun PagerCustomAnimateScrollToPage() {
+     val state = rememberPagerState(initialPage = 5) { 10 }
+     val scope = rememberCoroutineScope()
+ 
+-    Column {
++    Column(Modifier.size(250.dp, 300.dp)) {
+         HorizontalPager(modifier = Modifier.fillMaxSize().weight(0.9f), state = state) { page ->
+             Box(
+                 modifier =
+@@ -158,6 +163,7 @@ fun PagerCustomAnimateScrollToPage() {
+ @Sampled
+ @Composable
+ fun CustomPageSizeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+ 
+     // [PageSize] should be defined as a top level constant in order to avoid unnecessary re-
+     // creations.
+@@ -176,7 +182,7 @@ fun CustomPageSizeSample() {
+         }
+ 
+     val state = rememberPagerState { 10 }
+-    HorizontalPager(state = state, modifier = Modifier.fillMaxSize(), pageSize = CustomPageSize) {
++    HorizontalPager(state = state, modifier = Modifier.size(250.dp), pageSize = CustomPageSize) {
+         page ->
+         Box(
+             modifier =
+@@ -191,8 +197,9 @@ fun CustomPageSizeSample() {
+ @Sampled
+ @Composable
+ fun ObservingStateChangesInPagerStateSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val pagerState = rememberPagerState { 10 }
+-    Column(modifier = Modifier.fillMaxSize()) {
++    Column(modifier = Modifier.size(250.dp, 320.dp).background(Color.White)) {
+         HorizontalPager(modifier = Modifier.weight(0.9f), state = pagerState) { page ->
+             Box(
+                 modifier =
+@@ -214,9 +221,10 @@ fun ObservingStateChangesInPagerStateSample() {
+ @Sampled
+ @Composable
+ fun AnimateScrollPageSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val state = rememberPagerState { 10 }
+     val animationScope = rememberCoroutineScope()
+-    Column {
++    Column(Modifier.size(250.dp, 300.dp)) {
+         HorizontalPager(modifier = Modifier.weight(0.7f), state = state) { page ->
+             Box(
+                 modifier =
+@@ -266,6 +274,7 @@ fun ScrollToPageSample() {
+ @Sampled
+ @Composable
+ fun HorizontalPagerWithScrollableContent() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // This is a sample using NestedScroll and Pager.
+     // We use the toolbar offset changing example from
+     // androidx.compose.ui.samples.NestedScrollConnectionSample
+@@ -286,7 +295,7 @@ fun HorizontalPagerWithScrollableContent() {
+         }
+     }
+ 
+-    Box(modifier = Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
++    Box(modifier = Modifier.size(250.dp, 300.dp).nestedScroll(nestedScrollConnection)) {
+         // This Box simulates a collapsing top bar. It stands in for a component like TopAppBar.
+         Box(
+             modifier =
+diff --git a/androidx/compose/foundation/samples/ScrollableSamples.kt b/androidx/compose/foundation/samples/ScrollableSamples.kt
+index 39cdc45..8f6fc59 100644
+--- a/androidx/compose/foundation/samples/ScrollableSamples.kt
++++ b/androidx/compose/foundation/samples/ScrollableSamples.kt
+@@ -90,8 +90,9 @@ fun ScrollableSample() {
+ @Sampled
+ @Composable
+ fun CanScrollSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val state = rememberLazyListState()
+-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
++    Column(Modifier.size(200.dp, 220.dp).background(Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+         Icon(
+             Icons.Filled.KeyboardArrowUp,
+             null,
+diff --git a/androidx/compose/foundation/samples/ScrollerSamples.kt b/androidx/compose/foundation/samples/ScrollerSamples.kt
+index a60b9a9..2596d33 100644
+--- a/androidx/compose/foundation/samples/ScrollerSamples.kt
++++ b/androidx/compose/foundation/samples/ScrollerSamples.kt
+@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.requiredHeight
+ import androidx.compose.foundation.layout.size
++import androidx.compose.foundation.layout.width
+ import androidx.compose.foundation.rememberScrollState
+ import androidx.compose.foundation.verticalScroll
+ import androidx.compose.material3.Text
+@@ -54,6 +55,7 @@ private val colors =
+ @Sampled
+ @Composable
+ fun HorizontalScrollSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val scrollState = rememberScrollState()
+     val gradient =
+         Brush.horizontalGradient(
+@@ -63,7 +65,7 @@ fun HorizontalScrollSample() {
+             TileMode.Repeated,
+         )
+     Box(
+-        Modifier.horizontalScroll(scrollState)
++        Modifier.width(300.dp).horizontalScroll(scrollState)
+             .size(width = 10000.dp, height = 200.dp)
+             .background(brush = gradient)
+     )
+@@ -72,6 +74,7 @@ fun HorizontalScrollSample() {
+ @Sampled
+ @Composable
+ fun VerticalScrollExample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val scrollState = rememberScrollState()
+     val gradient =
+         Brush.verticalGradient(
+@@ -81,8 +84,8 @@ fun VerticalScrollExample() {
+             TileMode.Repeated,
+         )
+     Box(
+-        Modifier.verticalScroll(scrollState)
+-            .fillMaxWidth()
++        Modifier.size(200.dp)
++            .verticalScroll(scrollState)
+             .requiredHeight(10000.dp)
+             .background(brush = gradient)
+     )
+@@ -91,10 +94,11 @@ fun VerticalScrollExample() {
+ @Sampled
+ @Composable
+ fun ControlledScrollableRowSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // Create ScrollState to own it and be able to control scroll behaviour of scrollable Row below
+     val scrollState = rememberScrollState()
+     val scope = rememberCoroutineScope()
+-    Column {
++    Column(Modifier.width(320.dp).background(Color.White)) {
+         Row(Modifier.horizontalScroll(scrollState)) { repeat(1000) { index -> Square(index) } }
+         // Controls for scrolling
+         Row(verticalAlignment = Alignment.CenterVertically) {
+diff --git a/androidx/compose/foundation/samples/SnapFlingBehaviorSample.kt b/androidx/compose/foundation/samples/SnapFlingBehaviorSample.kt
+index 036ead2..03af702 100644
+--- a/androidx/compose/foundation/samples/SnapFlingBehaviorSample.kt
++++ b/androidx/compose/foundation/samples/SnapFlingBehaviorSample.kt
+@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.width
+ import androidx.compose.foundation.lazy.LazyRow
+ import androidx.compose.foundation.lazy.rememberLazyListState
+@@ -41,10 +42,11 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun SnapFlingBehaviorSimpleSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val state = rememberLazyListState()
+ 
+     LazyRow(
+-        modifier = Modifier.fillMaxSize(),
++        modifier = Modifier.size(350.dp, 220.dp),
+         verticalAlignment = Alignment.CenterVertically,
+         state = state,
+         flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+@@ -52,7 +54,7 @@ fun SnapFlingBehaviorSimpleSample() {
+         items(200) {
+             Box(
+                 modifier =
+-                    Modifier.height(400.dp).width(200.dp).padding(8.dp).background(Color.Gray),
++                    Modifier.height(180.dp).width(140.dp).padding(8.dp).background(Color.Gray),
+                 contentAlignment = Alignment.Center,
+             ) {
+                 Text(it.toString(), fontSize = 32.sp)
+@@ -64,6 +66,7 @@ fun SnapFlingBehaviorSimpleSample() {
+ @Sampled
+ @Composable
+ fun SnapFlingBehaviorCustomizedSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val state = rememberLazyListState()
+ 
+     // If you'd like to customize either the snap behavior or the layout provider
+@@ -71,7 +74,7 @@ fun SnapFlingBehaviorCustomizedSample() {
+     val flingBehavior = rememberSnapFlingBehavior(snappingLayout)
+ 
+     LazyRow(
+-        modifier = Modifier.fillMaxSize(),
++        modifier = Modifier.size(350.dp, 220.dp),
+         verticalAlignment = Alignment.CenterVertically,
+         state = state,
+         flingBehavior = flingBehavior,
+@@ -79,7 +82,7 @@ fun SnapFlingBehaviorCustomizedSample() {
+         items(200) {
+             Box(
+                 modifier =
+-                    Modifier.height(400.dp).width(200.dp).padding(8.dp).background(Color.Gray),
++                    Modifier.height(180.dp).width(140.dp).padding(8.dp).background(Color.Gray),
+                 contentAlignment = Alignment.Center,
+             ) {
+                 Text(it.toString(), fontSize = 32.sp)
+@@ -91,6 +94,7 @@ fun SnapFlingBehaviorCustomizedSample() {
+ @Sampled
+ @Composable
+ fun SnapFlingBehaviorSnapPosition() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val state = rememberLazyListState()
+     val density = LocalDensity.current
+ 
+@@ -116,7 +120,7 @@ fun SnapFlingBehaviorSnapPosition() {
+     val flingBehavior = rememberSnapFlingBehavior(snappingLayout)
+ 
+     LazyRow(
+-        modifier = Modifier.fillMaxSize(),
++        modifier = Modifier.size(350.dp, 220.dp),
+         verticalAlignment = Alignment.CenterVertically,
+         state = state,
+         flingBehavior = flingBehavior,
+@@ -124,7 +128,7 @@ fun SnapFlingBehaviorSnapPosition() {
+         items(200) {
+             Box(
+                 modifier =
+-                    Modifier.height(400.dp).width(200.dp).padding(8.dp).background(Color.Gray),
++                    Modifier.height(180.dp).width(140.dp).padding(8.dp).background(Color.Gray),
+                 contentAlignment = Alignment.Center,
+             ) {
+                 Text(it.toString(), fontSize = 32.sp)
+diff --git a/androidx/compose/foundation/samples/TapGestureSamples.kt b/androidx/compose/foundation/samples/TapGestureSamples.kt
+index b790ef6..2900357 100644
+--- a/androidx/compose/foundation/samples/TapGestureSamples.kt
++++ b/androidx/compose/foundation/samples/TapGestureSamples.kt
+@@ -45,14 +45,13 @@ import androidx.compose.ui.unit.dp
+ @Composable
+ @Sampled
+ fun AwaitLongPressOrCancellationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     var count by remember { mutableStateOf(0) }
+ 
+-    Column {
++    Column(Modifier.background(Color.White)) {
+         Text("Long Press to increase count. Long Press count: $count")
+         Box(
+-            Modifier.fillMaxSize()
+-                .wrapContentSize(Alignment.Center)
+-                .size(192.dp)
++            Modifier.size(192.dp)
+                 .pointerInput(Unit) {
+                     awaitEachGesture {
+                         val down = awaitFirstDown(requireUnconsumed = false)
+diff --git a/androidx/compose/foundation/samples/TransformGestureSamples.kt b/androidx/compose/foundation/samples/TransformGestureSamples.kt
+index 9b239e8..ae8c64c 100644
+--- a/androidx/compose/foundation/samples/TransformGestureSamples.kt
++++ b/androidx/compose/foundation/samples/TransformGestureSamples.kt
+@@ -29,6 +29,7 @@ import androidx.compose.foundation.gestures.detectTransformGestures
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.offset
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.TransformOrigin
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.unit.IntOffset
++import androidx.compose.ui.unit.dp
+ import kotlin.math.PI
+ import kotlin.math.cos
+ import kotlin.math.roundToInt
+@@ -50,6 +52,7 @@ import kotlin.math.sin
+ @Composable
+ @Sampled
+ fun DetectTransformGestures() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     /**
+      * Rotates the given offset around the origin by the given angle in degrees.
+      *
+@@ -99,13 +102,14 @@ fun DetectTransformGestures() {
+                 transformOrigin = TransformOrigin(0f, 0f)
+             }
+             .background(Color.Blue)
+-            .fillMaxSize()
++            .size(200.dp)
+     )
+ }
+ 
+ @Composable
+ @Sampled
+ fun CalculateRotation() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     var angle by remember { mutableStateOf(0f) }
+     Box(
+         Modifier.graphicsLayer(rotationZ = angle)
+@@ -120,13 +124,14 @@ fun CalculateRotation() {
+                     } while (event.changes.any { it.pressed })
+                 }
+             }
+-            .fillMaxSize()
++            .size(200.dp)
+     )
+ }
+ 
+ @Composable
+ @Sampled
+ fun CalculateZoom() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     var zoom by remember { mutableStateOf(1f) }
+     Box(
+         Modifier.graphicsLayer(scaleX = zoom, scaleY = zoom)
+@@ -140,13 +145,14 @@ fun CalculateZoom() {
+                     } while (event.changes.any { it.pressed })
+                 }
+             }
+-            .fillMaxSize()
++            .size(200.dp)
+     )
+ }
+ 
+ @Composable
+ @Sampled
+ fun CalculatePan() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val offsetX = remember { mutableStateOf(0f) }
+     val offsetY = remember { mutableStateOf(0f) }
+     Box(
+@@ -164,15 +170,16 @@ fun CalculatePan() {
+                     } while (event.changes.any { it.pressed })
+                 }
+             }
+-            .fillMaxSize()
++            .size(200.dp)
+     )
+ }
+ 
+ @Composable
+ @Sampled
+ fun CalculateCentroidSize() {
+-    var centroidSize by remember { mutableStateOf(0f) }
+-    var position by remember { mutableStateOf(Offset.Zero) }
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    var centroidSize by remember { mutableStateOf(50f) }
++    var position by remember { mutableStateOf(Offset(100f, 100f)) }
+     Box(
+         Modifier.drawBehind {
+                 // Draw a circle where the gesture is
+@@ -194,6 +201,6 @@ fun CalculateCentroidSize() {
+                     } while (event.changes.any { it.pressed })
+                 }
+             }
+-            .fillMaxSize()
++            .size(200.dp)
+     )
+ }
+diff --git a/androidx/compose/material/samples/ElevationSamples.kt b/androidx/compose/material/samples/ElevationSamples.kt
+index 9d50b68..c38da32 100644
+--- a/androidx/compose/material/samples/ElevationSamples.kt
++++ b/androidx/compose/material/samples/ElevationSamples.kt
+@@ -17,21 +17,27 @@
+ package androidx.compose.material.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.material.LocalAbsoluteElevation
+ import androidx.compose.material.Surface
+ import androidx.compose.runtime.Composable
++import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+ 
+ @Suppress("UNUSED_VARIABLE", "NAME_SHADOWING")
+ @Sampled
+ @Composable
+ fun AbsoluteElevationSample() {
+-    Surface(elevation = 4.dp) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Surface(modifier = Modifier.padding(16.dp), elevation = 4.dp) {
+         // This will equal 4.dp
+         val elevation = LocalAbsoluteElevation.current
+-        Surface(elevation = 2.dp) {
++        Surface(modifier = Modifier.padding(16.dp), elevation = 2.dp) {
+             // This will equal 6.dp (4 + 2)
+             val elevation = LocalAbsoluteElevation.current
++            Box(Modifier.size(60.dp))
+         }
+     }
+ }
+diff --git a/androidx/compose/runtime/saveable/samples/SaveableStateHolderSamples.kt b/androidx/compose/runtime/saveable/samples/SaveableStateHolderSamples.kt
+index fa3c0b4..1d1bf72 100644
+--- a/androidx/compose/runtime/saveable/samples/SaveableStateHolderSamples.kt
++++ b/androidx/compose/runtime/saveable/samples/SaveableStateHolderSamples.kt
+@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun SimpleNavigationWithSaveableStateSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     @Composable
+     fun <T : Any> Navigation(
+         currentScreen: T,
+@@ -56,13 +58,13 @@ fun SimpleNavigationWithSaveableStateSample() {
+         }
+     }
+ 
+-    Column {
++    Column(Modifier.background(Color.White)) {
+         var screen by rememberSaveable { mutableStateOf("screen1") }
+         Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+             Button(onClick = { screen = "screen1" }) { Text("Go to screen1") }
+             Button(onClick = { screen = "screen2" }) { Text("Go to screen2") }
+         }
+-        Navigation(screen, Modifier.fillMaxSize()) { currentScreen ->
++        Navigation(screen, Modifier.size(300.dp, 80.dp)) { currentScreen ->
+             if (currentScreen == "screen1") {
+                 Screen1()
+             } else {
+diff --git a/androidx/compose/ui/graphics/samples/MeshGradientSamples.kt b/androidx/compose/ui/graphics/samples/MeshGradientSamples.kt
+index 72f10d2..b5c974b 100644
+--- a/androidx/compose/ui/graphics/samples/MeshGradientSamples.kt
++++ b/androidx/compose/ui/graphics/samples/MeshGradientSamples.kt
+@@ -19,6 +19,7 @@ package androidx.compose.ui.graphics.samples
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Modifier
+@@ -26,10 +27,12 @@ import androidx.compose.ui.draw.paint
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.MeshGradientPainter
++import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun MeshGradientPainterSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val gradientPainter = remember {
+         MeshGradientPainter(1, 1, hasBicubicColor = true) {
+             // (row, column, position, color)
+@@ -46,5 +49,5 @@ fun MeshGradientPainterSample() {
+         }
+     }
+ 
+-    Box(Modifier.fillMaxSize().paint(gradientPainter))
++    Box(Modifier.size(200.dp).paint(gradientPainter))
+ }
+diff --git a/androidx/compose/ui/graphics/samples/PathEffectSample.kt b/androidx/compose/ui/graphics/samples/PathEffectSample.kt
+index 6b158d3..adf130e 100644
+--- a/androidx/compose/ui/graphics/samples/PathEffectSample.kt
++++ b/androidx/compose/ui/graphics/samples/PathEffectSample.kt
+@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun StampedPathEffectSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val size = 20f
+     val square =
+         Path().apply {
+@@ -44,7 +45,7 @@ fun StampedPathEffectSample() {
+             lineTo(0f, size)
+             close()
+         }
+-    Column(modifier = Modifier.fillMaxHeight().wrapContentSize(Alignment.Center)) {
++    Column(modifier = Modifier.wrapContentSize(Alignment.Center)) {
+         val canvasModifier = Modifier.requiredSize(80.dp).align(Alignment.CenterHorizontally)
+ 
+         // StampedPathEffectStyle.Morph will modify the lines of the square to be curved to fit
+diff --git a/androidx/compose/ui/samples/AlignmentLineSample.kt b/androidx/compose/ui/samples/AlignmentLineSample.kt
+index ac7df01..b80e647 100644
+--- a/androidx/compose/ui/samples/AlignmentLineSample.kt
++++ b/androidx/compose/ui/samples/AlignmentLineSample.kt
+@@ -26,6 +26,7 @@ import kotlin.math.min
+ @Sampled
+ @Composable
+ fun AlignmentLineSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     // Create a horizontal alignment line. Note it is not common for alignment lines to be created
+     // in the scope of one composable, since they are usually used across more than one function.
+     // We use ::min as merging strategy, which means that the parent will have the minimum of
+@@ -46,9 +47,9 @@ fun AlignmentLineSample() {
+         val placeables = measurables.map { it.measure(constraints) }
+         // placeables[0][line] will be 5
+         // placeables[1][line] will be 10
+-        layout(constraints.maxWidth, constraints.maxHeight) {
++        layout(100, 40) {
+             placeables[0].place(0, 3)
+-            placeables[1].place(constraints.maxWidth / 2, 0)
++            placeables[1].place(50, 0)
+         }
+     }
+     // Note that if the parent of this Layout (the parent of AlignmentLineSample) was able to
+diff --git a/androidx/compose/ui/samples/LayoutSample.kt b/androidx/compose/ui/samples/LayoutSample.kt
+index 47d6fef..fd96379 100644
+--- a/androidx/compose/ui/samples/LayoutSample.kt
++++ b/androidx/compose/ui/samples/LayoutSample.kt
+@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+@@ -180,6 +181,7 @@ fun LayoutTagChildrenUsage(header: @Composable () -> Unit, footer: @Composable (
+ @Sampled
+ @Composable
+ fun LayoutModifierSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val verticalPadding =
+         object : LayoutModifier {
+             override fun MeasureScope.measure(
+@@ -195,13 +197,14 @@ fun LayoutModifierSample() {
+             }
+         }
+     Box(Modifier.background(Color.Gray).then(verticalPadding)) {
+-        Box(Modifier.fillMaxSize().background(Color.DarkGray))
++        Box(Modifier.size(100.dp).background(Color.DarkGray))
+     }
+ }
+ 
+ @Sampled
+ @Composable
+ fun LayoutModifierNodeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     class VerticalPadding(var padding: Dp) : LayoutModifierNode, Modifier.Node() {
+         override fun MeasureScope.measure(
+             measurable: Measurable,
+@@ -228,13 +231,14 @@ fun LayoutModifierNodeSample() {
+     }
+     fun Modifier.verticalPadding(padding: Dp) = this then VerticalPaddingElement(padding)
+     Box(Modifier.background(Color.Gray).verticalPadding(50.dp)) {
+-        Box(Modifier.fillMaxSize().background(Color.DarkGray))
++        Box(Modifier.size(100.dp).background(Color.DarkGray))
+     }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ConvenienceLayoutModifierSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     Box(
+         Modifier.background(Color.Gray).layout { measurable, constraints ->
+             // an example modifier that adds 50 pixels of vertical padding.
+@@ -245,7 +249,7 @@ fun ConvenienceLayoutModifierSample() {
+             }
+         }
+     ) {
+-        Box(Modifier.fillMaxSize().background(Color.DarkGray))
++        Box(Modifier.size(100.dp).background(Color.DarkGray))
+     }
+ }
+ 
+diff --git a/androidx/compose/ui/samples/OnPlacedSamples.kt b/androidx/compose/ui/samples/OnPlacedSamples.kt
+index cdb2285..2041f43 100644
+--- a/androidx/compose/ui/samples/OnPlacedSamples.kt
++++ b/androidx/compose/ui/samples/OnPlacedSamples.kt
+@@ -49,6 +49,7 @@ import kotlinx.coroutines.launch
+ @Sampled
+ @Composable
+ fun OnPlaced() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     fun Modifier.animatePlacement(): Modifier = composed {
+         val scope = rememberCoroutineScope()
+         var targetOffset by remember { mutableStateOf(IntOffset.Zero) }
+@@ -79,11 +80,12 @@ fun OnPlaced() {
+ 
+     @Composable
+     fun AnimatedChildAlignment(alignment: Alignment) {
+-        Box(Modifier.fillMaxSize().padding(4.dp).border(1.dp, Color.Red)) {
++        Box(Modifier.size(160.dp).padding(4.dp).border(1.dp, Color.Red)) {
+             Box(
+                 modifier =
+                     Modifier.animatePlacement().align(alignment).size(100.dp).background(Color.Red)
+             )
+         }
+     }
++    AnimatedChildAlignment(Alignment.Center)
+ }
+diff --git a/androidx/compose/ui/samples/RotateSample.kt b/androidx/compose/ui/samples/RotateSample.kt
+index 10e69c0..349b49d 100644
+--- a/androidx/compose/ui/samples/RotateSample.kt
++++ b/androidx/compose/ui/samples/RotateSample.kt
+@@ -17,15 +17,18 @@
+ package androidx.compose.ui.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.rotate
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun RotateSample() {
+-    Box(Modifier.rotate(45f).size(100.dp, 100.dp))
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.rotate(45f).size(100.dp, 100.dp).background(Color.Blue))
+ }
+diff --git a/androidx/compose/ui/samples/ScaleSample.kt b/androidx/compose/ui/samples/ScaleSample.kt
+index 09489fd..40e2baf 100644
+--- a/androidx/compose/ui/samples/ScaleSample.kt
++++ b/androidx/compose/ui/samples/ScaleSample.kt
+@@ -17,21 +17,25 @@
+ package androidx.compose.ui.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.scale
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun ScaleUniformSample() {
+-    Box(Modifier.scale(2f).size(100.dp, 100.dp))
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.scale(2f).size(50.dp, 50.dp).background(Color.Blue))
+ }
+ 
+ @Sampled
+ @Composable
+ fun ScaleNonUniformSample() {
+-    Box(Modifier.scale(scaleX = 2f, scaleY = 3f).size(100.dp, 100.dp))
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
++    Box(Modifier.scale(scaleX = 2f, scaleY = 3f).size(40.dp, 40.dp).background(Color.Blue))
+ }
+diff --git a/androidx/compose/ui/unit/samples/DpSample.kt b/androidx/compose/ui/unit/samples/DpSample.kt
+index 75bbe19..5578e2f 100644
+--- a/androidx/compose/ui/unit/samples/DpSample.kt
++++ b/androidx/compose/ui/unit/samples/DpSample.kt
+@@ -17,9 +17,11 @@ package androidx.compose.ui.unit.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.Canvas
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+@@ -30,21 +32,23 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun DpSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     Box(
+         Modifier.padding(
+             10.dp, // Int
+             10f.dp, // Float
+             20.0.dp, // Double
+             10.dp,
+-        )
++        ).size(50.dp).background(Color.Blue)
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun ToPxSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+     val lineThickness = 6.dp
+-    Canvas(Modifier.fillMaxSize()) {
++    Canvas(Modifier.size(100.dp)) {
+         val lineThicknessPx = lineThickness.toPx()
+         inset(lineThicknessPx / 2) { drawRect(Color.Red, style = Stroke(lineThicknessPx)) }
+     }

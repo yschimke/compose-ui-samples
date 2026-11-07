@@ -49,6 +49,7 @@ import kotlinx.coroutines.launch
 @Sampled
 @Composable
 fun OnPlaced() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     fun Modifier.animatePlacement(): Modifier = composed {
         val scope = rememberCoroutineScope()
         var targetOffset by remember { mutableStateOf(IntOffset.Zero) }
@@ -79,11 +80,12 @@ fun OnPlaced() {
 
     @Composable
     fun AnimatedChildAlignment(alignment: Alignment) {
-        Box(Modifier.fillMaxSize().padding(4.dp).border(1.dp, Color.Red)) {
+        Box(Modifier.size(160.dp).padding(4.dp).border(1.dp, Color.Red)) {
             Box(
                 modifier =
                     Modifier.animatePlacement().align(alignment).size(100.dp).background(Color.Red)
             )
         }
     }
+    AnimatedChildAlignment(Alignment.Center)
 }

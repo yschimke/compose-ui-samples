@@ -17,6 +17,7 @@
 package androidx.compose.ui.text.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.ParagraphStyle
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.sp
 @Sampled
 @Composable
 fun ParagraphStyleSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val textStyle =
         TextStyle(
             textAlign = TextAlign.Justify,
@@ -42,11 +45,14 @@ fun ParagraphStyleSample() {
                 "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         style = textStyle,
     )
+    }
 }
 
 @Sampled
 @Composable
 fun ParagraphStyleAnnotatedStringsSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val text =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
             "incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis " +
@@ -63,4 +69,5 @@ fun ParagraphStyleAnnotatedStringsSample() {
                 addStyle(paragraphStyle2, text.indexOf('\n') + 1, text.length)
             }
     )
+    }
 }

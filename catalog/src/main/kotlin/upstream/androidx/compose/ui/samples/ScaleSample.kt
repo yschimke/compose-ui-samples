@@ -17,21 +17,25 @@
 package androidx.compose.ui.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Sampled
 @Composable
 fun ScaleUniformSample() {
-    Box(Modifier.scale(2f).size(100.dp, 100.dp))
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Box(Modifier.scale(2f).size(50.dp, 50.dp).background(Color.Blue))
 }
 
 @Sampled
 @Composable
 fun ScaleNonUniformSample() {
-    Box(Modifier.scale(scaleX = 2f, scaleY = 3f).size(100.dp, 100.dp))
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
+    Box(Modifier.scale(scaleX = 2f, scaleY = 3f).size(40.dp, 40.dp).background(Color.Blue))
 }

@@ -1,0 +1,207 @@
+/*
+ * Copyright 2022 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package ee.schimke.composeuisamples.android.patched.material.samples
+
+import androidx.annotation.Sampled
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FilterChip
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+@OptIn(ExperimentalMaterialApi::class)
+@Sampled
+@Composable
+fun ChipSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var count by remember { mutableStateOf(0) }
+    Chip(onClick = { count++ }) {
+        Text(if (count == 0) "Action Chip" else "Action Chip ($count)")
+    }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Sampled
+@Composable
+fun OutlinedChipWithIconSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var clicked by remember { mutableStateOf(false) }
+    Chip(
+        onClick = { clicked = !clicked },
+        border = ChipDefaults.outlinedBorder,
+        colors = ChipDefaults.outlinedChipColors(),
+        leadingIcon = { Icon(Icons.Filled.Settings, contentDescription = "Localized description") },
+    ) {
+        Text(if (clicked) "Settings changed" else "Change settings")
+    }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Sampled
+@Composable
+fun FilterChipSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    val state = remember { mutableStateOf(false) }
+    FilterChip(
+        selected = state.value,
+        onClick = { state.value = !state.value },
+        selectedIcon = {
+            Icon(
+                imageVector = Icons.Filled.Done,
+                contentDescription = "Localized Description",
+                modifier = Modifier.requiredSize(ChipDefaults.SelectedIconSize),
+            )
+        },
+    ) {
+        Text("Filter chip")
+    }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Sampled
+@Composable
+fun OutlinedFilterChipSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    val state = remember { mutableStateOf(false) }
+    FilterChip(
+        selected = state.value,
+        onClick = { state.value = !state.value },
+        border = ChipDefaults.outlinedBorder,
+        colors = ChipDefaults.outlinedFilterChipColors(),
+        selectedIcon = {
+            Icon(
+                imageVector = Icons.Filled.Done,
+                contentDescription = "Localized Description",
+                modifier = Modifier.requiredSize(ChipDefaults.SelectedIconSize),
+            )
+        },
+    ) {
+        Text("Filter chip")
+    }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Sampled
+@Composable
+fun FilterChipWithLeadingIconSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    val state = remember { mutableStateOf(false) }
+    FilterChip(
+        selected = state.value,
+        onClick = { state.value = !state.value },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Home,
+                contentDescription = "Localized description",
+                modifier = Modifier.requiredSize(ChipDefaults.LeadingIconSize),
+            )
+        },
+        selectedIcon = {
+            Icon(
+                imageVector = Icons.Filled.Done,
+                contentDescription = "Localized Description",
+                modifier = Modifier.requiredSize(ChipDefaults.SelectedIconSize),
+            )
+        },
+    ) {
+        Text("Filter chip")
+    }
+    }
+}
+
+@Sampled
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ChipGroupSingleLineSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var selected by remember { mutableStateOf<Int?>(null) }
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+            repeat(9) { index ->
+                Chip(
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    onClick = { selected = index },
+                ) {
+                    Text(if (selected == index) "Chip $index ✓" else "Chip $index")
+                }
+            }
+        }
+    }
+    }
+}
+
+@Sampled
+@OptIn(ExperimentalMaterialApi::class, ExperimentalLayoutApi::class)
+@Composable
+fun ChipGroupReflowSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var selected by remember { mutableStateOf<Int?>(null) }
+    Column {
+        FlowRow(
+            Modifier.fillMaxWidth(1f).wrapContentHeight(align = Alignment.Top),
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            repeat(10) { index ->
+                Chip(
+                    modifier =
+                        Modifier.padding(horizontal = 4.dp)
+                            .align(alignment = Alignment.CenterVertically),
+                    onClick = { selected = index },
+                ) {
+                    Text(if (selected == index) "Chip $index ✓" else "Chip $index")
+                }
+            }
+        }
+    }
+    }
+}

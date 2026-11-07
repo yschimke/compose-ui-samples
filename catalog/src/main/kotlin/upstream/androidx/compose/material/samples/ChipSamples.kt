@@ -33,14 +33,17 @@ import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FilterChip
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -49,20 +52,30 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun ChipSample() {
-    Chip(onClick = { /* Do something! */ }) { Text("Action Chip") }
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var count by remember { mutableStateOf(0) }
+    Chip(onClick = { count++ }) {
+        Text(if (count == 0) "Action Chip" else "Action Chip ($count)")
+    }
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Sampled
 @Composable
 fun OutlinedChipWithIconSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var clicked by remember { mutableStateOf(false) }
     Chip(
-        onClick = { /* Do something! */ },
+        onClick = { clicked = !clicked },
         border = ChipDefaults.outlinedBorder,
         colors = ChipDefaults.outlinedChipColors(),
         leadingIcon = { Icon(Icons.Filled.Settings, contentDescription = "Localized description") },
     ) {
-        Text("Change settings")
+        Text(if (clicked) "Settings changed" else "Change settings")
+    }
     }
 }
 
@@ -70,6 +83,8 @@ fun OutlinedChipWithIconSample() {
 @Sampled
 @Composable
 fun FilterChipSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
     val state = remember { mutableStateOf(false) }
     FilterChip(
         selected = state.value,
@@ -84,12 +99,15 @@ fun FilterChipSample() {
     ) {
         Text("Filter chip")
     }
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Sampled
 @Composable
 fun OutlinedFilterChipSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
     val state = remember { mutableStateOf(false) }
     FilterChip(
         selected = state.value,
@@ -106,12 +124,15 @@ fun OutlinedFilterChipSample() {
     ) {
         Text("Filter chip")
     }
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Sampled
 @Composable
 fun FilterChipWithLeadingIconSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
     val state = remember { mutableStateOf(false) }
     FilterChip(
         selected = state.value,
@@ -133,23 +154,28 @@ fun FilterChipWithLeadingIconSample() {
     ) {
         Text("Filter chip")
     }
+    }
 }
 
 @Sampled
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ChipGroupSingleLineSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var selected by remember { mutableStateOf<Int?>(null) }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
             repeat(9) { index ->
                 Chip(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    onClick = { /* do something*/ },
+                    onClick = { selected = index },
                 ) {
-                    Text("Chip $index")
+                    Text(if (selected == index) "Chip $index ✓" else "Chip $index")
                 }
             }
         }
+    }
     }
 }
 
@@ -157,6 +183,9 @@ fun ChipGroupSingleLineSample() {
 @OptIn(ExperimentalMaterialApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun ChipGroupReflowSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0003-connect-interactive-samples.patch
+    Surface {
+    var selected by remember { mutableStateOf<Int?>(null) }
     Column {
         FlowRow(
             Modifier.fillMaxWidth(1f).wrapContentHeight(align = Alignment.Top),
@@ -167,11 +196,12 @@ fun ChipGroupReflowSample() {
                     modifier =
                         Modifier.padding(horizontal = 4.dp)
                             .align(alignment = Alignment.CenterVertically),
-                    onClick = { /* do something*/ },
+                    onClick = { selected = index },
                 ) {
-                    Text("Chip $index")
+                    Text(if (selected == index) "Chip $index ✓" else "Chip $index")
                 }
             }
         }
+    }
     }
 }

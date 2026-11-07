@@ -17,13 +17,16 @@
 package androidx.compose.ui.samples
 
 import androidx.annotation.Sampled
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.dp
@@ -31,17 +34,26 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun ShadowSample() {
-    Box(Modifier.shadow(12.dp, RectangleShape).size(100.dp, 100.dp))
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White).padding(16.dp)) {
+    Box(Modifier.shadow(12.dp, RectangleShape).size(100.dp, 100.dp).background(Color.White))
+    }
 }
 
 @Sampled
 @Composable
 fun DropShadowSample() {
-    Box(Modifier.size(100.dp, 100.dp).dropShadow(RectangleShape, Shadow(12.dp)))
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White).padding(16.dp)) {
+    Box(Modifier.size(100.dp, 100.dp).background(Color.White).dropShadow(RectangleShape, Shadow(12.dp)))
+    }
 }
 
 @Sampled
 @Composable
 fun InnerShadowSample() {
-    Box(Modifier.size(100.dp, 100.dp).innerShadow(RectangleShape, Shadow(12.dp)))
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Box(Modifier.background(Color.White).padding(16.dp)) {
+    Box(Modifier.size(100.dp, 100.dp).background(Color.White).innerShadow(RectangleShape, Shadow(12.dp)))
+    }
 }

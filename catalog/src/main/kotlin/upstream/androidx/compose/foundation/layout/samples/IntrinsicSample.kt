@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun SameWidthBoxes() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // Builds a layout containing three Box having the same width as the widest one.
     //
     // Here width min intrinsic is adding a width premeasurement pass for the
@@ -45,7 +46,7 @@ fun SameWidthBoxes() {
     // same as the premeasured minimum intrinsic width, which due to fillMaxWidth will force
     // the Box's to use the same width.
     Box {
-        Column(Modifier.width(IntrinsicSize.Min).fillMaxHeight()) {
+        Column(Modifier.width(IntrinsicSize.Min).height(50.dp)) {
             Box(modifier = Modifier.fillMaxWidth().size(20.dp, 10.dp).background(Color.Gray))
             Box(modifier = Modifier.fillMaxWidth().size(30.dp, 10.dp).background(Color.Blue))
             Box(modifier = Modifier.fillMaxWidth().size(10.dp, 10.dp).background(Color.Magenta))
@@ -56,6 +57,7 @@ fun SameWidthBoxes() {
 @Sampled
 @Composable
 fun MatchParentDividerForText() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // Builds a layout containing two pieces of text separated by a divider, where the divider
     // is sized according to the height of the longest text.
     //
@@ -64,7 +66,7 @@ fun MatchParentDividerForText() {
     // height min intrinsic will measure the Row with tight height, the same as the
     // premeasured minimum intrinsic height, which due to fillMaxHeight will force the Texts and
     // the divider to use the same height.
-    Box {
+    Box(Modifier.background(Color.White)) {
         Row(Modifier.height(IntrinsicSize.Min)) {
             Text(
                 text = "This is a really short text",
@@ -84,6 +86,7 @@ fun MatchParentDividerForText() {
 @Sampled
 @Composable
 fun SameWidthTextBoxes() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // Builds a layout containing three Text boxes having the same width as the widest one.
     //
     // Here width max intrinsic is adding a width premeasurement pass for the Column,
@@ -93,7 +96,7 @@ fun SameWidthTextBoxes() {
     // force the Boxs to use the same width.
 
     Box {
-        Column(Modifier.width(IntrinsicSize.Max).fillMaxHeight()) {
+        Column(Modifier.width(IntrinsicSize.Max).height(80.dp)) {
             Box(Modifier.fillMaxWidth().background(Color.Gray)) { Text("Short text") }
             Box(Modifier.fillMaxWidth().background(Color.Blue)) {
                 Text("Extremely long text giving the width of its siblings")
@@ -106,6 +109,7 @@ fun SameWidthTextBoxes() {
 @Sampled
 @Composable
 fun MatchParentDividerForAspectRatio() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // Builds a layout containing two aspectRatios separated by a divider, where the divider
     // is sized according to the height of the taller aspectRatio.
     //
@@ -115,7 +119,7 @@ fun MatchParentDividerForAspectRatio() {
     // the same as the premeasured maximum intrinsic height, which due to fillMaxHeight modifier
     // will force the aspectRatios and the divider to use the same height.
     //
-    Box {
+    Box(Modifier.background(Color.White)) {
         Row(Modifier.height(IntrinsicSize.Max)) {
             val modifier = Modifier.fillMaxHeight().weight(1f)
             Box(modifier.aspectRatio(2f).background(Color.Gray))

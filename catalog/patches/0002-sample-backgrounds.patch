@@ -1,0 +1,2411 @@
+Add a light Surface or white background container to samples that draw dark text, strokes,
+dividers, borders, or controls on a transparent root, so they are legible against the dark
+preview canvas.
+
+diff --git a/androidx/compose/animation/samples/CrossfadeSample.kt b/androidx/compose/animation/samples/CrossfadeSample.kt
+index abf7f63..62b2f3f 100644
+--- a/androidx/compose/animation/samples/CrossfadeSample.kt
++++ b/androidx/compose/animation/samples/CrossfadeSample.kt
+@@ -18,16 +18,20 @@ package androidx.compose.animation.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.animation.Crossfade
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ 
+ @Sampled
+ @Composable
+ fun CrossfadeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Crossfade(targetState = "A") { screen ->
+         when (screen) {
+             "A" -> Text("Page A")
+             "B" -> Text("Page B")
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/animation/samples/LookaheadAnimationVisualDebugSamples.kt b/androidx/compose/animation/samples/LookaheadAnimationVisualDebugSamples.kt
+index 8ae62ac..56a0556 100644
+--- a/androidx/compose/animation/samples/LookaheadAnimationVisualDebugSamples.kt
++++ b/androidx/compose/animation/samples/LookaheadAnimationVisualDebugSamples.kt
+@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+@@ -40,14 +41,15 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun LookaheadAnimationVisualDebuggingSample() {
+-    var isExpanded by mutableStateOf(false)
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    var isExpanded by remember { mutableStateOf(false) }
+     // Wrap content with LookaheadAnimationVisualDebugging to enable visual debugging.
+     // Optional parameters allow color customization and decision of whether to show key labels.
+     // Note that enabling LookaheadAnimationVisualDebugging affects the entire UI subtree generated
+     // by the content lambda. It applies to all descendants, regardless of whether they are defined
+     // within the same lexical scope.
+     LookaheadAnimationVisualDebugging(isShowKeyLabelEnabled = true) {
+-        SharedTransitionLayout(Modifier.fillMaxSize().clickable { isExpanded = !isExpanded }) {
++        SharedTransitionLayout(Modifier.size(250.dp).background(Color.White).clickable { isExpanded = !isExpanded }) {
+             AnimatedVisibility(visible = isExpanded) {
+                 Box(
+                     Modifier.offset(100.dp, 100.dp)
+@@ -78,7 +80,8 @@ fun LookaheadAnimationVisualDebuggingSample() {
+ @Sampled
+ @Composable
+ fun CustomizedLookaheadAnimationVisualDebuggingSample() {
+-    var isExpanded by mutableStateOf(false)
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    var isExpanded by remember { mutableStateOf(false) }
+     // Wrap content with LookaheadAnimationVisualDebugging to enable visual debugging.
+     // Optional parameters allow color customization and decision of whether to show key labels.
+     // Note that enabling LookaheadAnimationVisualDebugging affects the entire UI subtree generated
+@@ -88,7 +91,7 @@ fun CustomizedLookaheadAnimationVisualDebuggingSample() {
+         // Wrap content with CustomizedLookaheadAnimationVisualDebugging to customize the color of
+         // the bounds visualizations in the specified scope.
+         CustomizedLookaheadAnimationVisualDebugging(Color.Black) {
+-            SharedTransitionLayout(Modifier.fillMaxSize().clickable { isExpanded = !isExpanded }) {
++            SharedTransitionLayout(Modifier.size(250.dp).background(Color.White).clickable { isExpanded = !isExpanded }) {
+                 AnimatedVisibility(visible = isExpanded) {
+                     Box(
+                         Modifier.offset(100.dp, 100.dp)
+diff --git a/androidx/compose/foundation/layout/samples/IntrinsicSample.kt b/androidx/compose/foundation/layout/samples/IntrinsicSample.kt
+index 2674483..0c9e864 100644
+--- a/androidx/compose/foundation/layout/samples/IntrinsicSample.kt
++++ b/androidx/compose/foundation/layout/samples/IntrinsicSample.kt
+@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun SameWidthBoxes() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // Builds a layout containing three Box having the same width as the widest one.
+     //
+     // Here width min intrinsic is adding a width premeasurement pass for the
+@@ -45,7 +46,7 @@ fun SameWidthBoxes() {
+     // same as the premeasured minimum intrinsic width, which due to fillMaxWidth will force
+     // the Box's to use the same width.
+     Box {
+-        Column(Modifier.width(IntrinsicSize.Min).fillMaxHeight()) {
++        Column(Modifier.width(IntrinsicSize.Min).height(50.dp)) {
+             Box(modifier = Modifier.fillMaxWidth().size(20.dp, 10.dp).background(Color.Gray))
+             Box(modifier = Modifier.fillMaxWidth().size(30.dp, 10.dp).background(Color.Blue))
+             Box(modifier = Modifier.fillMaxWidth().size(10.dp, 10.dp).background(Color.Magenta))
+@@ -56,6 +57,7 @@ fun SameWidthBoxes() {
+ @Sampled
+ @Composable
+ fun MatchParentDividerForText() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // Builds a layout containing two pieces of text separated by a divider, where the divider
+     // is sized according to the height of the longest text.
+     //
+@@ -64,7 +66,7 @@ fun MatchParentDividerForText() {
+     // height min intrinsic will measure the Row with tight height, the same as the
+     // premeasured minimum intrinsic height, which due to fillMaxHeight will force the Texts and
+     // the divider to use the same height.
+-    Box {
++    Box(Modifier.background(Color.White)) {
+         Row(Modifier.height(IntrinsicSize.Min)) {
+             Text(
+                 text = "This is a really short text",
+@@ -84,6 +86,7 @@ fun MatchParentDividerForText() {
+ @Sampled
+ @Composable
+ fun SameWidthTextBoxes() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // Builds a layout containing three Text boxes having the same width as the widest one.
+     //
+     // Here width max intrinsic is adding a width premeasurement pass for the Column,
+@@ -93,7 +96,7 @@ fun SameWidthTextBoxes() {
+     // force the Boxs to use the same width.
+ 
+     Box {
+-        Column(Modifier.width(IntrinsicSize.Max).fillMaxHeight()) {
++        Column(Modifier.width(IntrinsicSize.Max).height(80.dp)) {
+             Box(Modifier.fillMaxWidth().background(Color.Gray)) { Text("Short text") }
+             Box(Modifier.fillMaxWidth().background(Color.Blue)) {
+                 Text("Extremely long text giving the width of its siblings")
+@@ -106,6 +109,7 @@ fun SameWidthTextBoxes() {
+ @Sampled
+ @Composable
+ fun MatchParentDividerForAspectRatio() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // Builds a layout containing two aspectRatios separated by a divider, where the divider
+     // is sized according to the height of the taller aspectRatio.
+     //
+@@ -115,7 +119,7 @@ fun MatchParentDividerForAspectRatio() {
+     // the same as the premeasured maximum intrinsic height, which due to fillMaxHeight modifier
+     // will force the aspectRatios and the divider to use the same height.
+     //
+-    Box {
++    Box(Modifier.background(Color.White)) {
+         Row(Modifier.height(IntrinsicSize.Max)) {
+             val modifier = Modifier.fillMaxHeight().weight(1f)
+             Box(modifier.aspectRatio(2f).background(Color.Gray))
+diff --git a/androidx/compose/foundation/layout/samples/LayoutOffsetSample.kt b/androidx/compose/foundation/layout/samples/LayoutOffsetSample.kt
+index a45f3bd..cadfaf9 100644
+--- a/androidx/compose/foundation/layout/samples/LayoutOffsetSample.kt
++++ b/androidx/compose/foundation/layout/samples/LayoutOffsetSample.kt
+@@ -17,10 +17,12 @@
+ package androidx.compose.foundation.layout.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.absoluteOffset
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.offset
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.layout.wrapContentSize
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+@@ -30,49 +32,54 @@ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.unit.IntOffset
+ import androidx.compose.ui.unit.dp
+ 
+ @Sampled
+ @Composable
+ fun OffsetModifier() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // This text will be offset (10.dp, 20.dp) from the center of the available space. In the
+     // right-to-left context, the offset will be (-10.dp, 20.dp).
+     Text(
+         "Layout offset modifier sample",
+-        Modifier.fillMaxSize().wrapContentSize(Alignment.Center).offset(10.dp, 20.dp),
++        Modifier.size(220.dp, 80.dp).background(Color.White).wrapContentSize(Alignment.Center).offset(10.dp, 20.dp),
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun AbsoluteOffsetModifier() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // This text will be offset (10.dp, 20.dp) from the center of the available space.
+     Text(
+         "Layout offset modifier sample",
+-        Modifier.fillMaxSize().wrapContentSize(Alignment.Center).absoluteOffset(10.dp, 20.dp),
++        Modifier.size(220.dp, 80.dp).background(Color.White).wrapContentSize(Alignment.Center).absoluteOffset(10.dp, 20.dp),
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun OffsetPxModifier() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // This text will be offset in steps of 10.dp from the top left of the available space in
+     // left-to-right context, and from top right in right-to-left context.
+     var offset by remember { mutableStateOf(0) }
+     Text(
+         "Layout offset modifier sample",
+-        Modifier.clickable { offset += 10 }.offset { IntOffset(offset, offset) },
++        Modifier.background(Color.White).clickable { offset += 10 }.offset { IntOffset(offset, offset) },
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun AbsoluteOffsetPxModifier() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // This text will be offset in steps of 10.dp from the top left of the available space.
+     var offset by remember { mutableStateOf(0) }
+     Text(
+         "Layout offset modifier sample",
+-        Modifier.clickable { offset += 10 }.absoluteOffset { IntOffset(offset, offset) },
++        Modifier.background(Color.White).clickable { offset += 10 }.absoluteOffset { IntOffset(offset, offset) },
+     )
+ }
+diff --git a/androidx/compose/foundation/layout/samples/RelativePaddingFromSamples.kt b/androidx/compose/foundation/layout/samples/RelativePaddingFromSamples.kt
+index 97367f2..761e147 100644
+--- a/androidx/compose/foundation/layout/samples/RelativePaddingFromSamples.kt
++++ b/androidx/compose/foundation/layout/samples/RelativePaddingFromSamples.kt
+@@ -17,11 +17,13 @@
+ package androidx.compose.foundation.layout.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.paddingFrom
+ import androidx.compose.foundation.layout.paddingFromBaseline
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.layout.FirstBaseline
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.unit.dp
+@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun PaddingFromSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // We want to have 30.sp distance from the top of the layout box to the baseline of the
+     // first line of text.
+     val distanceToBaseline = 30.sp
+@@ -39,13 +42,14 @@ fun PaddingFromSample() {
+     // baseline of the first line of text.
+     Text(
+         text = "This is an example.",
+-        modifier = Modifier.paddingFrom(FirstBaseline, before = distanceToBaselineDp),
++        modifier = Modifier.background(Color.White).paddingFrom(FirstBaseline, before = distanceToBaselineDp),
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun PaddingFromBaselineSampleDp() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // We want to have 30.dp distance from the top of the layout box to the baseline of the
+     // first line of text, and a 40.dp distance from the bottom of the layout box to the baseline
+     // of the last line of text. Note it is good practice to specify these distances in sp for font
+@@ -54,13 +58,14 @@ fun PaddingFromBaselineSampleDp() {
+     val distanceFromLastBaseline = 40.dp
+     Text(
+         text = "This line has the first baseline.\nThis line has the last baseline.",
+-        modifier = Modifier.paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
++        modifier = Modifier.background(Color.White).paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
+     )
+ }
+ 
+ @Sampled
+ @Composable
+ fun PaddingFromBaselineSampleTextUnit() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // We want to have 30.sp distance from the top of the layout box to the baseline of the
+     // first line of text, and a 40.sp distance from the bottom of the layout box to the baseline
+     // of the last line of text.
+@@ -68,6 +73,6 @@ fun PaddingFromBaselineSampleTextUnit() {
+     val distanceFromLastBaseline = 40.sp
+     Text(
+         text = "This line has the first baseline.\nThis line has the last baseline.",
+-        modifier = Modifier.paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
++        modifier = Modifier.background(Color.White).paddingFromBaseline(distanceToFirstBaseline, distanceFromLastBaseline),
+     )
+ }
+diff --git a/androidx/compose/foundation/layout/samples/SpacerSample.kt b/androidx/compose/foundation/layout/samples/SpacerSample.kt
+index 83df70d..323e28d 100644
+--- a/androidx/compose/foundation/layout/samples/SpacerSample.kt
++++ b/androidx/compose/foundation/layout/samples/SpacerSample.kt
+@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun SpacerExample() {
+-    Row {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Row(Modifier.background(Color.White)) {
+         Box(Modifier.size(100.dp).background(Color.Red))
+         Spacer(Modifier.width(20.dp))
+         Box(Modifier.size(100.dp).background(Color.Magenta))
+diff --git a/androidx/compose/foundation/samples/AnchoredDraggableSample.kt b/androidx/compose/foundation/samples/AnchoredDraggableSample.kt
+index 7c01e17..a262009 100644
+--- a/androidx/compose/foundation/samples/AnchoredDraggableSample.kt
++++ b/androidx/compose/foundation/samples/AnchoredDraggableSample.kt
+@@ -122,6 +122,8 @@ fun AnchoredDraggableAnchorsFromCompositionSample() {
+ @Preview
+ @Composable
+ fun AnchoredDraggableLayoutDependentAnchorsSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White)) {
+     val state =
+         rememberSaveable(saver = AnchoredDraggableState.Saver()) {
+             AnchoredDraggableState(initialValue = Center)
+@@ -153,6 +155,7 @@ fun AnchoredDraggableLayoutDependentAnchorsSample() {
+                 .background(Color.Red)
+         )
+     }
++    }
+ }
+ 
+ @Preview
+@@ -269,6 +272,8 @@ fun AnchoredDraggableProgressSample() {
+ @Preview
+ @Composable
+ fun DraggableAnchorsSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White)) {
+     var anchors by remember { mutableStateOf(DraggableAnchors<AnchoredDraggableSampleValue> {}) }
+     var offset by rememberSaveable { mutableFloatStateOf(0f) }
+     val thumbSize = 16.dp
+@@ -306,11 +311,14 @@ fun DraggableAnchorsSample() {
+                 .background(Color.Red)
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun AnchoredDraggableDynamicAnchorsSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White)) {
+     val open = "Open"
+     val closed = "Closed"
+ 
+@@ -374,6 +382,7 @@ fun AnchoredDraggableDynamicAnchorsSample() {
+     ) {
+         Text("Swipe to expand Drawer")
+     }
++    }
+ }
+ 
+ /**
+diff --git a/androidx/compose/foundation/samples/BasicMarqueeSamples.kt b/androidx/compose/foundation/samples/BasicMarqueeSamples.kt
+index bc3df91..f654f7f 100644
+--- a/androidx/compose/foundation/samples/BasicMarqueeSamples.kt
++++ b/androidx/compose/foundation/samples/BasicMarqueeSamples.kt
+@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.width
+ import androidx.compose.foundation.layout.widthIn
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.remember
+@@ -51,18 +52,23 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun BasicMarqueeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // Marquee only animates when the content doesn't fit in the max width.
+-    Column(Modifier.width(30.dp)) { Text("hello world", Modifier.basicMarquee()) }
++    Column(Modifier.width(60.dp)) { Text("hello world", Modifier.basicMarquee()) }
++    }
+ }
+ 
+ @Preview(showBackground = true)
+ @Sampled
+ @Composable
+ fun BasicFocusableMarqueeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val focusRequester = remember { FocusRequester() }
+ 
+     // Marquee only animates when the content doesn't fit in the max width.
+-    Column(Modifier.width(30.dp)) {
++    Column(Modifier.width(60.dp)) {
+         Text(
+             "hello world",
+             Modifier.clickable { focusRequester.requestFocus() }
+@@ -71,12 +77,15 @@ fun BasicFocusableMarqueeSample() {
+                 .focusable(),
+         )
+     }
++    }
+ }
+ 
+ @Preview(showBackground = true)
+ @Sampled
+ @Composable
+ fun BasicMarqueeWithFadedEdgesSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val edgeWidth = 32.dp
+     fun ContentDrawScope.drawFadedEdge(leftEdge: Boolean) {
+         val edgeWidthPx = edgeWidth.toPx()
+@@ -112,4 +121,5 @@ fun BasicMarqueeWithFadedEdgesSample() {
+             )
+             .padding(start = edgeWidth),
+     )
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/BasicTextFieldSamples.kt b/androidx/compose/foundation/samples/BasicTextFieldSamples.kt
+index b4eabff..f7a1c4c 100644
+--- a/androidx/compose/foundation/samples/BasicTextFieldSamples.kt
++++ b/androidx/compose/foundation/samples/BasicTextFieldSamples.kt
+@@ -60,6 +60,7 @@ import androidx.compose.material3.Button
+ import androidx.compose.material3.Icon
+ import androidx.compose.material3.IconButton
+ import androidx.compose.material3.LocalTextStyle
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.Stable
+@@ -93,8 +94,10 @@ import kotlinx.coroutines.flow.debounce
+ @Sampled
+ @Composable
+ fun BasicTextFieldSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var value by
+-        rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
++        rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("Initial text")) }
+     BasicTextField(
+         value = value,
+         onValueChange = {
+@@ -103,11 +106,14 @@ fun BasicTextFieldSample() {
+             value = it
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun BasicTextFieldWithStringSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var value by rememberSaveable { mutableStateOf("initial value") }
+     BasicTextField(
+         value = value,
+@@ -117,11 +123,14 @@ fun BasicTextFieldWithStringSample() {
+             value = it
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun PlaceholderBasicTextFieldSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var value by rememberSaveable { mutableStateOf("initial value") }
+     Box {
+         BasicTextField(value = value, onValueChange = { value = it })
+@@ -129,6 +138,7 @@ fun PlaceholderBasicTextFieldSample() {
+             Text(text = "Placeholder")
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+@@ -158,6 +168,7 @@ fun TextFieldWithIconSample() {
+ @Sampled
+ @Composable
+ fun CreditCardSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     /** The offset translator used for credit card input field */
+     val creditCardOffsetTranslator =
+         object : OffsetMapping {
+@@ -196,7 +207,7 @@ fun CreditCardSample() {
+         TransformedText(AnnotatedString(transformedText), creditCardOffsetTranslator)
+     }
+ 
+-    var text by rememberSaveable { mutableStateOf("") }
++    var text by rememberSaveable { mutableStateOf("1234567890123456") }
+     BasicTextField(
+         value = text,
+         onValueChange = { input ->
+@@ -597,6 +608,8 @@ fun BasicTextFieldTextValuesSample() {
+ @Sampled
+ @Composable
+ fun BasicTextFieldUndoSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val state = rememberTextFieldState()
+ 
+     Column(Modifier.padding(8.dp)) {
+@@ -626,6 +639,7 @@ fun BasicTextFieldUndoSample() {
+             textStyle = TextStyle(fontSize = 16.sp),
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+@@ -669,6 +683,8 @@ fun TextFieldStateApplyOutputTransformation() {
+ @Sampled
+ @Composable
+ fun BasicTextFieldTrackedRangeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // This sample demonstrates how to use the `TrackedRange` API to track and modify text ranges
+     // dynamically. It implements a basic Markdown-like behavior where text typed inside double
+     // asterisks (e.g., **bold**) is automatically bolded, and the asterisks are removed.
+@@ -717,11 +733,14 @@ fun BasicTextFieldTrackedRangeSample() {
+             inputTransformation = inputTransformation,
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun BasicTextFieldTrackedRangeToggleBoldSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // This sample demonstrates a realistic rich-text editor scenario using the `TrackedRange` and
+     // `TextFieldTextStyles` APIs. It implements a "Toggle Bold" formatting function on the current
+     // selection.
+@@ -832,11 +851,14 @@ fun BasicTextFieldTrackedRangeToggleBoldSample() {
+ 
+         BasicTextField(state = state, textStyle = LocalTextStyle.current)
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun BasicTextFieldTrackedRangePropertiesSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // This sample demonstrates the use of [TrackedRange.valid] and [TrackedRange.expandPolicy]. It
+     // shows how mutating the text can cause a TrackedRange to become invalid, and how to
+     // dynamically
+@@ -869,4 +891,6 @@ fun BasicTextFieldTrackedRangePropertiesSample() {
+             }
+         }
+     }
++    BasicTextField(state)
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/BasicTextFieldValueSample.kt b/androidx/compose/foundation/samples/BasicTextFieldValueSample.kt
+index 96e6ed8..f03c340 100644
+--- a/androidx/compose/foundation/samples/BasicTextFieldValueSample.kt
++++ b/androidx/compose/foundation/samples/BasicTextFieldValueSample.kt
+@@ -19,6 +19,7 @@ package androidx.compose.foundation.samples
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.text.BasicTextField
+ import androidx.compose.foundation.text.input.TextFieldState
++import androidx.compose.material3.Surface
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+@@ -37,10 +38,13 @@ import androidx.compose.ui.text.input.TextFieldValue
+ @Sampled
+ @Composable
+ fun BasicTextFieldWithValueOnValueChangeSample() {
+-    var text by remember { mutableStateOf("") }
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
++    var text by remember { mutableStateOf("Initial text") }
+     // A reference implementation that demonstrates how to create a TextField with the legacy
+     // state hoisting design around `BasicTextField(TextFieldState)`
+     StringTextField(value = text, onValueChange = { text = it })
++    }
+ }
+ 
+ @Composable
+diff --git a/androidx/compose/foundation/samples/BorderSamples.kt b/androidx/compose/foundation/samples/BorderSamples.kt
+index c31f5c8..270d685 100644
+--- a/androidx/compose/foundation/samples/BorderSamples.kt
++++ b/androidx/compose/foundation/samples/BorderSamples.kt
+@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
+ import androidx.compose.foundation.shape.CutCornerShape
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material3.Button
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -44,7 +45,10 @@ import kotlin.random.Random
+ @Composable
+ @Sampled
+ fun BorderSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text("Text with  square border", modifier = Modifier.border(4.dp, Color.Magenta).padding(10.dp))
++    }
+ }
+ 
+ @Composable
+@@ -67,17 +71,22 @@ fun BorderSampleWithBrush() {
+ @Composable
+ @Sampled
+ fun BorderSampleWithDataClass() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(
+         "Text with gradient border",
+         modifier =
+             Modifier.border(border = BorderStroke(2.dp, Color.Blue), shape = CutCornerShape(8.dp))
+                 .padding(10.dp),
+     )
++    }
+ }
+ 
+ @Composable
+ @Sampled
+ fun BorderSampleWithDynamicData() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0001-seed-random-samples.patch
+     val random = remember { Random(0) }
+     val widthRange = (1..10)
+@@ -115,13 +124,11 @@ fun BorderSampleWithDynamicData() {
+         Text(text = "Update border with buttons")
+         Row {
+             Button(
+-                modifier = Modifier.width(60.dp),
+                 onClick = { width = (widthRange.random(random)).dp },
+             ) {
+                 Text(fontSize = 8.sp, text = "width")
+             }
+             Button(
+-                modifier = Modifier.width(60.dp),
+                 onClick = {
+                     gradientBrush =
+                         Brush.horizontalGradient(
+@@ -135,7 +142,6 @@ fun BorderSampleWithDynamicData() {
+                 Text(fontSize = 8.sp, text = "brush")
+             }
+             Button(
+-                modifier = Modifier.width(60.dp),
+                 onClick = { selectedShape = shapes.random(random) },
+             ) {
+                 Text(fontSize = 8.sp, text = "shape")
+@@ -148,4 +154,5 @@ fun BorderSampleWithDynamicData() {
+                     .padding(10.dp),
+         )
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/BringIntoViewSamples.kt b/androidx/compose/foundation/samples/BringIntoViewSamples.kt
+index d54a182..4921127 100644
+--- a/androidx/compose/foundation/samples/BringIntoViewSamples.kt
++++ b/androidx/compose/foundation/samples/BringIntoViewSamples.kt
+@@ -18,6 +18,7 @@ package androidx.compose.foundation.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.Canvas
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.border
+ import androidx.compose.foundation.horizontalScroll
+ import androidx.compose.foundation.layout.Box
+@@ -28,6 +29,7 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
+ import androidx.compose.foundation.relocation.bringIntoViewRequester
+ import androidx.compose.foundation.rememberScrollState
+ import androidx.compose.material3.Button
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.remember
+@@ -45,6 +47,7 @@ import kotlinx.coroutines.launch
+ @Sampled
+ @Composable
+ fun BringIntoViewSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     Row(Modifier.horizontalScroll(rememberScrollState())) {
+         repeat(100) {
+             val bringIntoViewRequester = remember { BringIntoViewRequester() }
+@@ -63,7 +66,7 @@ fun BringIntoViewSample() {
+                             }
+                         }
+                     }
+-                    .focusTarget()
++                    .size(32.dp).border(1.dp, Color.Black).background(Color.LightGray).focusTarget()
+             )
+         }
+     }
+@@ -72,6 +75,8 @@ fun BringIntoViewSample() {
+ @Sampled
+ @Composable
+ fun BringPartOfComposableIntoViewSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     with(LocalDensity.current) {
+         val bringIntoViewRequester = remember { BringIntoViewRequester() }
+         val coroutineScope = rememberCoroutineScope()
+@@ -104,4 +109,5 @@ fun BringPartOfComposableIntoViewSample() {
+             }
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/ClickableSamples.kt b/androidx/compose/foundation/samples/ClickableSamples.kt
+index 87633a1..510519a 100644
+--- a/androidx/compose/foundation/samples/ClickableSamples.kt
++++ b/androidx/compose/foundation/samples/ClickableSamples.kt
+@@ -18,6 +18,7 @@ package androidx.compose.foundation.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.clickable
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.mutableStateOf
+@@ -27,7 +28,10 @@ import androidx.compose.ui.Modifier
+ @Sampled
+ @Composable
+ fun ClickableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val count = remember { mutableStateOf(0) }
+     // content that you want to make clickable
+     Text(text = count.value.toString(), modifier = Modifier.clickable { count.value += 1 })
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/DarkThemeSample.kt b/androidx/compose/foundation/samples/DarkThemeSample.kt
+index 6e4e73b..413d0e5 100644
+--- a/androidx/compose/foundation/samples/DarkThemeSample.kt
++++ b/androidx/compose/foundation/samples/DarkThemeSample.kt
+@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.isSystemInDarkTheme
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+@@ -29,7 +30,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun DarkThemeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val dark = isSystemInDarkTheme()
+     val color = if (dark) Color.White else Color.Black
+-    Box { Box(Modifier.size(50.dp).background(color = color)) }
++    Box(Modifier.background(Color.Gray).padding(8.dp)) { Box(Modifier.size(50.dp).background(color = color)) }
+ }
+diff --git a/androidx/compose/foundation/samples/DraggableSamples.kt b/androidx/compose/foundation/samples/DraggableSamples.kt
+index 6f1665a..4377995 100644
+--- a/androidx/compose/foundation/samples/DraggableSamples.kt
++++ b/androidx/compose/foundation/samples/DraggableSamples.kt
+@@ -18,6 +18,7 @@ package androidx.compose.foundation.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.border
+ import androidx.compose.foundation.gestures.Orientation
+ import androidx.compose.foundation.gestures.draggable
+ import androidx.compose.foundation.gestures.rememberDraggableState
+@@ -38,6 +39,7 @@ import kotlin.math.roundToInt
+ @Sampled
+ @Composable
+ fun DraggableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // Draw a seekbar-like composable that has a black background
+     // with a red square that moves along the 300.dp drag distance
+     val max = 300.dp
+@@ -58,7 +60,7 @@ fun DraggableSample() {
+                             offsetPosition.value = newValue.coerceIn(minPx, maxPx)
+                         },
+                 )
+-                .background(Color.Black)
++                .background(Color.Black).border(1.dp, Color.White)
+     ) {
+         Box(
+             Modifier.offset { IntOffset(offsetPosition.value.roundToInt(), 0) }
+diff --git a/androidx/compose/foundation/samples/FocusableSample.kt b/androidx/compose/foundation/samples/FocusableSample.kt
+index f815c0e..b49ec19 100644
+--- a/androidx/compose/foundation/samples/FocusableSample.kt
++++ b/androidx/compose/foundation/samples/FocusableSample.kt
+@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.lazy.LazyRow
+ import androidx.compose.material3.Button
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.remember
+@@ -39,6 +40,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun FocusableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // initialize focus reference to be able to request focus programmatically
+     val focusRequester = remember { FocusRequester() }
+     // MutableInteractionSource to track changes of the component's interactions (like "focused")
+@@ -66,11 +69,14 @@ fun FocusableSample() {
+             Text("Bring focus to the text above")
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun FocusGroupSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Row {
+         Column(Modifier.focusGroup()) {
+             Button({}) { Text("Row1 Col1") }
+@@ -83,11 +89,14 @@ fun FocusGroupSample() {
+             Button({}) { Text("Row3 Col2") }
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun FocusableFocusGroupSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val interactionSource = remember { MutableInteractionSource() }
+     LazyRow(
+         Modifier.focusable(interactionSource = interactionSource)
+@@ -95,4 +104,5 @@ fun FocusableFocusGroupSample() {
+     ) {
+         repeat(10) { item { Button({}) { Text("Button$it") } } }
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/IndicationSamples.kt b/androidx/compose/foundation/samples/IndicationSamples.kt
+index ae33e4c..d82a316 100644
+--- a/androidx/compose/foundation/samples/IndicationSamples.kt
++++ b/androidx/compose/foundation/samples/IndicationSamples.kt
+@@ -25,19 +25,26 @@ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Spacer
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.requiredHeight
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.unit.dp
+ 
+ @Composable
+ @Sampled
+ fun IndicationSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val interactionSource = remember { MutableInteractionSource() }
++    var count by remember { mutableStateOf(0) }
+     Column {
+         Text(
+-            text = "Click me and my neighbour will indicate as well!",
++            text = if (count == 0) "Click me and my neighbour will indicate as well!" else "Clicked $count time(s)!",
+             modifier =
+                 Modifier
+                     // clickable will dispatch events using MutableInteractionSource
+@@ -45,7 +52,7 @@ fun IndicationSample() {
+                         interactionSource = interactionSource,
+                         indication = LocalIndication.current,
+                     ) {
+-                        /** do something */
++                        count++
+                     }
+                     .padding(10.dp),
+         )
+@@ -60,4 +67,5 @@ fun IndicationSample() {
+                     .padding(10.dp),
+         )
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/SelectableSamples.kt b/androidx/compose/foundation/samples/SelectableSamples.kt
+index fbcbd4c..08624b4 100644
+--- a/androidx/compose/foundation/samples/SelectableSamples.kt
++++ b/androidx/compose/foundation/samples/SelectableSamples.kt
+@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.selection.selectable
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -36,6 +37,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun SelectableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val option1 = Color.Red
+     val option2 = Color.Blue
+     var selectedOption by remember { mutableStateOf(option1) }
+@@ -52,4 +55,5 @@ fun SelectableSample() {
+             }
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/SelectionSample.kt b/androidx/compose/foundation/samples/SelectionSample.kt
+index c8377e0..5236021 100644
+--- a/androidx/compose/foundation/samples/SelectionSample.kt
++++ b/androidx/compose/foundation/samples/SelectionSample.kt
+@@ -23,6 +23,7 @@ import androidx.compose.foundation.text.selection.DisableSelection
+ import androidx.compose.foundation.text.selection.SelectionContainer
+ import androidx.compose.foundation.text.selection.rememberSelectionState
+ import androidx.compose.material3.Button
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -32,6 +33,8 @@ import androidx.compose.ui.text.TextRange
+ @Sampled
+ @Composable
+ fun SelectionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     SelectionContainer {
+         Column {
+             Text("Text 1")
+@@ -39,22 +42,28 @@ fun SelectionSample() {
+             Text("טקסט 3")
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SelectAllSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val selectionState = rememberSelectionState()
+ 
+     Column {
+         Button(onClick = { selectionState.selectAll() }) { BasicText("Select All") }
+         SelectionContainer(state = selectionState) { BasicText(text = "Text to be selected...") }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun DisableSelectionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     SelectionContainer {
+         Column {
+             Text("Text 1")
+@@ -67,11 +76,14 @@ fun DisableSelectionSample() {
+             Text("Text 3")
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SelectionStateSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val selectionState = rememberSelectionState()
+ 
+     val characterCount = selectionState.selectedTexts.sumOf { it.text.length }
+@@ -84,11 +96,14 @@ fun SelectionStateSample() {
+             BasicText(text = "Characters selected: $characterCount")
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SelectQuerySample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val selectionState = rememberSelectionState()
+     val query = "Compose is great!"
+ 
+@@ -111,11 +126,14 @@ fun SelectQuerySample() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SelectThirdTextSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val selectionState = rememberSelectionState()
+ 
+     Column {
+@@ -141,11 +159,14 @@ fun SelectThirdTextSample() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ExtendSelectionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val selectionState = rememberSelectionState()
+ 
+     Column {
+@@ -154,4 +175,5 @@ fun ExtendSelectionSample() {
+         }
+         SelectionContainer(state = selectionState) { BasicText("Text to select: word by word") }
+     }
++    }
+ }
+diff --git a/androidx/compose/foundation/samples/TextAutoSizeSample.kt b/androidx/compose/foundation/samples/TextAutoSizeSample.kt
+index 61465bb..3da2262 100644
+--- a/androidx/compose/foundation/samples/TextAutoSizeSample.kt
++++ b/androidx/compose/foundation/samples/TextAutoSizeSample.kt
+@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.text.BasicText
+ import androidx.compose.foundation.text.TextAutoSize
+ import androidx.compose.foundation.text.modifiers.TextAutoSizeLayoutScope
++import androidx.compose.material3.Surface
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.remember
+ import androidx.compose.ui.Modifier
+@@ -35,10 +36,13 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun TextAutoSizeBasicTextSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Box(modifier = Modifier.size(200.dp)) {
+         // The text will find the biggest available font size that fits in the box.
+         BasicText(text = "Hello World", autoSize = TextAutoSize.StepBased())
+     }
++    }
+ }
+ 
+ /**
+diff --git a/androidx/compose/foundation/samples/ToggleableSamples.kt b/androidx/compose/foundation/samples/ToggleableSamples.kt
+index 222b6b2..d9280b8 100644
+--- a/androidx/compose/foundation/samples/ToggleableSamples.kt
++++ b/androidx/compose/foundation/samples/ToggleableSamples.kt
+@@ -19,6 +19,7 @@ package androidx.compose.foundation.samples
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.selection.toggleable
+ import androidx.compose.foundation.selection.triStateToggleable
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -31,17 +32,22 @@ import androidx.compose.ui.state.ToggleableState
+ @Sampled
+ @Composable
+ fun ToggleableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var checked by remember { mutableStateOf(false) }
+     // content that you want to make toggleable
+     Text(
+         modifier = Modifier.toggleable(value = checked, onValueChange = { checked = it }),
+         text = checked.toString(),
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TriStateToggleableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var checked by remember { mutableStateOf(ToggleableState.Indeterminate) }
+     // content that you want to make toggleable
+     Text(
+@@ -56,4 +62,5 @@ fun TriStateToggleableSample() {
+             ),
+         text = checked.toString(),
+     )
++    }
+ }
+diff --git a/androidx/compose/material/samples/ContentAlphaSamples.kt b/androidx/compose/material/samples/ContentAlphaSamples.kt
+index be3d8e7..64207e8 100644
+--- a/androidx/compose/material/samples/ContentAlphaSamples.kt
++++ b/androidx/compose/material/samples/ContentAlphaSamples.kt
+@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.material.ContentAlpha
+ import androidx.compose.material.LocalContentAlpha
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.CompositionLocalProvider
+@@ -27,6 +28,8 @@ import androidx.compose.runtime.CompositionLocalProvider
+ @Sampled
+ @Composable
+ fun ContentAlphaSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // Note the alpha values listed below are the values for light theme. The values are slightly
+     // different in dark theme to provide proper contrast against the background.
+     Column {
+@@ -47,4 +50,5 @@ fun ContentAlphaSample() {
+             Text("Disabled content alpha applied - 38% alpha")
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/DrawerSamples.kt b/androidx/compose/material/samples/DrawerSamples.kt
+index 7169636..0e567de 100644
+--- a/androidx/compose/material/samples/DrawerSamples.kt
++++ b/androidx/compose/material/samples/DrawerSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.material.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.Spacer
+@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.selection.toggleable
+ import androidx.compose.material.BottomDrawer
+@@ -35,6 +37,7 @@ import androidx.compose.material.ExperimentalMaterialApi
+ import androidx.compose.material.Icon
+ import androidx.compose.material.ListItem
+ import androidx.compose.material.ModalDrawer
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.Favorite
+@@ -52,6 +55,8 @@ import kotlinx.coroutines.launch
+ @Sampled
+ @Composable
+ fun ModalDrawerSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.size(320.dp, 320.dp)) {
+     val drawerState = rememberDrawerState(DrawerValue.Closed)
+     val scope = rememberCoroutineScope()
+     ModalDrawer(
+@@ -74,12 +79,15 @@ fun ModalDrawerSample() {
+             }
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun BottomDrawerSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface(Modifier.size(320.dp, 360.dp)) {
+     val (gesturesEnabled, toggleGesturesEnabled) = remember { mutableStateOf(true) }
+     val scope = rememberCoroutineScope()
+     Column {
+@@ -130,4 +138,5 @@ fun BottomDrawerSample() {
+             },
+         )
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/ExposedDropdownMenuSamples.kt b/androidx/compose/material/samples/ExposedDropdownMenuSamples.kt
+index 28649c7..79f48a3 100644
+--- a/androidx/compose/material/samples/ExposedDropdownMenuSamples.kt
++++ b/androidx/compose/material/samples/ExposedDropdownMenuSamples.kt
+@@ -23,6 +23,7 @@ import androidx.compose.material.DropdownMenuItem
+ import androidx.compose.material.ExperimentalMaterialApi
+ import androidx.compose.material.ExposedDropdownMenuBox
+ import androidx.compose.material.ExposedDropdownMenuDefaults
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.material.TextField
+ import androidx.compose.runtime.Composable
+@@ -35,6 +36,8 @@ import androidx.compose.runtime.setValue
+ @Sampled
+ @Composable
+ fun ExposedDropdownMenuSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
+     var expanded by remember { mutableStateOf(false) }
+     val textFieldState = rememberTextFieldState(options[0])
+@@ -60,12 +63,15 @@ fun ExposedDropdownMenuSample() {
+             }
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalMaterialApi::class)
+ @Sampled
+ @Composable
+ fun EditableExposedDropdownMenuSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
+     var expanded by remember { mutableStateOf(false) }
+     val textFieldState = rememberTextFieldState()
+@@ -94,4 +100,5 @@ fun EditableExposedDropdownMenuSample() {
+             }
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/ListSamples.kt b/androidx/compose/material/samples/ListSamples.kt
+index 86c11a2..bba7161 100644
+--- a/androidx/compose/material/samples/ListSamples.kt
++++ b/androidx/compose/material/samples/ListSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.material.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.size
+@@ -26,6 +27,7 @@ import androidx.compose.material.Divider
+ import androidx.compose.material.ExperimentalMaterialApi
+ import androidx.compose.material.Icon
+ import androidx.compose.material.ListItem
++import androidx.compose.material.MaterialTheme
+ import androidx.compose.material.Switch
+ import androidx.compose.material.Text
+ import androidx.compose.material.icons.Icons
+@@ -43,7 +45,8 @@ import androidx.compose.ui.unit.dp
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun ClickableListItems() {
+-    Column {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Column(Modifier.background(MaterialTheme.colors.surface)) {
+         var switched by remember { mutableStateOf(false) }
+         val onSwitchedChange: (Boolean) -> Unit = { switched = it }
+         ListItem(
+@@ -87,7 +90,9 @@ fun ClickableListItems() {
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun OneLineListItems() {
+-    Column {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    var clicked by remember { mutableStateOf(false) }
++    Column(Modifier.background(MaterialTheme.colors.surface)) {
+         ListItem(text = { Text("One line list item with no icon") })
+         Divider()
+         ListItem(
+@@ -118,7 +123,7 @@ fun OneLineListItems() {
+         )
+         Divider()
+         ListItem(
+-            text = { Text("One line clickable list item") },
++            text = { Text(if (clicked) "One line clickable list item (Clicked)" else "One line clickable list item") },
+             icon = {
+                 Icon(
+                     Icons.Filled.Favorite,
+@@ -126,7 +131,7 @@ fun OneLineListItems() {
+                     modifier = Modifier.size(56.dp),
+                 )
+             },
+-            modifier = Modifier.clickable {},
++            modifier = Modifier.clickable { clicked = !clicked },
+         )
+         Divider()
+         ListItem(
+@@ -153,7 +158,8 @@ fun OneLineListItems() {
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun TwoLineListItems() {
+-    Column {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Column(Modifier.background(MaterialTheme.colors.surface)) {
+         ListItem(text = { Text("Two line list item") }, secondaryText = { Text("Secondary text") })
+         Divider()
+         ListItem(text = { Text("Two line list item") }, overlineText = { Text("OVERLINE") })
+@@ -196,7 +202,8 @@ fun TwoLineListItems() {
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun ThreeLineListItems() {
+-    Column {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Column(Modifier.background(MaterialTheme.colors.surface)) {
+         ListItem(
+             text = { Text("Three line list item") },
+             secondaryText = {
+diff --git a/androidx/compose/material/samples/ProgressIndicatorSamples.kt b/androidx/compose/material/samples/ProgressIndicatorSamples.kt
+index eb3280e..ceeb5e2 100644
+--- a/androidx/compose/material/samples/ProgressIndicatorSamples.kt
++++ b/androidx/compose/material/samples/ProgressIndicatorSamples.kt
+@@ -25,6 +25,7 @@ import androidx.compose.material.CircularProgressIndicator
+ import androidx.compose.material.LinearProgressIndicator
+ import androidx.compose.material.OutlinedButton
+ import androidx.compose.material.ProgressIndicatorDefaults
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -38,6 +39,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun LinearProgressIndicatorSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var progress by remember { mutableStateOf(0.1f) }
+     val animatedProgress by
+         animateFloatAsState(
+@@ -50,11 +53,14 @@ fun LinearProgressIndicatorSample() {
+         Spacer(Modifier.requiredHeight(30.dp))
+         OutlinedButton(onClick = { if (progress < 1f) progress += 0.1f }) { Text("Increase") }
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun CircularProgressIndicatorSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var progress by remember { mutableStateOf(0.1f) }
+     val animatedProgress by
+         animateFloatAsState(
+@@ -67,4 +73,5 @@ fun CircularProgressIndicatorSample() {
+         Spacer(Modifier.requiredHeight(30.dp))
+         OutlinedButton(onClick = { if (progress < 1f) progress += 0.1f }) { Text("Increase") }
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/SelectionControlsSamples.kt b/androidx/compose/material/samples/SelectionControlsSamples.kt
+index c7c157a..2592d81 100644
+--- a/androidx/compose/material/samples/SelectionControlsSamples.kt
++++ b/androidx/compose/material/samples/SelectionControlsSamples.kt
+@@ -32,6 +32,7 @@ import androidx.compose.material.Checkbox
+ import androidx.compose.material.CheckboxDefaults
+ import androidx.compose.material.MaterialTheme
+ import androidx.compose.material.RadioButton
++import androidx.compose.material.Surface
+ import androidx.compose.material.Switch
+ import androidx.compose.material.Text
+ import androidx.compose.material.TriStateCheckbox
+@@ -56,6 +57,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun TriStateCheckboxSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Column {
+         // define dependent checkboxes states
+         val (state, onStateChange) = remember { mutableStateOf(true) }
+@@ -86,6 +89,7 @@ fun TriStateCheckboxSample() {
+             Checkbox(state2, onStateChange2)
+         }
+     }
++    }
+ }
+ 
+ @OptIn(ExperimentalComposeUiApi::class)
+@@ -113,20 +117,28 @@ fun FocusedCheckboxSample() {
+ @Sampled
+ @Composable
+ fun CheckboxSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val checkedState = remember { mutableStateOf(true) }
+     Checkbox(checked = checkedState.value, onCheckedChange = { checkedState.value = it })
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SwitchSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val checkedState = remember { mutableStateOf(true) }
+     Switch(checked = checkedState.value, onCheckedChange = { checkedState.value = it })
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun RadioButtonSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     // We have two radio buttons and only one can be selected
+     var state by remember { mutableStateOf(true) }
+     // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
+@@ -134,11 +146,14 @@ fun RadioButtonSample() {
+         RadioButton(selected = state, onClick = { state = true })
+         RadioButton(selected = !state, onClick = { state = false })
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun RadioGroupSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val radioOptions = listOf("Calls", "Missed", "Friends")
+     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+     // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
+@@ -167,4 +182,5 @@ fun RadioGroupSample() {
+             }
+         }
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/SliderSample.kt b/androidx/compose/material/samples/SliderSample.kt
+index 8c939d2..05bfa26 100644
+--- a/androidx/compose/material/samples/SliderSample.kt
++++ b/androidx/compose/material/samples/SliderSample.kt
+@@ -24,6 +24,7 @@ import androidx.compose.material.MaterialTheme
+ import androidx.compose.material.RangeSlider
+ import androidx.compose.material.Slider
+ import androidx.compose.material.SliderDefaults
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -37,16 +38,21 @@ import kotlin.math.roundToInt
+ @Sampled
+ @Composable
+ fun SliderSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var sliderPosition by remember { mutableStateOf(0f) }
+     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+         Text(text = "%.2f".format(sliderPosition))
+         Slider(value = sliderPosition, onValueChange = { sliderPosition = it })
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun StepsSliderSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var sliderPosition by remember { mutableStateOf(0f) }
+     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+         Text(text = sliderPosition.roundToInt().toString())
+@@ -68,12 +74,15 @@ fun StepsSliderSample() {
+                 ),
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun RangeSliderSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var sliderPosition by remember { mutableStateOf(0f..100f) }
+     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+         val rangeStart = "%.2f".format(sliderPosition.start)
+@@ -89,12 +98,15 @@ fun RangeSliderSample() {
+             },
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun StepRangeSliderSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var sliderPosition by remember { mutableStateOf(0f..100f) }
+     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+         val rangeStart = sliderPosition.start.roundToInt()
+@@ -118,4 +130,5 @@ fun StepRangeSliderSample() {
+                 ),
+         )
+     }
++    }
+ }
+diff --git a/androidx/compose/material/samples/SwipeableSamples.kt b/androidx/compose/material/samples/SwipeableSamples.kt
+index 2e74530..ad6cffb 100644
+--- a/androidx/compose/material/samples/SwipeableSamples.kt
++++ b/androidx/compose/material/samples/SwipeableSamples.kt
+@@ -19,6 +19,7 @@ package androidx.compose.material.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.border
+ import androidx.compose.foundation.gestures.Orientation
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.offset
+@@ -43,6 +44,7 @@ import kotlin.math.roundToInt
+ @Composable
+ @OptIn(ExperimentalMaterialApi::class)
+ fun SwipeableSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // Draw a slider-like composable consisting of a red square moving along a
+     // black background, with three states: "A" (min), "B" (middle), and "C" (max).
+     val width = 350.dp
+@@ -61,7 +63,7 @@ fun SwipeableSample() {
+                     thresholds = { _, _ -> FractionalThreshold(0.5f) },
+                     orientation = Orientation.Horizontal,
+                 )
+-                .background(Color.Black)
++                .background(Color.Black).border(1.dp, Color.White)
+     ) {
+         Box(
+             Modifier.offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
+diff --git a/androidx/compose/material/samples/TabSamples.kt b/androidx/compose/material/samples/TabSamples.kt
+index 4d46752..966ad39 100644
+--- a/androidx/compose/material/samples/TabSamples.kt
++++ b/androidx/compose/material/samples/TabSamples.kt
+@@ -40,6 +40,7 @@ import androidx.compose.material.Icon
+ import androidx.compose.material.LeadingIconTab
+ import androidx.compose.material.MaterialTheme
+ import androidx.compose.material.ScrollableTabRow
++import androidx.compose.material.Surface
+ import androidx.compose.material.Tab
+ import androidx.compose.material.TabPosition
+ import androidx.compose.material.TabRow
+@@ -61,6 +62,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun TextTabs() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var state by remember { mutableStateOf(0) }
+     val titles = listOf("TAB 1", "TAB 2", "TAB 3 WITH LOTS OF TEXT")
+     Column {
+@@ -75,6 +78,7 @@ fun TextTabs() {
+             style = MaterialTheme.typography.body1,
+         )
+     }
++    }
+ }
+ 
+ @Composable
+@@ -188,6 +192,8 @@ fun ScrollingTextTabs() {
+ @Sampled
+ @Composable
+ fun FancyTabs() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var state by remember { mutableStateOf(0) }
+     val titles = listOf("TAB 1", "TAB 2", "TAB 3")
+     Column {
+@@ -202,11 +208,14 @@ fun FancyTabs() {
+             style = MaterialTheme.typography.body1,
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun FancyIndicatorTabs() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var state by remember { mutableStateOf(0) }
+     val titles = listOf("TAB 1", "TAB 2", "TAB 3")
+ 
+@@ -228,11 +237,14 @@ fun FancyIndicatorTabs() {
+             style = MaterialTheme.typography.body1,
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun FancyIndicatorContainerTabs() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     var state by remember { mutableStateOf(0) }
+     val titles = listOf("TAB 1", "TAB 2", "TAB 3")
+ 
+@@ -253,6 +265,7 @@ fun FancyIndicatorContainerTabs() {
+             style = MaterialTheme.typography.body1,
+         )
+     }
++    }
+ }
+ 
+ @Composable
+diff --git a/androidx/compose/material/samples/TextFieldSamples.kt b/androidx/compose/material/samples/TextFieldSamples.kt
+index 0460004..689f9f9 100644
+--- a/androidx/compose/material/samples/TextFieldSamples.kt
++++ b/androidx/compose/material/samples/TextFieldSamples.kt
+@@ -32,6 +32,7 @@ import androidx.compose.material.ContentAlpha
+ import androidx.compose.material.Icon
+ import androidx.compose.material.IconButton
+ import androidx.compose.material.MaterialTheme
++import androidx.compose.material.Surface
+ import androidx.compose.material.OutlinedTextField
+ import androidx.compose.material.SecureTextField
+ import androidx.compose.material.Text
+@@ -68,26 +69,34 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun SimpleTextFieldSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     TextField(
+         state = rememberTextFieldState(),
+         label = { Text("Label") },
+         lineLimits = TextFieldLineLimits.SingleLine,
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SimpleOutlinedTextFieldSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     OutlinedTextField(
+         state = rememberTextFieldState(),
+         label = { Text("Label") },
+         lineLimits = TextFieldLineLimits.SingleLine,
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextFieldWithIcons() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val state = rememberTextFieldState()
+     TextField(
+         state = state,
+@@ -100,22 +109,28 @@ fun TextFieldWithIcons() {
+             }
+         },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextFieldWithPlaceholder() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     TextField(
+         state = rememberTextFieldState(),
+         lineLimits = TextFieldLineLimits.SingleLine,
+         label = { Text("Email") },
+         placeholder = { Text("example@gmail.com") },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextFieldWithErrorState() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val state = rememberTextFieldState()
+     var isError by rememberSaveable { mutableStateOf(false) }
+ 
+@@ -144,11 +159,14 @@ fun TextFieldWithErrorState() {
+                 if (isError) error("Email format is invalid.")
+             },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextFieldWithHelperMessage() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Column {
+         TextField(
+             state = rememberTextFieldState(),
+@@ -162,6 +180,7 @@ fun TextFieldWithHelperMessage() {
+             modifier = Modifier.padding(start = 16.dp),
+         )
+     }
++    }
+ }
+ 
+ @Sampled
+@@ -284,19 +303,25 @@ private var _visibilityOff: ImageVector? = null
+ @Sampled
+ @Composable
+ fun TextFieldWithInitialValueAndSelection() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val state = rememberTextFieldState("Initial text", TextRange(0, 12))
+     TextField(state = state, label = { Text("Label") }, lineLimits = TextFieldLineLimits.SingleLine)
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun OutlinedTextFieldWithInitialValueAndSelection() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val state = rememberTextFieldState("Initial text", TextRange(0, 12))
+     OutlinedTextField(
+         state = state,
+         label = { Text("Label") },
+         lineLimits = TextFieldLineLimits.SingleLine,
+     )
++    }
+ }
+ 
+ @Sampled
+diff --git a/androidx/compose/material/samples/TextSamples.kt b/androidx/compose/material/samples/TextSamples.kt
+index 755b17d..29d0e32 100644
+--- a/androidx/compose/material/samples/TextSamples.kt
++++ b/androidx/compose/material/samples/TextSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.material.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.text.LinkAnnotation
+@@ -26,6 +27,8 @@ import androidx.compose.ui.text.withLink
+ @Sampled
+ @Composable
+ fun TextWithLinks() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val url = "https://developer.android.com/jetpack/compose"
+     val annotatedString = buildAnnotatedString {
+         append("Build better apps faster with ")
+@@ -34,4 +37,5 @@ fun TextWithLinks() {
+         withLink(LinkAnnotation.Url(url = url)) { append("Jetpack Compose") }
+     }
+     Text(annotatedString)
++    }
+ }
+diff --git a/androidx/compose/material/samples/ThemeSamples.kt b/androidx/compose/material/samples/ThemeSamples.kt
+index 96814fa..7c03d2f 100644
+--- a/androidx/compose/material/samples/ThemeSamples.kt
++++ b/androidx/compose/material/samples/ThemeSamples.kt
+@@ -22,27 +22,36 @@ import androidx.compose.foundation.isSystemInDarkTheme
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.aspectRatio
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.material.ExtendedFloatingActionButton
+ import androidx.compose.material.MaterialTheme
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.material.Typography
+ import androidx.compose.material.darkColors
+ import androidx.compose.material.lightColors
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.text.TextStyle
+ import androidx.compose.ui.text.font.FontWeight
++import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ 
+ @Sampled
+ @Composable
+ fun MaterialThemeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val lightColors = lightColors(primary = Color(0xFF1EB980))
+ 
+     val darkColors = darkColors(primary = Color(0xFF66ffc7))
+ 
+-    val colors = if (isSystemInDarkTheme()) darkColors else lightColors
++    var isDark by remember { mutableStateOf(false) }
++    val colors = if (isDark || isSystemInDarkTheme()) darkColors else lightColors
+ 
+     val typography =
+         Typography(
+@@ -54,7 +63,7 @@ fun MaterialThemeSample() {
+         val currentTheme = if (MaterialTheme.colors.isLight) "light" else "dark"
+         ExtendedFloatingActionButton(
+             text = { Text("FAB with text style and color from $currentTheme theme") },
+-            onClick = {},
++            onClick = { isDark = !isDark },
+         )
+     }
+ }
+@@ -62,13 +71,17 @@ fun MaterialThemeSample() {
+ @Sampled
+ @Composable
+ fun ThemeColorSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val colors = MaterialTheme.colors
+-    Box(Modifier.aspectRatio(1f).fillMaxSize().background(color = colors.primary))
++    Box(Modifier.size(100.dp).aspectRatio(1f).background(color = colors.primary))
+ }
+ 
+ @Sampled
+ @Composable
+ fun ThemeTextStyleSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val typography = MaterialTheme.typography
+     Text(text = "H4 styled text", style = typography.h4)
++    }
+ }
+diff --git a/androidx/compose/ui/graphics/samples/BrushSamples.kt b/androidx/compose/ui/graphics/samples/BrushSamples.kt
+index 873838c..a8de0a0 100644
+--- a/androidx/compose/ui/graphics/samples/BrushSamples.kt
++++ b/androidx/compose/ui/graphics/samples/BrushSamples.kt
+@@ -43,7 +43,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun GradientBrushSample() {
+-    Column(modifier = Modifier.fillMaxSize().wrapContentSize()) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Column {
+ 
+         // Create a linear gradient that shows red in the top left corner
+         // and blue in the bottom right corner
+@@ -168,9 +169,10 @@ fun SweepGradientSample() {
+ @Sampled
+ @Composable
+ fun CompositeShaderSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     Box(
+         modifier =
+-            Modifier.size(120.dp).drawWithCache {
++            Modifier.size(120.dp).background(Color.White).drawWithCache {
+                 val bitmap = ImageBitmap(size.width.toInt(), size.height.toInt())
+                 CanvasDrawScope().draw(this, layoutDirection, Canvas(bitmap), size) {
+                     drawRect(Color.Black, style = Stroke(20.dp.toPx()))
+diff --git a/androidx/compose/ui/samples/DrawModifierSample.kt b/androidx/compose/ui/samples/DrawModifierSample.kt
+index 2b468c5..2cf1b17 100644
+--- a/androidx/compose/ui/samples/DrawModifierSample.kt
++++ b/androidx/compose/ui/samples/DrawModifierSample.kt
+@@ -18,10 +18,12 @@ package androidx.compose.ui.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.Image
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.requiredSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+@@ -52,8 +54,9 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun DrawWithCacheModifierSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     Box(
+-        Modifier.drawWithCache {
++        Modifier.size(100.dp).drawWithCache {
+             val gradient =
+                 Brush.linearGradient(
+                     colors = listOf(Color.Red, Color.Blue),
+@@ -74,11 +77,12 @@ fun DrawWithCacheModifierSample() {
+ @Sampled
+ @Composable
+ fun DrawWithCacheModifierStateParameterSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val colors1 = listOf(Color.Red, Color.Blue)
+     val colors2 = listOf(Color.Yellow, Color.Green)
+     var toggle by remember { mutableStateOf(true) }
+     Box(
+-        Modifier.clickable { toggle = !toggle }
++        Modifier.size(100.dp).clickable { toggle = !toggle }
+             .drawWithCache {
+                 val gradient =
+                     Brush.linearGradient(
+@@ -100,6 +104,7 @@ fun DrawWithCacheModifierStateParameterSample() {
+ @Sampled
+ @Composable
+ fun DrawWithCacheContentSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val vectorPainter =
+         rememberVectorPainter(24.dp, 24.dp, autoMirror = true) { viewportWidth, viewportHeight ->
+             Path(
+@@ -116,7 +121,7 @@ fun DrawWithCacheContentSample() {
+         painter = vectorPainter,
+         contentDescription = null,
+         modifier =
+-            Modifier.requiredSize(120.dp).drawWithCache {
++            Modifier.requiredSize(120.dp).background(Color.White).drawWithCache {
+                 val gradient =
+                     Brush.linearGradient(
+                         colors = listOf(Color.Red, Color.Blue),
+@@ -134,6 +139,7 @@ fun DrawWithCacheContentSample() {
+ @Sampled
+ @Composable
+ fun DrawModifierNodeSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     class CircleNode(var color: Color) : DrawModifierNode, Modifier.Node() {
+         override fun ContentDrawScope.draw() {
+             drawCircle(color)
+@@ -152,5 +158,5 @@ fun DrawModifierNodeSample() {
+         }
+     }
+     fun Modifier.circle(color: Color) = this then CircleElement(color)
+-    Box(Modifier.fillMaxSize().circle(Color.Blue))
++    Box(Modifier.size(100.dp).circle(Color.Blue))
+ }
+diff --git a/androidx/compose/ui/samples/LayerModifierSamples.kt b/androidx/compose/ui/samples/LayerModifierSamples.kt
+index de483da..7cae837 100644
+--- a/androidx/compose/ui/samples/LayerModifierSamples.kt
++++ b/androidx/compose/ui/samples/LayerModifierSamples.kt
+@@ -20,6 +20,7 @@ import androidx.annotation.Sampled
+ import androidx.compose.animation.core.Animatable
+ import androidx.compose.foundation.Canvas
+ import androidx.compose.foundation.background
++import androidx.compose.foundation.border
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.size
+@@ -42,12 +43,17 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun ChangeOpacity() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White)) {
+     Text("Hello World", Modifier.graphicsLayer(alpha = 0.5f, clip = true))
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun AnimateFadeIn() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White)) {
+     val animatedAlpha = remember { Animatable(0f) }
+     Text(
+         "Hello World",
+@@ -57,15 +63,17 @@ fun AnimateFadeIn() {
+         },
+     )
+     LaunchedEffect(animatedAlpha) { animatedAlpha.animateTo(1f) }
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun CompositingStrategyModulateAlpha() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     Canvas(
+         modifier =
+             Modifier.size(100.dp)
+-                .background(Color.Black)
++                .background(Color.Black).border(1.dp, Color.White)
+                 .graphicsLayer(
+                     alpha = 0.5f,
+                     compositingStrategy = CompositingStrategy.ModulateAlpha,
+diff --git a/androidx/compose/ui/samples/PointerIconSample.kt b/androidx/compose/ui/samples/PointerIconSample.kt
+index 0a00797..daa2345 100644
+--- a/androidx/compose/ui/samples/PointerIconSample.kt
++++ b/androidx/compose/ui/samples/PointerIconSample.kt
+@@ -18,6 +18,7 @@ package androidx.compose.ui.samples
+ 
+ import androidx.annotation.Sampled
+ import androidx.compose.foundation.BorderStroke
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.border
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+@@ -37,7 +38,8 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun PointerIconSample() {
+-    Column(Modifier.pointerHoverIcon(PointerIcon.Crosshair)) {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Column(Modifier.background(Color.White).pointerHoverIcon(PointerIcon.Crosshair)) {
+         SelectionContainer {
+             Column {
+                 Text("Selectable text")
+@@ -54,8 +56,9 @@ fun PointerIconSample() {
+ @Sampled
+ @Composable
+ fun StylusHoverIconSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     Box(
+-        Modifier.requiredSize(200.dp)
++        Modifier.requiredSize(200.dp).background(Color.White)
+             .border(BorderStroke(2.dp, SolidColor(Color.Red)))
+             .stylusHoverIcon(PointerIcon.Crosshair)
+     ) {
+diff --git a/androidx/compose/ui/samples/ShadowSample.kt b/androidx/compose/ui/samples/ShadowSample.kt
+index beaba00..bca10fd 100644
+--- a/androidx/compose/ui/samples/ShadowSample.kt
++++ b/androidx/compose/ui/samples/ShadowSample.kt
+@@ -17,13 +17,16 @@
+ package androidx.compose.ui.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.dropShadow
+ import androidx.compose.ui.draw.innerShadow
+ import androidx.compose.ui.draw.shadow
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.RectangleShape
+ import androidx.compose.ui.graphics.shadow.Shadow
+ import androidx.compose.ui.unit.dp
+@@ -31,17 +34,26 @@ import androidx.compose.ui.unit.dp
+ @Sampled
+ @Composable
+ fun ShadowSample() {
+-    Box(Modifier.shadow(12.dp, RectangleShape).size(100.dp, 100.dp))
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White).padding(16.dp)) {
++    Box(Modifier.shadow(12.dp, RectangleShape).size(100.dp, 100.dp).background(Color.White))
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun DropShadowSample() {
+-    Box(Modifier.size(100.dp, 100.dp).dropShadow(RectangleShape, Shadow(12.dp)))
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White).padding(16.dp)) {
++    Box(Modifier.size(100.dp, 100.dp).background(Color.White).dropShadow(RectangleShape, Shadow(12.dp)))
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun InnerShadowSample() {
+-    Box(Modifier.size(100.dp, 100.dp).innerShadow(RectangleShape, Shadow(12.dp)))
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White).padding(16.dp)) {
++    Box(Modifier.size(100.dp, 100.dp).background(Color.White).innerShadow(RectangleShape, Shadow(12.dp)))
++    }
+ }
+diff --git a/androidx/compose/ui/samples/ZIndexModifierSample.kt b/androidx/compose/ui/samples/ZIndexModifierSample.kt
+index b92935c..efdb005 100644
+--- a/androidx/compose/ui/samples/ZIndexModifierSample.kt
++++ b/androidx/compose/ui/samples/ZIndexModifierSample.kt
+@@ -17,17 +17,22 @@
+ package androidx.compose.ui.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.padding
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.zIndex
+ 
+ @Sampled
+ @Composable
+ fun ZIndexModifierSample() {
+-    Box {
+-        Text("Drawn second", Modifier.zIndex(1f))
+-        Text("Drawn first")
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Box(Modifier.background(Color.White)) {
++        Text("Drawn second", Modifier.zIndex(1f).background(Color.Cyan))
++        Text("Drawn first", Modifier.padding(top = 10.dp).background(Color.Yellow))
+     }
+ }
+diff --git a/androidx/compose/ui/text/samples/BaselineShiftSamples.kt b/androidx/compose/ui/text/samples/BaselineShiftSamples.kt
+index 0d950d6..59e1720 100644
+--- a/androidx/compose/ui/text/samples/BaselineShiftSamples.kt
++++ b/androidx/compose/ui/text/samples/BaselineShiftSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.ui.text.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.text.SpanStyle
+@@ -28,6 +29,8 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun BaselineShiftSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(
+         fontSize = 20.sp,
+         text =
+@@ -41,14 +44,18 @@ fun BaselineShiftSample() {
+                 }
+             },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun BaselineShiftAnnotatedStringSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val annotatedString = buildAnnotatedString {
+         append("Text ")
+         withStyle(SpanStyle(baselineShift = BaselineShift.Superscript)) { append("Demo") }
+     }
+     Text(text = annotatedString)
++    }
+ }
+diff --git a/androidx/compose/ui/text/samples/DrawTextSamples.kt b/androidx/compose/ui/text/samples/DrawTextSamples.kt
+index 7b43548..6d4ab43 100644
+--- a/androidx/compose/ui/text/samples/DrawTextSamples.kt
++++ b/androidx/compose/ui/text/samples/DrawTextSamples.kt
+@@ -22,8 +22,10 @@ import androidx.compose.animation.core.infiniteRepeatable
+ import androidx.compose.animation.core.rememberInfiniteTransition
+ import androidx.compose.animation.core.tween
+ import androidx.compose.foundation.Canvas
++import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.material3.LocalTextStyle
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -49,23 +51,26 @@ import androidx.compose.ui.text.style.TextDecoration
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.text.withStyle
+ import androidx.compose.ui.unit.Constraints
++import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import kotlin.math.roundToInt
+ 
+ @Sampled
+ @Composable
+ fun DrawTextSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val textMeasurer = rememberTextMeasurer()
+ 
+-    Canvas(Modifier.fillMaxSize()) { drawText(textMeasurer, "Hello, World!") }
++    Canvas(Modifier.size(200.dp, 80.dp).background(Color.White)) { drawText(textMeasurer, "Hello, World!") }
+ }
+ 
+ @Sampled
+ @Composable
+ fun DrawTextStyledSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val textMeasurer = rememberTextMeasurer()
+ 
+-    Canvas(Modifier.fillMaxSize()) {
++    Canvas(Modifier.size(200.dp, 80.dp).background(Color.White)) {
+         drawText(
+             textMeasurer = textMeasurer,
+             text = "Hello, World!",
+@@ -82,9 +87,10 @@ fun DrawTextStyledSample() {
+ @Sampled
+ @Composable
+ fun DrawTextAnnotatedStringSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val textMeasurer = rememberTextMeasurer()
+ 
+-    Canvas(Modifier.fillMaxSize()) {
++    Canvas(Modifier.size(200.dp, 80.dp).background(Color.White)) {
+         drawText(
+             textMeasurer = textMeasurer,
+             text =
+@@ -105,11 +111,12 @@ fun DrawTextAnnotatedStringSample() {
+ @Sampled
+ @Composable
+ fun DrawTextMeasureInLayoutSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     val textMeasurer = rememberTextMeasurer()
+     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+ 
+     Canvas(
+-        Modifier.fillMaxSize().layout { measurable, constraints ->
++        Modifier.size(200.dp, 80.dp).background(Color.White).layout { measurable, constraints ->
+             val placeable = measurable.measure(constraints)
+             // TextLayout can be done any time prior to its use in draw, including in a
+             // background thread.
+@@ -137,6 +144,7 @@ fun DrawTextMeasureInLayoutSample() {
+ @Sampled
+ @Composable
+ fun DrawTextDrawWithCacheSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+     // We can disable implicit caching since we will cache in DrawWithCache
+     val textMeasurer = rememberTextMeasurer(cacheSize = 0)
+     // Apply the current text style from theme, otherwise TextStyle.Default will be used.
+@@ -152,7 +160,7 @@ fun DrawTextDrawWithCacheSample() {
+         )
+ 
+     Box(
+-        Modifier.fillMaxSize().drawWithCache {
++        Modifier.size(200.dp, 80.dp).background(Color.White).drawWithCache {
+             // Text layout will be measured just once until the size of the drawing area or
+             // materialTextStyle changes.
+             val textLayoutResult =
+diff --git a/androidx/compose/ui/text/samples/ParagraphStyleSamples.kt b/androidx/compose/ui/text/samples/ParagraphStyleSamples.kt
+index 3d8ae65..921c0b5 100644
+--- a/androidx/compose/ui/text/samples/ParagraphStyleSamples.kt
++++ b/androidx/compose/ui/text/samples/ParagraphStyleSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.ui.text.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.text.ParagraphStyle
+@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun ParagraphStyleSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val textStyle =
+         TextStyle(
+             textAlign = TextAlign.Justify,
+@@ -42,11 +45,14 @@ fun ParagraphStyleSample() {
+                 "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+         style = textStyle,
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun ParagraphStyleAnnotatedStringsSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val text =
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+             "incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis " +
+@@ -63,4 +69,5 @@ fun ParagraphStyleAnnotatedStringsSample() {
+                 addStyle(paragraphStyle2, text.indexOf('\n') + 1, text.length)
+             }
+     )
++    }
+ }
+diff --git a/androidx/compose/ui/text/samples/SpanStyleSamples.kt b/androidx/compose/ui/text/samples/SpanStyleSamples.kt
+index 10ce7ab..a681f59 100644
+--- a/androidx/compose/ui/text/samples/SpanStyleSamples.kt
++++ b/androidx/compose/ui/text/samples/SpanStyleSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.ui.text.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.graphics.Brush
+@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.sp
+ @Sampled
+ @Composable
+ fun SpanStyleSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(
+         fontSize = 16.sp,
+         text =
+@@ -37,11 +40,14 @@ fun SpanStyleSample() {
+                 withStyle(SpanStyle(color = Color.Blue)) { append(" World") }
+             },
+     )
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun SpanStyleBrushSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     val brushColors = listOf(Color.Red, Color.Blue, Color.Green, Color.Yellow)
+     Text(
+         fontSize = 16.sp,
+@@ -53,4 +59,5 @@ fun SpanStyleBrushSample() {
+                 }
+             },
+     )
++    }
+ }
+diff --git a/androidx/compose/ui/text/samples/TextDecorationSamples.kt b/androidx/compose/ui/text/samples/TextDecorationSamples.kt
+index c323fa9..9ed7fac 100644
+--- a/androidx/compose/ui/text/samples/TextDecorationSamples.kt
++++ b/androidx/compose/ui/text/samples/TextDecorationSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.ui.text.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.text.style.TextDecoration
+@@ -24,17 +25,26 @@ import androidx.compose.ui.text.style.TextDecoration
+ @Sampled
+ @Composable
+ fun TextDecorationLineThroughSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(text = "Demo Text", textDecoration = TextDecoration.LineThrough)
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextDecorationUnderlineSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(text = "Demo Text", textDecoration = TextDecoration.Underline)
++    }
+ }
+ 
+ @Sampled
+ @Composable
+ fun TextDecorationCombinedSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(text = "Demo Text", textDecoration = TextDecoration.Underline + TextDecoration.LineThrough)
++    }
+ }
+diff --git a/androidx/compose/ui/text/samples/TextMotionSamples.kt b/androidx/compose/ui/text/samples/TextMotionSamples.kt
+index b843583..2a6dfaa 100644
+--- a/androidx/compose/ui/text/samples/TextMotionSamples.kt
++++ b/androidx/compose/ui/text/samples/TextMotionSamples.kt
+@@ -22,14 +22,19 @@ import androidx.compose.animation.core.animateFloat
+ import androidx.compose.animation.core.infiniteRepeatable
+ import androidx.compose.animation.core.rememberInfiniteTransition
+ import androidx.compose.animation.core.tween
++import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.size
+ import androidx.compose.material3.LocalTextStyle
++import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
++import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.TransformOrigin
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.text.style.TextMotion
++import androidx.compose.ui.unit.dp
+ 
+ /**
+  * This sample demonstrates how to define TextMotion on a Text composable that scales up and down
+@@ -38,6 +43,9 @@ import androidx.compose.ui.text.style.TextMotion
+ @Sampled
+ @Composable
+ fun TextMotionSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
++        Box(Modifier.size(200.dp, 80.dp), contentAlignment = Alignment.Center) {
+     val infiniteTransition = rememberInfiniteTransition()
+     val scale by
+         infiniteTransition.animateFloat(
+@@ -58,4 +66,6 @@ fun TextMotionSample() {
+         // Provide it via style argument but make sure that we are copying from current theme
+         style = LocalTextStyle.current.copy(textMotion = TextMotion.Animated),
+     )
++        }
++    }
+ }
+diff --git a/androidx/compose/ui/text/samples/TextStyleSamples.kt b/androidx/compose/ui/text/samples/TextStyleSamples.kt
+index bf70290..bad4dc9 100644
+--- a/androidx/compose/ui/text/samples/TextStyleSamples.kt
++++ b/androidx/compose/ui/text/samples/TextStyleSamples.kt
+@@ -17,6 +17,7 @@
+ package androidx.compose.ui.text.samples
+ 
+ import androidx.annotation.Sampled
++import androidx.compose.material.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.graphics.Brush
+@@ -51,6 +52,8 @@ fun TextStyleSample() {
+ @Sampled
+ @Composable
+ fun TextStyleBrushSample() {
++    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
++    Surface {
+     Text(
+         text = "Demo Text",
+         style =
+@@ -65,4 +68,5 @@ fun TextStyleBrushSample() {
+                 textDecoration = TextDecoration.Underline,
+             ),
+     )
++    }
+ }

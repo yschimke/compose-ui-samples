@@ -18,6 +18,7 @@ package androidx.compose.foundation.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -38,6 +39,7 @@ import kotlin.math.roundToInt
 @Sampled
 @Composable
 fun DraggableSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // Draw a seekbar-like composable that has a black background
     // with a red square that moves along the 300.dp drag distance
     val max = 300.dp
@@ -58,7 +60,7 @@ fun DraggableSample() {
                             offsetPosition.value = newValue.coerceIn(minPx, maxPx)
                         },
                 )
-                .background(Color.Black)
+                .background(Color.Black).border(1.dp, Color.White)
     ) {
         Box(
             Modifier.offset { IntOffset(offsetPosition.value.roundToInt(), 0) }

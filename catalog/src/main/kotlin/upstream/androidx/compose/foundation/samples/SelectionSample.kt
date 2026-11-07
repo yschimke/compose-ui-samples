@@ -23,6 +23,7 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +33,8 @@ import androidx.compose.ui.text.TextRange
 @Sampled
 @Composable
 fun SelectionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     SelectionContainer {
         Column {
             Text("Text 1")
@@ -39,22 +42,28 @@ fun SelectionSample() {
             Text("טקסט 3")
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun SelectAllSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val selectionState = rememberSelectionState()
 
     Column {
         Button(onClick = { selectionState.selectAll() }) { BasicText("Select All") }
         SelectionContainer(state = selectionState) { BasicText(text = "Text to be selected...") }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun DisableSelectionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     SelectionContainer {
         Column {
             Text("Text 1")
@@ -67,11 +76,14 @@ fun DisableSelectionSample() {
             Text("Text 3")
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun SelectionStateSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val selectionState = rememberSelectionState()
 
     val characterCount = selectionState.selectedTexts.sumOf { it.text.length }
@@ -84,11 +96,14 @@ fun SelectionStateSample() {
             BasicText(text = "Characters selected: $characterCount")
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun SelectQuerySample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val selectionState = rememberSelectionState()
     val query = "Compose is great!"
 
@@ -111,11 +126,14 @@ fun SelectQuerySample() {
             }
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun SelectThirdTextSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val selectionState = rememberSelectionState()
 
     Column {
@@ -141,11 +159,14 @@ fun SelectThirdTextSample() {
             }
         }
     }
+    }
 }
 
 @Sampled
 @Composable
 fun ExtendSelectionSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val selectionState = rememberSelectionState()
 
     Column {
@@ -153,5 +174,6 @@ fun ExtendSelectionSample() {
             BasicText("Extend Selection to Next Word")
         }
         SelectionContainer(state = selectionState) { BasicText("Text to select: word by word") }
+    }
     }
 }

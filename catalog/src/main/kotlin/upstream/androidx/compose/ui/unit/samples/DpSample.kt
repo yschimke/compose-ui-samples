@@ -17,9 +17,11 @@ package androidx.compose.ui.unit.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,21 +32,23 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun DpSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     Box(
         Modifier.padding(
             10.dp, // Int
             10f.dp, // Float
             20.0.dp, // Double
             10.dp,
-        )
+        ).size(50.dp).background(Color.Blue)
     )
 }
 
 @Sampled
 @Composable
 fun ToPxSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     val lineThickness = 6.dp
-    Canvas(Modifier.fillMaxSize()) {
+    Canvas(Modifier.size(100.dp)) {
         val lineThicknessPx = lineThickness.toPx()
         inset(lineThicknessPx / 2) { drawRect(Color.Red, style = Stroke(lineThicknessPx)) }
     }

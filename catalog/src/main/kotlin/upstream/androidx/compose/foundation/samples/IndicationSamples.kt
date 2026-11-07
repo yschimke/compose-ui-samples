@@ -25,19 +25,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 @Sampled
 fun IndicationSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
+    Surface {
     val interactionSource = remember { MutableInteractionSource() }
+    var count by remember { mutableStateOf(0) }
     Column {
         Text(
-            text = "Click me and my neighbour will indicate as well!",
+            text = if (count == 0) "Click me and my neighbour will indicate as well!" else "Clicked $count time(s)!",
             modifier =
                 Modifier
                     // clickable will dispatch events using MutableInteractionSource
@@ -45,7 +52,7 @@ fun IndicationSample() {
                         interactionSource = interactionSource,
                         indication = LocalIndication.current,
                     ) {
-                        /** do something */
+                        count++
                     }
                     .padding(10.dp),
         )
@@ -59,5 +66,6 @@ fun IndicationSample() {
                     .indication(interactionSource, LocalIndication.current)
                     .padding(10.dp),
         )
+    }
     }
 }

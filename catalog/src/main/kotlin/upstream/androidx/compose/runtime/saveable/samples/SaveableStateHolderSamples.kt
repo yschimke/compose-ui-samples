@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun SimpleNavigationWithSaveableStateSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     @Composable
     fun <T : Any> Navigation(
         currentScreen: T,
@@ -56,13 +58,13 @@ fun SimpleNavigationWithSaveableStateSample() {
         }
     }
 
-    Column {
+    Column(Modifier.background(Color.White)) {
         var screen by rememberSaveable { mutableStateOf("screen1") }
         Row(horizontalArrangement = Arrangement.SpaceEvenly) {
             Button(onClick = { screen = "screen1" }) { Text("Go to screen1") }
             Button(onClick = { screen = "screen2" }) { Text("Go to screen2") }
         }
-        Navigation(screen, Modifier.fillMaxSize()) { currentScreen ->
+        Navigation(screen, Modifier.size(300.dp, 80.dp)) { currentScreen ->
             if (currentScreen == "screen1") {
                 Screen1()
             } else {

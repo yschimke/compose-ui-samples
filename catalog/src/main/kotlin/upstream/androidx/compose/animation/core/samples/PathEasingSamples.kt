@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 @Sampled
 @Composable
 fun PathEasingSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0004-sample-sizes.patch
     // Creates a custom PathEasing curve and applies it to an animation
     var toggled by remember { mutableStateOf(true) }
     val pathForAnimation = remember {
@@ -55,7 +56,7 @@ fun PathEasingSample() {
             label = "offset",
             animationSpec = tween(durationMillis = 1000, easing = PathEasing(pathForAnimation)),
         )
-    Box(modifier = Modifier.fillMaxSize().clickable { toggled = !toggled }) {
+    Box(modifier = Modifier.size(200.dp).clickable { toggled = !toggled }) {
         Box(modifier = Modifier.offset { offset }.size(100.dp).background(Color.Blue))
     }
 }

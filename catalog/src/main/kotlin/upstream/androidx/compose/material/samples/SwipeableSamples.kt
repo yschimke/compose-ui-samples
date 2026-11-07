@@ -19,6 +19,7 @@ package androidx.compose.material.samples
 
 import androidx.annotation.Sampled
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
@@ -43,6 +44,7 @@ import kotlin.math.roundToInt
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun SwipeableSample() {
+    // Sample includes local edits: https://github.com/yschimke/compose-ui-samples/blob/main/catalog/patches/0002-sample-backgrounds.patch
     // Draw a slider-like composable consisting of a red square moving along a
     // black background, with three states: "A" (min), "B" (middle), and "C" (max).
     val width = 350.dp
@@ -61,7 +63,7 @@ fun SwipeableSample() {
                     thresholds = { _, _ -> FractionalThreshold(0.5f) },
                     orientation = Orientation.Horizontal,
                 )
-                .background(Color.Black)
+                .background(Color.Black).border(1.dp, Color.White)
     ) {
         Box(
             Modifier.offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
